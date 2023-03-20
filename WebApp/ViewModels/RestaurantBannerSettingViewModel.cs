@@ -1,0 +1,13 @@
+﻿namespace WebApp.ViewModels
+{
+    public class RestaurantBannerSettingViewModel
+    {
+
+        public long Id { get; set; }
+        public long RestaurantId { get; set; }
+        public string Lang { get; set; }
+        public string ImagePath { get; set; }
+        public string Url { get; set; }
+        public string BannerType { get; set; }
+    }
+}

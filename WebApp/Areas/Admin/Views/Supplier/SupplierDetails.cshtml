@@ -1,0 +1,488 @@
+﻿@model WebApp.ViewModels.SupplierViewModel
+
+@{
+    Layout = null;
+}
+<style>
+    .btn-send-for-approval {
+        margin-top: -41px !important;
+    }
+
+    .btn-remarks {
+        margin-right: 180px !important;
+    }
+
+    .fa-arrow-right:before {
+        content: "\f061";
+        color: red;
+    }
+
+    .vertical {
+        width: 0.1rem;
+        height: auto;
+        border: none;
+        background: #dacdcd;
+    }
+
+    .color-circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50px;
+        display: inline-block;
+        position: relative;
+        margin-top: 0px;
+        padding-top: 5px;
+        top: 1px;
+    }
+
+    .variat {
+        border-top: 1px solid #0000001c;
+        padding-top: 1.25rem !important;
+        border-bottom: 1px solid #0000004a;
+        padding-bottom: 1.25rem !important;
+    }
+
+    .branch-input {
+        background-color: #e8e8e8;
+    }
+
+        .branch-input::placeholder {
+            color: #8e8a8a;
+            opacity: 70;
+        }
+
+    .pin-on-map {
+        right: 50px;
+        padding-right: 5px;
+        border-right: 1px solid rgb(255 63 64 / 5%);
+    }
+
+    .get-current-location {
+        top: 25px;
+        right: 30px;
+    }
+
+        .get-current-location i {
+            color: #FF3F40;
+        }
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map {
+        height: 100%;
+    }
+
+
+    div.pac-container {
+        /*for search locaton on map model popup txtaddress*/
+        z-index: 99999999999 !important;
+    }
+
+    .wo-right-icon {
+        position: absolute;
+        top: 30px;
+        font-size: 12px;
+        color: #FF3F40;
+        font-weight: 900;
+    }
+
+        .wo-right-icon:hover {
+            color: #c91e1f;
+        }
+
+    .pac-card {
+        background-color: #fff;
+        border: 0;
+        border-radius: 2px;
+        box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+        margin: 10px;
+        padding: 0 0.5em;
+        font: 400 18px Roboto, Arial, sans-serif;
+        font-family: Roboto;
+        padding: 0;
+    }
+
+    #pac-container {
+        z-index: 1051 !important;
+    }
+
+    .pac-container {
+        z-index: 1051 !important;
+    }
+
+    .pac-controls {
+        padding: 5px 11px;
+    }
+
+        .pac-controls label {
+            font-family: Roboto;
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+    #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 503px;
+        height: 40px;
+    }
+
+        #pac-input:focus {
+            border-color: #4d90fe;
+        }
+
+    @@media(max-width: 500px) {
+        .btn-send-for-approval {
+            margin-top: 10px !important;
+        }
+
+        .btn-remarks {
+            margin-top: 10px !important;
+            margin-right: 0px !important;
+        }
+    }
+</style>
+
+<!--end::Subheader-->
+<!--begin::Entry-->
+<div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container">
+
+
+        <!--begin::Dashboard-->
+        <!--begin::Card-->
+        <div class="card card-custom" id="kt_page_sticky_card">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        Supplier Profile:
+                        <span class="label label-lg font-weight-bold label-light-success label-inline">@(Model.Status != null ? Model.Status : "")</span>
+                    </h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <input type="hidden" id="VendorIdle" @*value="@(Session["VendorIdle"] != null ? Session["VendorIdle"].ToString() : "false")"*@ />
+                <form id="Userform" method="post">
+                    @*@using (Html.BeginForm("ProfileManagement", "Account", new { area = "Vendor" }, FormMethod.Post, new { enctype = "multipart/form-data", id = "Userform" }))*@
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.AntiForgeryToken()
+                    <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group row justify-content-center">
+                        <div class="col-lg-6 text-center">
+                            <div class="image-input image-input-outline" id="kt_image_1">
+                                <div class="image-input-wrapper" style="background-image: url(@Model.Logo); background-repeat: round"></div>
+                                @*<label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change logo" id="ChangeLogo">
+                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                    <input type="file" name="logo" id="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" />
+                                    <input type="hidden" name="profile_avatar_remove" />
+                                </label>*@
+                                @*<span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow cancelimage" id="RemoveImage" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                </span>*@
+                            </div>
+                            <span class="form-text text-muted">Logo</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Supplier Reference No</label>
+                                <div class="input-group mb-2">
+                                    <input asp-for="ReferenceCode" class="form-control" readonly>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-hashtag"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Legal Name as per Trade License</label>
+                                <div class="input-group mb-2">
+                                    <input asp-for="NameAsPerTradeLicense" class="form-control" required disabled>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Email</label>
+                                <div class="input-group mb-2">
+                                    <input asp-for="Email" class="form-control" required disabled>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Phone Number</label>
+                                <div class="input-group mb-2">
+                                    <input asp-for="PhoneNumber" class="form-control" required disabled>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Whatsapp</label>
+                                <div class="input-group mb-2">
+                                    <input asp-for="WhatsappNumber" class="form-control" required disabled>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Bank Name</label>
+                                <div class="input-group mb-2">
+                                    <input asp-for="Bank" class="form-control" required disabled>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-landmark"></i></span></div>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Bank, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Bank Account Holder Name</label>
+                                <div class="input-group mb-2">
+                                    <input asp-for="BankAccountHolderName" class="form-control" required disabled>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-landmark"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Bank Account Number</label>
+                                <div class="input-group mb-2">
+                                    <input asp-for="BankAccountNumber" class="form-control" required disabled>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-landmark"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Bank Account Numebr</label>
+                                <div class="input-group mb-2">
+                                    <input asp-for="BankAccountNumber" class="form-control" required disabled>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-landmark"></i></span></div>
+                                </div>
+                            </div>
+                        </div>*@
+
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">IBAN</label>
+                                <div class="input-group mb-2">
+                                    <input asp-for="IBAN" class="form-control" required disabled>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-hashtag"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @{
+                            if (Model.Status == "Pending" || Model.Status == "Processing")
+                            {
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Package</label>
+                                        <select asp-for="SupplierPackageId" class="form-control" asp-items="@(new SelectList(ViewBag.PackageId,"Id","Name"))" disabled required></select>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+
+                </form>
+
+                <div class="col-md-12 col-sm-12">
+                    <h4 class="card-label">
+                        Location
+                    </h4>
+                    <hr />
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">Country</label>
+                        <select asp-for="CountryId" id="CountryId" class="form-control" asp-items="@(new SelectList(ViewBag.CountryId,"Id","Name"))"  disabled required></select>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">City</label>
+                        <select asp-for="CityId" id="CityId" class="form-control" asp-items="@(new SelectList(ViewBag.CityId,"Id","Name"))" required disabled></select>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        <label class="wo-titleinput mb-0">Search Location</label>
+                        <div class="wo-form-icon">
+                            <input type="text" class="form-control show-map-input Address" asp-for="Address" placeholder="Choose location" required disabled>
+                            <a href="javascript:void(0);" class="wo-right-icon get-current-location" onclick="getLocation()">
+                                <i class="flaticon2-map"></i>
+                            </a>
+                            <a href="javascript:void(0);" class="wo-right-icon pin-on-map" @*data-toggle="modal" data-target="#map-modal"*@ onclick="openMap()">
+                                Pin On Map
+                            </a>
+                        </div>
+                    </div>
+                    <div class="MapSearchResult" style="display:none">
+                    </div>
+                    <input type="hidden" name="Latitude" asp-for="Latitude" value="@Model.Latitude" />
+                    <input type="hidden" name="Longitude" asp-for="Longitude" value="@Model.Longitude" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card card-custom gutter-b card-documents">
+        <div class="card-body p-10">
+            <!--begin::Accordion-->
+            <div class="accordion accordion-light accordion-toggle-plus accordion-light-borderless accordion-svg-toggle" id="">
+                <div class="card">
+
+                    <!--<div class="card-toolbar">
+                        <a href="javascript:;" class="btn btn-info font-weight-bolder" onclick="OpenModelPopup(this,'/Supplier/Account/DocumentModel?SupplierId=@Model.Id')">-->
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <circle fill="#000000" cx="9" cy="15" r="6" />
+                                    <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                </g>
+                            </svg>-->
+                            <!--end::Svg Icon-->
+                            <!--Add Document
+                        </a>
+                    </div>-->
+
+
+                    <div class="card-body pl-12">
+
+                        <div class="checkbox-list vendor-documents mt-2">
+                            <div class="row mt-1">
+                                <div class="col-sm-5">
+                                    <h5><b><strong>Document Name</strong></b></h5>
+
+                                </div>
+                                <div class="col-sm-2">
+                                    <h5><b><strong>Expiry Date</strong></b></h5>
+
+                                </div>
+                                <div class="col-sm-1">
+
+                                </div>
+                                <div class="col-sm-2 pl-2">
+                                    <h5><b><strong>Actions</strong></b></h5>
+                                </div>
+                            </div>
+                            <div class="DocWrap">
+                                @{
+                                    foreach (var document in Model.SupplierDocuments)
+                                    {
+                                        <div class="row mt-1">
+                                            <div class="col-sm-5">
+                                                <a href="@document.Path" class="font-weight-bolder mr-2" target="_blank" disabled>
+                                                    @document.DocumentType
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <p disabled>@document.ExpiryDateTime.ToShortDateString()</p>
+
+                                            </div>
+                                            <div class="col-sm-1">
+
+                                            </div>
+                                            <div class="col-sm-2 pl-2">
+                                                <button type="button" class="btn btn-bg-secondary btn-icon btn-sm mr-1" disabled onclick="DeleteDocument(this, '@document.Id')"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--end::Accordion-->
+        </div>
+    </div>
+
+    <div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content" style="min-height:100px">
+                <div id='myModalContent'>
+                    <div class="row justify-content-center">
+                        <div class="col-16">
+                            <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card-->
+    <!--end::Dashboard-->
+</div>
+<!--end::Container-->
+
+<!-- Map Modal Start -->
+<div class="modal fade wo-videopopup " tabindex="-1" role="dialog" id="map-modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="wo-modalcontent modal-content">
+            <div class="modal-body">
+                <a href="javascript:void(0);" class="close"><i class="ti-close" data-dismiss="modal"></i></a>
+                <div class="login-header">
+                    <h4 class="text-center mb-2">Search Location</h4>
+                    <p class="text-center" id="drag-map"><span>Drag marker on the map to select your desired location.</span></p>
+                </div>
+                <!-- Modal Body Start -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="map-div" style="display:none">
+                                <input type="text" class="form-control mb-3 Address" id="current-location" name="current-location" placeholder="Search Location" required="">
+                                <div id="googleMap" style="width:100%;height:400px;"></div>
+                                <button class="btn btn-block btn-theme border-radius-4 mt-3 p-3" type="button" data-dismiss="modal">Done</button>
+                            </div>
+                            <div class="map-div-spin p-5 m-5 text-center">
+                                <span class="fa fa-circle-notch fa-spin fa-2x"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Body End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Map Modal End -->
+<!--end::Row-->
+@*
+    <script>
+        var SuccessMessage = '@ViewBag.SuccessMessage';
+        var ErrorMessage = '@ViewBag.ErrorMessage';
+    </script>
+*@
+
+@section Scripts {
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmOcUK0pgT3lW3Cr9LoeCVGIrm1_qFq30&callback=initMap&libraries=&v=weekly&callback=myMap"></script>*@
+
+    <!--end::Page Scripts-->
+    <script src="~/Admin/js/general/ModalPopup.js"></script>
+
+    <script src="~/js/Map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8&libraries=places&callback=initAutocomplete"></script>
+
+    <script>
+    </script>
+}

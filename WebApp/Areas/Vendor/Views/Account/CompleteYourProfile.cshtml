@@ -1,0 +1,640 @@
+﻿@model WebApp.ViewModels.VendorViewModel
+@using HelperClasses.Classes
+@using WebApp.ViewModels
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Vendor/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .Selected {
+    }
+    /**/
+    .ck.ck-editor {
+        position: relative;
+        z-index: 0;
+        width: 100%;
+    }
+
+    font-size-11 {
+        font-size: 11px !important;
+    }
+
+    custom-bg-input {
+        background-color: #f6f5f5;
+    }
+
+    .my-cursor {
+        cursor: pointer;
+    }
+    /*#tns1-mw {
+                width: 83% !important
+            }*/
+</style>
+<link href="~/Admin/css/admin/restaurant/edit.css" rel="stylesheet" />
+<link href="~/css/cropper.css" rel="stylesheet" />
+<link href="~/Admin/css/general/ImageUploader.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+<link rel="stylesheet" href="~/css/intlTelInput.css" />
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <div class="d-flex flex-column">
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <a href="/Vendor/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <a href="/Vendor/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript: window.history.go(-1);" class="text-white text-hover-white opacity-75 hover-opacity-100">Vendor</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body">
+                            <div class="" id="headingImage">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="d-flex flex-column">
+                                            <div><h4>Complete Your Profile</h4></div>
+                                            @*<div><h6>Reference Code : <span style="color: #ffb000">@Model.ReferenceCode</span></h6></div>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row justify-content-end">
+
+                                         
+
+                                            @if (Model != null)
+                                            {
+                                                 if (Model.Status == "Rejected")
+                                            { 
+                                                <div class="col-3">
+                                                    <button type="submit" form="VendorForm" id="SaveButton" data-attr="Draft" class="btn btn-block btn-success ml-6">Save</button>
+                                                </div>
+                                                <div class="col-5">
+                                                    <button type="submit" form="VendorForm" onclick="SendForApproval(this,@Model.Id)" id="DraftButton" data-attr="Draft" class="btn btn-block btn-info">Resend For approval</button>
+                                                </div>
+                                               
+                                            }
+                                            else if (Model.Status == "Processing")
+                                            {
+                                                <div class="col-6">
+
+                                                    <span class="label label-lg label-danger font-weight-bold label-light-success label-inline ml-48 my-2" style="margin-left: 40% !important;">Pending for Approval</span>
+                                                </div>
+                                                <div class="col-5">
+                                                    <button type="button" id="CancelButton" data-attr="Draft" onclick="CanceApprovel(@Model.Id)" class="btn btn-block btn-outline-danger ">Cancel</button>
+                                                </div>
+                                            }
+                                            else if (Model.Status == "Active")
+                                            {
+                                                  <div class="col-3">
+                                                    <button type="submit" form="VendorForm" id="SaveButton" data-attr="Draft" class="btn btn-block btn-success ml-6">Save</button>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                 <div class="col-3">
+                                                    <button type="submit" form="VendorForm" id="SaveButton" data-attr="Draft" class="btn btn-block btn-success ml-6">Save</button>
+                                                </div>
+                                                <div class="col-5">
+                                                    <button type="submit" id="DraftButton" onclick="SendForApproval(this,@Model.Id)" data-attr="Draft"  class="btn btn-block btn-info">Send For approval</button>
+                                                </div>
+                                            }
+                                            }
+
+
+                                           
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (Model != null)
+                            {
+                                if (Model.Status == "Rejected")
+                                {
+                                    <div class="alert alert-danger alert-dismissible fade show mt-5" style="background-color: #f64e603d !important;border-color: #f64e6029 !important;color: #000000 !important;" role="alert">
+                                        <strong>Your Profile is Rejected :</strong> @Html.Raw(Model.RejectionReason.Replace("\r\n", "<br/>"))
+                                        @*@Model.RejectionReason*@
+                                    </div>
+                                }
+                            }
+                            
+                            <form id="VendorForm">
+
+
+                                <div class="card-body pr-0 pl-0 pt-4" id="formInputs">
+                                    <hr />
+                                    <div class="form-group row">
+                                        <input name="Id" value="@Model.Id" id="VendorID" hidden />
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-md-6 border-right-lg">
+                                                    <div class="card-title"><h4>Personal Information</h4></div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Name As Per Trade License</label>
+                                                                <input name="NameAsPerTradeLicense" value="@Model.NameAsPerTradeLicense" type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Trade License No</label>
+                                                                <input name="TradeLicenseNo" value="@Model.TradeLicenseNo" type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Full Name</label>
+                                                                <input name="FullName" value="@Model.FullName" type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Email</label>
+                                                                <input name="Email" value="@Model.Email" type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Email Here" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="card-title"><h4>Login</h4></div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+
+                                                            <div class="intr-form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Phone Number</label>
+                                                                <div class="input-group">
+                                                                    <input type="hidden" id="PhoneNumberCode" class="code" value="@(Model.User.PhoneNumber!= null && Model.User.PhoneNumber.Contains('-') == true ?Model.User.PhoneNumber.Split('-').First() :971)" />
+                                                                    <input name="PhoneNumber" required value="@(Model.User.PhoneNumber!= null && Model.User.PhoneNumber.Contains('-') == true  ?Model.User.PhoneNumber.Split('-').Last() :Model.User.PhoneNumber)" placeholder="Enter your Phone number" class="form-control branch-input intr-phone bg-dark-o-15 border-0" />
+
+                                                                </div>
+                                                                @* <label class="control-label" style="font-size:11px;">Phone Number</label>
+                                                                <div class="input-group">
+                                                                <input type="hidden" id="PhoneNumberCode" class="code" value="@(Model.User.PhoneNumber!= null && Model.User.PhoneNumber.Contains('-') == true ? Model.User.PhoneNumber.Split('-').First() :971)" />
+                                                                <input name="PhoneNumber" required value="@(Model.User.PhoneNumber != null && Model.User.PhoneNumber.Contains('-') == true ? Model.User.PhoneNumber.Split('-').Last() :Model.User.PhoneNumber)" placeholder="Enter your Phone number" type="number" class="form-control branch-input intr-phone bg-dark-o-15 border-0" />
+                                                                </div>*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Password</label>
+                                                                <input type="password" name="Password" value="@Model.User.PasswordHash" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                                <small class="text-danger">* Leave this field unchange if you don't wish to change the password</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="card-title"><h4>Documents</h4></div>
+                                                    <div class="row">
+                                                        @if (Model != null)
+                                                        {
+                                                            
+                                                        
+                                                        @if (Model.VendorDocuments.Count(X => X.Type == "Trade License") <= 0)
+                                                        {
+                                                            <div class="col-sm-12" id="TradeLicenseDiv">
+                                                                <div class="form-group mb-3" onclick="OpenModelPopup(this, '/Vendor/Account/DocumentModel')">
+                                                                    <label class="control-label" style="font-size:11px;">Tradte License</label>
+                                                                    <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center" style=" border: #c1c1c1 2px dashed;">
+                                                                        <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold">Upload</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        @foreach (var TradeDocument in Model.VendorDocuments.Where(x => x.Type == "Trade License"))
+                                                        {
+                                                            <div class="col-sm-12" id="TradeLicenseDiv">
+                                                                <div class="form-group mb-3">
+                                                                    <input value="TRUE" id="TradeLicenseExist" hidden />
+                                                                    <label class="control-label" style="font-size:11px;">Tradte License</label>
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@TradeDocument.Path" target="_blank"><i class="fa fa-file font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span class="TRADE-LICENSE-EXP-DATE">@TradeDocument.ExpiryDateTime</span><br />
+                                                                                    <span class="font-weight-bold text-dark TRADE-LICENSE-REFNUMBER">@TradeDocument.RefNumber</span><br />
+                                                                                    <span class="TRADE-LICENSE-FILE-NAME">Trade License.pdf</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="float-right">
+                                                                            <i class="fa fa-trash text-danger my-cursor" onclick="DeleteDocument(this,@TradeDocument.Id,0)"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        @if (Model.VendorDocuments.Count(X => X.Type == "ID Proof") <= 0)
+                                                        {
+                                                            <div class="col-sm-12" id="IdProofDiv">
+                                                                <div class="form-group mb-3" onclick="OpenModelPopup(this, '/Vendor/Account/DocumentModel')">
+                                                                    <label class="control-label" style="font-size:11px;">ID Proof</label>
+                                                                    <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center" style=" border: #c1c1c1 2px dashed;">
+                                                                        <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold">Upload</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        @foreach (var TradeDocument in Model.VendorDocuments.Where(x => x.Type == "ID Proof"))
+                                                        {
+                                                            <div class="col-sm-12" id="IdProofDiv">
+                                                                <div class="form-group mb-3">
+                                                                    <input value="TRUE" id="IDProofExist" hidden />
+                                                                    <label class="control-label" style="font-size:11px;">ID Proof</label>
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@TradeDocument.Path" target="_blank"><i class="fa fa-file font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span class="TRADE-LICENSE-EXP-DATE">@TradeDocument.ExpiryDateTime</span><br />
+                                                                                    <span class="font-weight-bold text-dark TRADE-LICENSE-REFNUMBER">@TradeDocument.RefNumber</span><br />
+                                                                                    <span class="TRADE-LICENSE-FILE-NAME">Trade License.pdf</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="float-right">
+                                                                            <i class="fa fa-trash text-danger my-cursor" onclick="DeleteDocument(this,@TradeDocument.Id,1)"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card-title"><h4>Personal Information</h4></div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="intr-form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Contact Number 1</label>
+                                                                <div class="input-group">
+                                                                    <input type="hidden" id="ContactNumber1Code" class="code" value="@(Model.ContactNumber1!= null && Model.ContactNumber1.Contains('-') == true ?Model.ContactNumber1.Split('-').First() :971)" />
+                                                                    <input name="ContactNumber1" required value="@(Model.ContactNumber1!= null && Model.ContactNumber1.Contains('-') == true  ?Model.ContactNumber1.Split('-').Last() :Model.ContactNumber1)" placeholder="Enter your Phone number" class="form-control branch-input intr-phone bg-dark-o-15 border-0" />
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 ">
+                                                            <div class="intr-form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Contact Number 2</label>
+                                                                <div class="input-group">
+                                                                    <input type="hidden" id="ContactNumber2Code" class="code" value="@(Model.ContactNumber2!= null && Model.ContactNumber2.Contains('-') == true ?Model.ContactNumber2.Split('-').First() :971)" />
+                                                                    <input name="ContactNumber2" required value="@(Model.ContactNumber2!= null && Model.ContactNumber2.Contains('-') == true  ?Model.ContactNumber2.Split('-').Last() :Model.ContactNumber2)" placeholder="Enter your Phone number" class="form-control branch-input intr-phone bg-dark-o-15 border-0" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="intr-form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Business Whatsapp</label>
+                                                                <div class="input-group">
+                                                                    <input type="hidden" id="Whatsappcode" class="code" value="@(Model.Whatsapp!= null && Model.Whatsapp.Contains('-') == true ?Model.Whatsapp.Split('-').First() :971)" />
+                                                                    <input name="Whatsapp" required value="@(Model.Whatsapp!= null && Model.Whatsapp.Contains('-') == true  ?Model.Whatsapp.Split('-').Last() :Model.Whatsapp)" placeholder="Enter your Whatsapp number" class="form-control branch-input intr-phone bg-dark-o-15 border-0" />
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Office Address</label>
+                                                                <input name="OfficeAddress" required value="@Model.OfficeAddress" type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Website</label>
+                                                                <input type="text" name="Website" required value="@Model.Website" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Country Name</label>
+                                                                <div class="input-group mb-2">
+                                                                    <select asp-for="CountryId" id="CountryId" class="form-control" sortOrder="Ascending">
+                                                                        <option value="0">Select Country</option>
+                                                                        @foreach (var item in ViewBag.Country)
+                                                                        {
+                                                                            <option value="@item.Id">@item.Name</option>
+                                                                        }
+                                                                    </select>
+
+                                                                    <span asp-validation-for="CountryId" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 pr-lg-1">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Business City</label>
+                                                                <select class="form-control branch-input" name="CityId" id="CityId" required>
+                                                                    <option value="">Select city</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">TRN Number</label>
+                                                                <input type="text" value="@Model.TrnNumber" name="TrnNumber" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @*<script src="~/assets/admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+        <script src="~/Admin/js/general/ModalPopup.js"></script>
+        @*<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
+    <script src="~/js/intlTelInput/intlTelInput.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
+    <script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+    <script src="~/Admin/js/general/ModalPopup.js"></script>
+
+    <script>
+
+        'use strict';
+        var _URL = window.URL || window.webkitURL;
+        var CityId = '@Model.CityId'
+        var CountryId = '@Model.CountryId'
+        var count = 0;
+        var status = '@Model.Status'
+        var Description
+        // Class definition
+        var filePath, file;
+        $(document).ready(function() {
+            initIntlInputs();
+            if (status == "Active") {
+                $('.main-nav').removeAttr("hidden", "hidden")
+            }
+            else {
+                $('.main-nav').attr("hidden", "hidden")
+            }
+            if (CityId != null) {
+                $('#CountryId').val(CountryId);
+                $('#CountryId').trigger('change');
+            }
+        });
+
+        $('#CountryId').change(function() {
+
+            var count = 0;
+            var $dropdown = $("#CityId");
+            if ($(this).val() == 0) {
+                $dropdown.empty();
+                $dropdown.append($("<option />").val('').text("Please Select Country First!"));
+            }
+            else {
+                $.ajax({
+                    type: 'Get',
+                    url: '/Vendor/Account/GetCityBycountryId?countryId=' + $(this).val(),
+                    success: function(response) {
+                        $dropdown.empty();
+                        $dropdown.append($("<option />").val('').text("Select city"));
+                        var cities = response.data;
+                        $.each(cities, function(k, v) {
+                            $dropdown.append($("<option />").val(v.id).text(v.name));
+                            count++;
+                        });
+
+                        if (CityId != null)
+                            $dropdown.val(CityId)
+                    }
+                });
+            }
+        });
+        function CanceApprovel(VendorId) {
+            $.ajax({
+                url: '/Vendor/Account/ChangeStatus',
+                type: 'POST',
+                data: { 'VendorId': VendorId },
+                success: (response) => {
+                    if (response.success) {
+                        toastr.success("Approval Cancel  successfully ...");
+                        location.reload();
+                    }
+                    //location.reload();
+                },
+                error: function(error) {
+                    toastr.options = {
+                        "positionClass": "toast-bottom-right",
+                    };
+                }
+            });
+        }
+        $('#VendorForm').submit(function() {
+            debugger;
+            $('#SaveButton').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+            count = 0;
+            $('#formInputs').find('input,select').each(function() {
+                if ($(this).prop('required')) {
+                    if (this.value == null || this.value == '') {
+                        $('#SaveButton').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        toastr.error('Please Fill Full Form ...');
+                        count = 1;
+                        return false
+                    }
+
+                }
+            });
+            if (count == 0) {
+                var data = {
+                    Id: $('input[name="Id"]').val(),
+                    NameAsPerTradeLicense: $('input[name="NameAsPerTradeLicense"]').val(),
+                    FullName: $('input[name="FullName"]').val(),
+                    ContactNumber1: $('input[id="ContactNumber1Code"]').val() + '-' + $('input[name="ContactNumber1"]').val(),
+                    ContactNumber2: $('input[id="ContactNumber2Code"]').val() + '-' + $('input[name="ContactNumber2"]').val(),
+                    Whatsapp: $('input[name="Whatsapp"]').val(),
+                    OfficeAddress: $('input[name="OfficeAddress"]').val(),
+                    Website: $('input[name="Website"]').val(),
+                    CityId: $('#CityId').val(),
+                    CountryId: $('#CountryId').val(),
+                    Email: $('input[name="Email"]').val(),
+                    TrnNumber: $('input[name="TrnNumber"]').val(),
+                    TradeLicensePath: $('input[name="TradeLicensePath"]').val(),
+                    IDProofPath: $('input[name="IDProofPath"]').val(),
+                    TradeLicenseNo: $('input[name="TradeLicenseNo"]').val(),
+                    Email: $('input[name="Email"]').val(),
+                    Status: '@Model.Status',
+                    User:
+                    {
+                        Password: $('input[name="Password"]').val(),
+                        PhoneNumber: $('input[id="PhoneNumberCode"]').val() + '-' + $('input[name="PhoneNumber"]').val(),
+                    }
+                }
+                $(element).find('i').hide();
+                $(element).addClass('spinner spinner-left spinner-sm').attr('disabled', true);
+                $.ajax({
+                    url: '/Vendor/Account/CompleteYourProfile',
+                    type: 'POST',
+                    data: { 'model': data },
+                    success: (response) => {
+                        if (response.success) {
+                            $('#SaveButton').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                            toastr.success("Vendor updated successfully ...");
+                        }
+                        location.reload();
+                    },
+                    error: function(error) {
+                        toastr.options = {
+                            "positionClass": "toast-bottom-right",
+                        };
+                        $('#DraftButton').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        //toastr.error('Something went wrong ...');
+                    }
+                });
+                return false
+            }
+        })
+        function DeleteDocument(elem, Id, Type) {
+            debugger;
+            let DivID, DivLabel;
+            debugger;
+            $(elem).removeClass("fa fa-trash text-danger my-cursor").addClass("spinner spinner-sm spinner-center");
+            $.ajax({
+                url: '/Admin/VendorDocument/Delete?Id=' + Id,
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        toastr.options = {
+                            "positionClass": "toast-bottom-right",
+                        };
+                        if (Type == 0) {
+                            DivID = "#TradeLicenseDiv";
+                            DivLabel = "Trade License";
+                        } else if (Type == 1) {
+                            DivID = "#IdProofDiv";
+                            DivLabel = "ID Proof"
+                        }
+                        $(DivID).empty();
+                        var DocumentHTML = ` <div class="form-group mb-3" onclick="OpenModelPopup(this, '/Admin/Vendor/DocumentModel')">
+                                                                                        <label class="control-label" style="font-size:11px;">${DivLabel}</label>
+                                                                                        <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center" style=" border: #c1c1c1 2px dashed;">
+                                                                                            <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold">Upload</p>
+                                                                                        </div>
+                                                                                    </div>`
+                        $(DivID).append(DocumentHTML);
+                        toastr.success(response.message)
+                    }
+
+                    else {
+                        //$('#SaveSchedule').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        $(elem).removeClass("spinner spinner-sm spinner-center").addClass("fa fa-trash text-danger my-cursor DeleteDocument");
+                        toastr.error(response.message);
+
+                    }
+                },
+                error: function(error) {
+                    toastr.options = {
+                        "positionClass": "toast-bottom-right",
+                    };
+                    console.log(error)
+                    $(elem).removeClass("spinner spinner-sm spinner-center").addClass("fa fa-trash text-danger my-cursor DeleteDocument");
+                    toastr.error('Something went wrong ...');
+                    $(elem).removeClass("spinner spinner-sm spinner-center").addClass("fa fa-trash text-danger my-cursor DeleteDocument");
+                }
+
+
+            });
+        }
+        function SendForApproval(element,VendorId){
+             $('#formInputs').find('input,select').each(function() {
+                if ($(this).prop('required')) {
+                    if (this.value == null || this.value == '') {
+                        $('#SaveButton').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        toastr.error('Please Fill Full Form ...');
+                        count = 1;
+                        return false
+                    }
+
+                }
+            });
+            if(count==0){
+                  $(element).find('i').hide();
+                $(element).addClass('spinner spinner-left spinner-sm').attr('disabled', true);
+                $.ajax({
+                    url: '/Vendor/Account/ChangeStatus',
+                    type: 'POST',
+                    data: { 'VendorId': VendorId },
+                    success: (response) => {
+                        if (response.success) {
+                            $('#DraftButton').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                            toastr.success("Vendor updated successfully ...");
+                        }
+                        location.reload();
+                    },
+                    error: function(error) {
+                        toastr.options = {
+                            "positionClass": "toast-bottom-right",
+                        };
+                        $('#DraftButton').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        //toastr.error('Something went wrong ...');
+                    }
+                });
+                return false
+            }
+           
+        }
+        $("#fileUpload").change(function(e) {
+
+            if ((file = this.files[0])) {
+                if (this.files[0].size >= 5000000) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Document size should be equal to 5 MB !',
+                        //footer: '<a href>Image size should be less than or equal to  100KB and dimension should be 1713x540</a>'
+                    })
+                    $("#fileUpload").val("");
+                }
+                filePath = UploadImageToDraft(file).responseText;
+            }
+        });
+    </script>
+}

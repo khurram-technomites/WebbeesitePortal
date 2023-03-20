@@ -1,0 +1,162 @@
+﻿@model WebApp.ViewModels.RestaurantCustomerViewModel
+
+
+@{
+	Layout = null;
+}
+
+<style>
+	.coupon-customer {
+		text-align: center;
+		box-shadow: 1px 1px 3px #00000024;
+		border-radius: 5px;
+		padding: 5px;
+	}
+
+		.coupon-customer span {
+			padding-top: 10px;
+			float: left;
+		}
+
+		.coupon-customer button {
+			float: right;
+		}
+</style>
+<div class="modal-header">
+
+	<h5 class="modal-title">Coupons Assign</h5>
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<i aria-hidden="true" class="ki ki-close"></i>
+	</button>
+
+</div>
+<div class="modal-body">
+	<div class="row">
+
+		<div class="col-md-10 col-sm-12">
+			<input type="hidden" id="CouponID" value="@ViewBag.CouponID" />
+			<div class="form-group">
+                <div class="input-group">
+                    <select asp-for="RestaurantId" class="form-control Customers" asp-items="@(new SelectList((ViewBag.Customers) ,"Id","NameAsPerTradeLicense"))" sortOrder="Ascending">
+                        <option value="0">Select Customer</option>
+                    </select>
+                    <span asp-validation-for="RestaurantId" class="text-danger"></span>
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                    </div>
+                </div>
+			</div>
+		</div>
+		<div class="col-md-2 col-sm-12 text-right">
+			<button type="button" id="btnsubmit" class="btn btn-info btn-block" form="Userform">
+				<i class="fa fa-check"></i> Submit
+			</button>
+		</div>
+	</div>
+	<div class="row justify-content-center">
+		<div class="col-md-8 col-sm-12">
+			<div id="addusers">
+				<div class="spinner spinner-left spinner-sm spinner-center"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="mb-3 modal-footer">
+	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>
+
+<script>
+	$(document).ready(function () {
+		var id = $("#CouponID").val();
+		getCustomers(id);
+	})
+
+	function getCustomers(id) {
+		$.ajax({
+			url: "/Supplier/SupplierCoupon/SetCouponsByCouponID?CouponsID=" + id,
+			type: 'GET',
+			success: function (response) {
+				if (response.success) {
+					$("#addusers").html('');
+					
+					$.each(response.data, function (k, v) {
+						$("#addusers").append('<div class="row textCustomer coupon-customer"><div class="col-12">\
+													<span><i class="fa fa-user"></i> ' + v.name + '</span>\
+													<button type="button" class="btn btn-light-danger btn-icon btn-sm mr-1 btndelete" onclick="deleteCustomers(' + v.id + ',' + $('#CouponID').val() + ',this)">\
+														<i class="fa fa-trash"></i>\
+													</button>\
+												</div></div>');
+
+					});
+
+				} else {
+					$("#addusers").html('');
+					toastr.error(response.message);
+				}
+			}
+		})
+	}
+
+	$("#btnsubmit").click(function () {
+		
+		let customer = $(".Customers").val();
+		let coupondid = $("#CouponID").val();
+		
+		if (customer && coupondid > 0) {
+            $(this).find('i').hide();
+            $(this).addClass('spinner spinner-left spinner-sm').attr('disabled', true);
+            $.ajax({
+                url: "/Supplier/SupplierCoupon/SaveCustomerCoupons",
+                type: 'POST',
+                data: { "RestaurantId": $(".Customers").val(), "SupplierCouponId": $("#CouponID").val() },
+                success: function (response) {
+                    if (response.success) {
+                        $("#addusers").append('<div class="row textCustomer coupon-customer"><div class="col-12">\
+												<span><i class="fa fa-user"></i> ' + $(".Customers :selected").text() + '</span>\
+												<button type="button" class="btn btn-light-danger btn-icon btn-sm mr-1 btndelete" onclick="deleteCustomers(' + $('.Customers').val() + ',' + $('#CouponID').val() + ',this)">\
+													<i class="fa fa-trash"></i>\
+												</button>\
+											</div></div>');
+
+
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+
+                    $("#btnsubmit").find('i').show();
+                    $("#btnsubmit").removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                }
+            })
+		}
+        else {
+			toastr.error("Please select	customer ...");
+        }
+	
+
+	})
+
+	function deleteCustomers(cusId, couponID, event) {
+		
+		$(event).find('i').hide();
+		$(event).addClass('spinner spinner-left spinner-sm').attr('disabled', true);
+		var data = this;
+		
+		$.ajax({
+            url: "/Supplier/SupplierCoupon/DeleteCouponCustomers",
+			type: 'POST',
+            data: { "RestaurantId": cusId, "CouponsID": couponID },
+			success: function (response) {
+				if (response.success) {
+					$(event).closest(".textCustomer").remove();
+					toastr.success(response.message);
+				} else {
+					$(event).find('i').show();
+					$(event).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+					toastr.error(response.message);
+				}
+			}
+		})
+	}
+
+</script>

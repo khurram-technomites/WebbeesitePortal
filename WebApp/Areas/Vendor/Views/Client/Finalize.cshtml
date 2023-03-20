@@ -1,0 +1,835 @@
+﻿@model WebApp.ViewModels.GarageViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    //Layout = "~/Areas/Vendor/Views/Client/Client.cshtml";
+}
+<style>
+    .Selected {
+    }
+    /**/
+    .ck.ck-editor {
+        position: relative;
+        z-index: 0;
+        width: 100%;
+    }
+
+    font-size-11 {
+        font-size: 11px !important;
+    }
+
+    custom-bg-input {
+        background-color: #f6f5f5;
+    }
+    /*#tns1-mw {
+            width: 83% !important
+        }*/
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body">
+
+                            <div class="card-body pr-0 pl-0 pt-4 pb-0" id="formInputs">
+                                <div class="form-group row">
+                                    @*<input name="GarageId" value="@Model.Id" hidden />*@
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-4">
+                                            <div class="card-title"><h4>Business Info</h4></div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Business Name</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.NameAsPerTradeLicense</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Industry Type</p>
+                                                        <label class="control-label" style="font-size:11px;">@(Model.ClientIndustry!= null?Model.ClientIndustry.Name:"")</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Company Activity</p>
+                                                        <label class="control-label" style="font-size:11px;">@(Model.ClientType!= null?Model.ClientType.Name:"")</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">CEO Name</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageContentManagement.CEOName</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Business Registration</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageBusinessSetting.BusinessRegistration</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">VAT/Tax ID</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageBusinessSetting.VatTaxID</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Does The Client Need A New Domain?</p>
+                                                        <label class="control-label" style="font-size:11px;">@(Model.IsDomainRequired == true?"Yes,Need a New Domain":"No, Already has a Domain")</label>
+                                                    </div>
+                                                </div>
+                                                @if (Model.IsDomainRequired)
+                                                {
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group mb-3">
+                                                            <p class="m-0 font-size-sm font-weight-bolder">Domain Address</p>
+                                                            @foreach (var domain in Model.ClientDomainSuggestionsViewModels)
+                                                            {
+                                                                <label class="control-label" style="font-size:11px;">@domain.Domain</label>
+
+                                                                <br />
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Email Address</p>
+                                                        @foreach (var email in Model.ClientEmailsViewModels)
+                                                        {
+                                                            <label class="control-label" style="font-size:11px;">@email.Email</label>
+
+                                                            <br />
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-4">
+                                            <div class="card-title"><h4>Contact Info</h4></div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Contact Person Name</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.ContactPersonName</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Email Address</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.ContactPersonEmail</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Contact Number 1</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.ContactPersonNumber</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Contact Number 2</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.ContactPersonNumber01</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Business Whatsapp</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.Whatsapp</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Business Address</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.Address</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Business City</p>
+                                                        <label class="control-label" style="font-size:11px;">@(Model.City!= null?Model.City.Name:"")</label>
+                                                    </div>
+                                                </div><div class="col-sm-12">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Business Country</p>
+                                                        <label class="control-label" style="font-size:11px;">@(Model.Country!= null?Model.Country.Name:"")</label>
+                                                    </div>
+                                                </div>
+                                                @* <div class="col-sm-12">
+                                                <div class="form-group mb-3">
+                                                <p class="m-0 font-size-sm font-weight-bolder">Password</p>
+                                                <label class="control-label" style="font-size:11px;"></label>
+                                                </div>
+                                                </div>*@
+                                            </div>
+                                        </div>
+
+                                        @if (Model.IsDomainRequired == false)
+                                        {
+                                            <div class="col-md-12">
+                                                <hr />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="card-title"><h4>Domain</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <p class="m-0 font-size-sm font-weight-bolder">Website Address</p>
+                                                            <label class="control-label" style="font-size:11px;">@Model.Website</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <p class="m-0 font-size-sm font-weight-bolder">Domain Provider<p>
+                                                                <label class="control-label" style="font-size:11px;">@Model.DomainProvider</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <p class="m-0 font-size-sm font-weight-bolder">Domain UserId</p>
+                                                            <label class="control-label" style="font-size:11px;">@Model.DomainUserId</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <p class="m-0 font-size-sm font-weight-bolder">Domain Password</p>
+                                                            <label class="control-label" style="font-size:11px;">@Model.DomainPassword</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        <div class="col-md-12">
+                                            <hr />
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="card-title"><h4>Social Media Links</h4></div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Facebook</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageBusinessSetting.Facebook</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Snapchat</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageBusinessSetting.Snapchat</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Instagram</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageBusinessSetting.Instagram</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Pinterest</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageBusinessSetting.Pinterest</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Linkedin</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageBusinessSetting.LinkedIn</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Behance</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageBusinessSetting.Behnace</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Youtube</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageBusinessSetting.Youtube</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Tiktok</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageBusinessSetting.Tiktok</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group mb-3">
+                                                        <p class="m-0 font-size-sm font-weight-bolder">Twitter</p>
+                                                        <label class="control-label" style="font-size:11px;">@Model.GarageBusinessSetting.Twitter</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <hr />
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="card-title"><h4>Content</h4></div>
+                                            <div class="row">
+                                                @if (Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Company Logo").Count() > 0)
+                                                {
+                                                    foreach (var content in Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Company Logo"))
+                                                    {
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Company Logo</label>
+                                                                <div class="form-group mb-3">
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <input type="hidden" id="Id" value="@content.Id" />
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@content.DocumentPath" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span>@content.CreatedOn </span><br />
+                                                                                    <span>Company Logo @(System.IO.Path.GetExtension(content.DocumentPath))</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Company Logo</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center content-upload" style=" border: #c1c1c1 2px dashed;opacity: .5;">
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold"><i class=" fa fa-exclamation-triangle" style="color:grey"></i> No Data</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                @if (Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Picture Gallery").Count() > 0)
+                                                {
+                                                    foreach (var content in Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Picture Gallery"))
+                                                    {
+                                                        <div class="col-sm-6 contents">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label " style="font-size:11px;">Picture Gallery</label>
+                                                                <div class="form-group mb-3">
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@content.DocumentPath" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span>@content.CreatedOn </span><br />
+                                                                                    <span>Picture Gallery @(System.IO.Path.GetExtension(content.DocumentPath))</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Picture Gallery</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center content-upload" style=" border: #c1c1c1 2px dashed;opacity: .5;">
+
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold"><i class=" fa fa-exclamation-triangle" style="color:grey"></i> No Data</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+
+                                                @if (Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Company Video").Count() > 0)
+                                                {
+                                                    foreach (var content in Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Company Video"))
+                                                    {
+                                                        <div class="col-sm-6 contents">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label " style="font-size:11px;">Company Video</label>
+                                                                <div class="form-group mb-3">
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@content.DocumentPath" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span>@content.CreatedOn </span><br />
+                                                                                    <span>Company Video @(System.IO.Path.GetExtension(content.DocumentPath))</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Picture Gallery</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center content-upload" style=" border: #c1c1c1 2px dashed;opacity: .5;">
+
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold"><i class=" fa fa-exclamation-triangle" style="color:grey"></i> No Data</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+
+                                                @if (Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "About Us").Count() > 0)
+                                                {
+                                                    foreach (var content in Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "About Us"))
+                                                    {
+                                                        <div class="col-sm-6 contents">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label " style="font-size:11px;">About Us</label>
+                                                                <div class="form-group mb-3">
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@content.DocumentPath" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span>@content.CreatedOn </span><br />
+                                                                                    <span>About Us @(System.IO.Path.GetExtension(content.DocumentPath))</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">About Us</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center content-upload" style=" border: #c1c1c1 2px dashed;opacity: .5;">
+
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold"><i class=" fa fa-exclamation-triangle" style="color:grey"></i> No Data</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                @if (Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "CEO Message").Count() > 0)
+                                                {
+                                                    foreach (var content in Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "CEO Message"))
+                                                    {
+                                                        <div class="col-sm-6 contents">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label " style="font-size:11px;">CEO Message</label>
+                                                                <div class="form-group mb-3">
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@content.DocumentPath" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span>@content.CreatedOn </span><br />
+                                                                                    <span>CEO Message @(System.IO.Path.GetExtension(content.DocumentPath))</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">CEO Message</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center content-upload" style=" border: #c1c1c1 2px dashed;opacity: .5;">
+
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold"><i class=" fa fa-exclamation-triangle" style="color:grey"></i> No Data</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                @if (Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Vision Mission & Values").Count() > 0)
+                                                {
+                                                    foreach (var content in Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Vision Mission & Values"))
+                                                    {
+                                                        <div class="col-sm-6 contents">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label " style="font-size:11px;">Vision Mission & Values</label>
+                                                                <div class="form-group mb-3">
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@content.DocumentPath" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span>@content.CreatedOn </span><br />
+                                                                                    <span>Vision Mission & Values @(System.IO.Path.GetExtension(content.DocumentPath))</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Vision Mission & Values</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center content-upload" style=" border: #c1c1c1 2px dashed;opacity: .5;">
+
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold"><i class=" fa fa-exclamation-triangle" style="color:grey"></i> No Data</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                @if (Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Services").Count() > 0)
+                                                {
+                                                    foreach (var content in Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Services"))
+                                                    {
+                                                        <div class="col-sm-6 contents">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label " style="font-size:11px;">Services</label>
+                                                                <div class="form-group mb-3">
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@content.DocumentPath" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span>@content.CreatedOn </span><br />
+                                                                                    <span>Services @(System.IO.Path.GetExtension(content.DocumentPath))</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Services</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center content-upload" style=" border: #c1c1c1 2px dashed;opacity: .5;">
+
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold"><i class=" fa fa-exclamation-triangle" style="color:grey"></i> No Data</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                @if (Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "FAQs").Count() > 0)
+                                                {
+                                                    foreach (var content in Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "FAQs"))
+                                                    {
+                                                        <div class="col-sm-6 contents">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label " style="font-size:11px;">FAQs</label>
+                                                                <div class="form-group mb-3">
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@content.DocumentPath" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span>@content.CreatedOn </span><br />
+                                                                                    <span>FAQs @(System.IO.Path.GetExtension(content.DocumentPath))</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">FAQs</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center content-upload" style=" border: #c1c1c1 2px dashed;opacity: .5;">
+
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold"><i class=" fa fa-exclamation-triangle" style="color:grey"></i> No Data</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                @if (Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Opening and Close Houres").Count() > 0)
+                                                {
+                                                    foreach (var content in Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Opening and Close Houres"))
+                                                    {
+                                                        <div class="col-sm-6 contents">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label " style="font-size:11px;">Opening and Close Houres</label>
+                                                                <div class="form-group mb-3">
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@content.DocumentPath" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span>@content.CreatedOn </span><br />
+                                                                                    <span>Opening and Close Houres @(System.IO.Path.GetExtension(content.DocumentPath))</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Opening and Close Houres</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center content-upload" style=" border: #c1c1c1 2px dashed;opacity: .5;">
+
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold"><i class=" fa fa-exclamation-triangle" style="color:grey"></i> No Data</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                @if (Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Privacy and Policy").Count() > 0)
+                                                {
+                                                    foreach (var content in Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Privacy and Policy"))
+                                                    {
+                                                        <div class="col-sm-6 contents">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label " style="font-size:11px;">Privacy and Policy</label>
+                                                                <div class="form-group mb-3">
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@content.DocumentPath" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span>@content.CreatedOn </span><br />
+                                                                                    <span>Privacy and Policy @(System.IO.Path.GetExtension(content.DocumentPath))</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Privacy and Policy</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center content-upload" style=" border: #c1c1c1 2px dashed;opacity: .5;">
+
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold"><i class=" fa fa-exclamation-triangle" style="color:grey"></i> No Data</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                @if (Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Terms and Condition").Count() > 0)
+                                                {
+                                                    foreach (var content in Model.ClientContentMediaViewModels.Where(x => x.DocumentType == "Terms and Condition"))
+                                                    {
+                                                        <div class="col-sm-6 contents">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label " style="font-size:11px;">Terms and Condition</label>
+                                                                <div class="form-group mb-3">
+                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                        <div class="float-left d-flex align-items-center">
+                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                <a href="@content.DocumentPath" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                            </div>
+                                                                            <div class="pl-1">
+                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                    <span>@content.CreatedOn </span><br />
+                                                                                    <span>Terms and Condition @(System.IO.Path.GetExtension(content.DocumentPath))</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Terms and Condition</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center content-upload" style=" border: #c1c1c1 2px dashed;opacity: .5;">
+
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold"><i class=" fa fa-exclamation-triangle" style="color:grey"></i> No Data</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body">
+
+                            <div class="card-body pr-0 pl-0 pt-5 pb-0" id="formInputs">
+                                <div class="form-group row">
+                                    @*<input name="GarageId" value="@Model.Id" hidden />*@
+                                    <div class="col-lg-12">
+                                        <div class="card-title justify-content-center d-flex mb-5"><h6>Summary</h6></div>
+                                        <div class="row">
+                                            <div class="col-md-12 mb-2 overflow-auto my-scroll" style="height:260px">
+                                                @foreach (var module in Model.ModulePurchaseDetails)
+                                                {
+                                                    <div class="bg-white w-100 ">
+                                                        <div class="w-100 justify-content-between d-flex @module.ModuleID">
+
+                                                            <span hidden>@module.ModuleID</span>
+                                                            <div class="text-dark ">@(module.Module.ManageQunatity == true ? module.Quantity : 1)  x @module.Module.ServiceName</div>
+                                                            <div class="text-dark font-weight-bold ">AED <span>@module.TotalPrice</span></div>
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                            </div>
+                                            <hr />
+                                            <div class="col-md-12 mt-5">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <span class="font-weight-bold text-dark text-center" style="font-size:15px; line-height:21px">
+                                                        Total Price<br />
+                                                        @if (Model.ClientModulePurchases.SubTotal != Model.ClientModulePurchases.AmountToBePaid)
+                                                        {
+                                                            <span class="text-dark font-size-h3 font-weight-bold" style="line-height: 21px">
+                                                                AED<del>@Model.ClientModulePurchases.SubTotal</del><br />
+                                                            </span>
+                                                             <span class="text-dark font-size-h1 font-weight-bolder" style="line-height: 21px">
+                                                                AED @Model.ClientModulePurchases.AmountToBePaid<br />
+                                                                <span class="font-weight-bold text-dark float-right m-0" style="font-size:10px">/Year</span>
+                                                            </span>
+                                                        }
+                                                        else{
+                                                             <span class="text-dark font-size-h1 font-weight-bolder" style="line-height: 21px">
+                                                                AED @Model.ClientModulePurchases.AmountToBePaid<br />
+                                                                <span class="font-weight-bold text-dark float-right m-0" style="font-size:10px">/Year</span>
+                                                            </span>
+                                                        }
+
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-5">
+                                                <div class="row justify-content-end">
+                                                    <div class="col-12">
+                                                        <button type="button" id="DraftButton" data-attr="Draft" onclick="GenerateInvoice(this,@Model.ClientModulePurchases.Id)" class="btn btn-block btn-info">PROCEED</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-5">
+                                                <div class="row justify-content-center">
+                                                    <p class="font-size-xs text-center pl-2 pr-2 m-0">The invoice will be sent to the email address of the contact person: <a href="">@Model.ContactPersonEmail</a></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function GenerateInvoice(element, Id) {
+        $(element).addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+        debugger
+        $.ajax({
+            url: "/Vendor/Client/Finalize",
+            type: "POST",
+            data: { 'PurchaseId': Id },
+            success: function(response) {
+                if (response.success) {
+                    $(element).removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                    if (response.url.Data != undefined) {
+                        window.open(response.url.Data, '_blank');
+                    }
+                    else {
+                        if (response.url.Status != "Failed") {
+                            window.open(response.url, '_blank');
+                        }
+                        else {
+                            toastr.error("An error Occured Bad Request");
+                            return false;
+                        }
+
+                    }
+
+                }
+                else {
+                    toastr.error(response.message);
+                    return false;
+                }
+            },
+            error: function(er) {
+                toastr.error(er);
+            }
+        });
+
+    }
+</script>

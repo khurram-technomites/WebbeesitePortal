@@ -1,0 +1,436 @@
+﻿@model WebApp.ViewModels.Garage.GarageBannersViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<style>
+    .btn-lang {
+        position: absolute;
+        top: 2px;
+    }
+</style>
+<link href="~/Admin/css/admin/restaurant/edit.css" rel="stylesheet" />
+<link href="~/css/cropper.css" rel="stylesheet" />
+<link href="~/Admin/css/general/ImageUploader.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="~/Client/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a href="~/Client/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Banners</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Dashboard-->
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                            <div class="card-title">
+                                <h3 class="card-label">
+                                    Banners
+                                    <span class="d-block text-muted pt-2 font-size-sm">Manage Banners Here...</span>
+                                </h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <!--begin::Button-->
+                                <button type="submit" form="FormMobileAppBanners" class="btn btn-info font-weight-bolder">
+                                    <span class="svg-icon svg-icon-md">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <circle fill="#000000" cx="9" cy="15" r="6" />
+                                                <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span> Upload
+                                </button>
+                                <!--end::Button-->
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <form id="FormMobileAppBanners" action="Create" method="post">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Title</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="Title" id="Title" placeholder="Title" required />
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">
+                                                                <i class="flaticon2-open-text-book"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Tag</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="Tag" id="Tag" placeholder="Tag" required />
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">
+                                                                <i class="flaticon2-open-text-book"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Description</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="Description" id="Description" placeholder="Description" required />
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">
+                                                                <i class="flaticon2-open-text-book"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <br />
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="input-group">
+                                                    <input type="file" class="form-control logo" name="file" id="logo" placeholder="Browse" required />
+                                                    <input type="hidden" name="image" id="image" class="ImageBanner" />
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">
+                                                            <i class="flaticon-upload"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span class="form-text text-muted ml-4">Image dimensions should be 1920 x 1000 pixels and Image size must be less than 500 kb</span>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr />
+                                <div class="row">
+                                    @foreach (var Banner in Model.Banners)
+                                    {
+                                        <div class="col-md-12 col-sm-12 mb-5 promotion-banner banner" data="@Banner.Id">
+                                            <a class="btn btn-icon btn-light-dark btn-pill" onclick="OpenModelPopup(this,'/Client/BannerSetting/Edit/@Banner.Id',true)" style="position:absolute; right:56px;top:2px">
+                                                <i class="fa fa-pen"></i>
+                                            </a>
+                                            <a class="btn btn-icon btn-light-danger btn-pill" onclick="Delete(this,@Banner.Id)" style="position:absolute; right:15px;top:2px">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                            <div class="bgi-no-repeat bgi-size-cover rounded min-h-200px shadow-sm" style="background-position: 50% 50%;background-image: url(@Banner.ImagePath.Replace(" ", "%20"))"></div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                            <div class="card-title">
+                                <h3 class="card-label">
+                                    Promotion Banners
+                                    <span class="d-block text-muted pt-2 font-size-sm">Manage Promotion Banners Here...</span>
+                                </h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <!--begin::Button-->
+                                <button type="submit" form="FormPromotionBanners" class="btn btn-info font-weight-bolder">
+                                    <span class="svg-icon svg-icon-md">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <circle fill="#000000" cx="9" cy="15" r="6" />
+                                                <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span> Upload
+                                </button>
+                                <!--end::Button-->
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <form id="FormPromotionBanners" action="PromotionCreate" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                     
+                                        <div class="row">
+                                            <input type="hidden" value="@(Model.PromoBanners!= null ?@Model.PromoBanners.Id:0)" name="Id"/>
+                                           @* <input name="Id" type="hidden" value="@Model.PromoBanners!= null :@Model.PromoBanners.Id?0"/>*@
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Title</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="Title" id="Title" value="@(Model.PromoBanners!= null ?@Model.PromoBanners.Title:"" )" placeholder="Title" required />
+                                                    
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">
+                                                                <i class="flaticon2-open-text-book"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Tag</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="Tag" id="Tag" value="@(Model.PromoBanners!= null ?@Model.PromoBanners.Tag:"" )" placeholder="Tag" required />
+                                                           
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">
+                                                                <i class="flaticon2-open-text-book"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Description</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="Description" id="Description" value="@(Model.PromoBanners!= null ?@Model.PromoBanners.Description:"" )" placeholder="Description" required />
+        
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">
+                                                                <i class="flaticon2-open-text-book"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="col-12">
+                                                    <button type="button" class="btn btn-block btn-info" id="UploadVideo">Upload Video<i class="fa fa-video float-right" style="color: #ffffff"></i></button>
+                                                    <input type="file" hidden   id="Video" accept=".mp4"  />
+                                                     <input type="hidden"name="Video"  id="bannervideo" value="@(Model.PromoBanners!= null ?@Model.PromoBanners.ImagePath:"" )" />
+                                                 </div>
+                                                <div class="col-12" style="padding-top:3%" id="videobanner"> 
+                                                    <video height="240" typeof="file"  id="promoVideo" controls style="width:100%" src="@(Model.PromoBanners != null ?Model.PromoBanners.ImagePath:"")">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+
+                                                    <i class="fa fa-trash position-absolute trash-icon" id="RemoveVideo" data-action="cancel" data-toggle="tooltip" title="" onclick="DeleteVideo()" data-original-title="Delete Video"
+                                                       style="width: 50px; height: 50px; top: 85%; right: 0%; background-color: #ffb000 !important; color: white;"></i>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="col-md-12 col-sm-12" style="padding-top:5%">
+                                                <div class="col-12">
+                                                    <button type="button" class="btn btn-block btn-info" id="UploadThumbnail">Upload Thumbnail<i class="fa fa-image float-right" style="color: #ffffff"></i></button>
+                                                    <input type="file" hidden  id="Thumbnail" />
+                                                     <input type="hidden"name="Thumbnail"  id="bannerimage" value="@(Model.PromoBanners!= null ?@Model.PromoBanners.Thumbnail:"" )"  />
+                                                    
+                                                </div>
+                                                 <div class="col-12" style="padding-top:3%" hidden id="thumbnailbanner"> 
+                                                      <div class="bgi-no-repeat bgi-size-cover rounded min-h-200px shadow-sm" id="thumbnailimage" style="background-position: 50% 50%;background-image: url(@(Model.PromoBanners!= null ?Model.PromoBanners.Thumbnail:""))"></div>
+
+                                                    <i class="fa fa-trash position-absolute trash-icon" id="RemoveThumbnail" data-action="cancel" data-toggle="tooltip" title="" onclick="DeleteThumbnail()" data-original-title="Delete Thumbnail"
+                                                       style="width: 50px; height: 50px; top: 85%; right: 0%; background-color: #ffb000 !important; color: white;"></i>
+                                                </div>
+                                                   
+                                              
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Map Modal Start -->
+<div class="modal fade wo-videopopup " tabindex="-1" role="dialog" id="map-modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="wo-modalcontent modal-content">
+            <div class="modal-body">
+                <a href="javascript:void(0);" class="close"><i class="ti-close" data-dismiss="modal"></i></a>
+                <div class="login-header">
+                    <h4 class="text-center mb-2">Search Location</h4>
+                    <p class="text-center" id="drag-map"><span>Drag marker on the map to select your desired location.</span></p>
+                </div>
+                <!-- Modal Body Start -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="map-div" style="display:none">
+                                <input type="text" class="form-control custom-input mb-3 Address" id="current-location" name="current-location" placeholder="Search Location" required="">
+                                <div id="googleMap" style="width:100%;height:400px;"></div>
+                                <button class="btn btn-block btn-theme border-radius-4 mt-3 p-3" type="button" data-dismiss="modal">Done</button>
+                            </div>
+                            <div class="map-div-spin p-5 m-5 text-center">
+                                <span class="fa fa-circle-notch fa-spin fa-2x"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Body End -->
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+	var SuccessMessage = '@ViewBag.SuccessMessage';
+	var ErrorMessage = '@ViewBag.ErrorMessage';
+</script>
+<!-- Map Modal End -->
+<!--end::Row-->
+@section Scripts {
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/Admin/js/client/BannerSetting/manage.js"></script>
+    <!--end::Page Scripts-->
+    <script src="~/Admin/js/general/ModalPopup.js"></script>
+    <!--end::Page Scripts-->
+    
+    @if(Model.PromoBanners != null && Model.PromoBanners.Thumbnail != "" && Model.PromoBanners.Thumbnail != null)
+    {
+        <script>
+            $("#thumbnailbanner").removeAttr('hidden','hidden')
+        </script>
+    }
+
+    <script>
+        'use strict';
+        var _URL = window.URL || window.webkitURL;
+        var VideoPath = '@(Model.PromoBanners!= null?Model.PromoBanners.ImagePath:"")';
+        var ImagePath ='@(Model.PromoBanners!= null?Model.PromoBanners.Thumbnail:"")';
+        $(document).ready(function () {
+            if (SuccessMessage) {
+            toastr.success(SuccessMessage);
+        }
+        else if (ErrorMessage) {
+            toastr.error(ErrorMessage);
+        }
+            if (VideoPath == '') {
+                $("#RemoveVideo").hide();
+            }
+            $('#UploadVideo').on('click', () => {
+                $('#Video').click();
+            });
+             $('#UploadThumbnail').on('click', () => {
+                $('#Thumbnail').click();
+            });
+            $("#Video").change(function () {
+                debugger
+                $('#UploadVideo').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+                var file = this.files[0];
+                VideoPath = UploadImageToDraft(file).responseText;
+                $(".VideoBanner").val(VideoPath);
+                console.log("Path", VideoPath)
+                 $("#videobanner").removeAttr('hidden','hidden')
+                $('#promoVideo').attr('src', VideoPath);
+                 $("#bannervideo").val(VideoPath);
+                $("#RemoveVideo").show();
+                $('#UploadVideo').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+            });
+             $("#Thumbnail").change(function () {
+                debugger
+                $('#UploadThumbnail').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+                var file = this.files[0];
+                ImagePath = UploadImageToDraft(file).responseText;
+                console.log("Path", ImagePath)
+                  $("#thumbnailbanner").removeAttr('hidden','hidden')
+                $('#thumbnailimage').css("background-image", "url(" + ImagePath + ")");
+                  $("#bannerimage").val(ImagePath);
+                $("#RemoveThumbnail").show();
+                $('#UploadThumbnail').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+            });
+
+        })
+
+function DeleteVideo() {
+                 $("#bannervideo").val('');
+                  $("#videobanner").attr('hidden','hidden')
+}
+function DeleteThumbnail() {
+                 $("#bannerimage").val('');
+                  $("#thumbnailbanner").attr('hidden','hidden')
+}
+
+$('#FormPromotionBanners').on('submit',function(){
+    if($("#bannerimage").val() == '' ){
+         toastr.error("Plz upload thumnbail");
+        return false
+    }
+})
+    </script>
+
+}

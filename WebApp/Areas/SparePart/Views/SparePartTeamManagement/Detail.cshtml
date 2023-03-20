@@ -1,0 +1,96 @@
+﻿@model WebApp.ViewModels.SparePartTeamManagementViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Details</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+
+
+    <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="col-12 form-group row justify-content-center">
+        <div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+            <div class="image-upload uploaded">
+                <i class="fa fa-camera"></i>
+                <span>Upload Image</span>
+                <input type="file" name="ServiceBanner" id="ServiceBanner" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" />
+                <img id="ServiceBannerPreview" src='@Model.ImagePath' />
+                @*<i class="fa fa-trash" onclick="DeleteFile(this,'@Model.Image')"></i>*@
+            </div>
+            @* <div class="image-upload empty">
+                <i class="fa fa-camera" style="bottom: 5rem !important"></i>
+                <span>Upload Icon</span>
+                <input type="file" name="ServiceBanner" id="ServiceBanner" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+                aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+                <img id="ServiceBannerPreview" />
+                <i class="fa fa-pen" onclick="DeleteFile(this,'')" style="bottom: 5rem !important"></i>
+                </div>*@
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Name</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter name here ...", @readonly = "readonly" } })@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Designation</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter name here ...", @readonly = "readonly" } })@Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-address-card"></i></span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Facebook</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.Facebook, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter name here ...", @readonly = "readonly", type = "url" } })@Html.ValidationMessageFor(model => model.Facebook, "", new { @class = "text-danger" })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fab fa-facebook-f"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Twitter</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.Twitter, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter name here ...", @readonly = "readonly", type = "url" } })@Html.ValidationMessageFor(model => model.Twitter, "", new { @class = "text-danger" })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fab fa-twitter"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Instagram</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.Instagram, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter name here ...", @readonly = "readonly", type = "url" } })@Html.ValidationMessageFor(model => model.Instagram, "", new { @class = "text-danger" })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fab fa-instagram"></i></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+</div>
+
+

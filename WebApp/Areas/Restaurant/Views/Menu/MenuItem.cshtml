@@ -1,0 +1,1832 @@
+﻿@model IEnumerable<WebApp.ViewModels.MenuItemByMenuViewModel>
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Restaurant/Views/Shared/_Layout.cshtml";
+}
+@*<link href="/Admin/css/restaurant/branch/edit.css" rel="stylesheet" />*@
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<link href="/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!--begin::Page Custom Styles(used by this page)-->
+@*<link href="~/assets/admin/css/pages/wizard/wizard-2.css" rel="stylesheet" type="text/css" />*@
+<!--end::Page Custom Styles-->
+<style>
+
+    .nav.nav-tabs.nav-tabs-line.nav-tabs-line-3x .nav-link:hover:not(.disabled), .nav.nav-tabs.nav-tabs-line.nav-tabs-line-3x .nav-link.active, .nav.nav-tabs.nav-tabs-line.nav-tabs-line-3x .show > .nav-link {
+        border-bottom: 3px solid #dc4848;
+    }
+
+    .btn.btn-info {
+        background-color: #f64e60 !important;
+        border-color: #f64e60 !important;
+    }
+
+    .submit-button {
+        margin-bottom: 20px !important;
+        padding: 10px;
+    }
+
+    .item-option-card {
+        border: 3px solid #EBEDF3 !important;
+        border-radius: 2rem !important;
+        margin-bottom: 10px !important;
+    }
+
+    .item-option {
+        padding: 1.15rem !important;
+    }
+
+    .clear-margin-label {
+        margin-bottom: 0px !important;
+    }
+
+    .clear-margin-input {
+        margin-bottom: 0.5rem !important;
+    }
+
+    .theme-color {
+        color: #dc4848 !important;
+    }
+
+    .nav-item .active {
+        color: #dc4848 !important;
+    }
+
+    .nav-item .nav-link:hover {
+        color: #dc4848 !important;
+    }
+
+    .item-tab {
+        padding: 12px !important;
+    }
+
+    .offcanvas {
+        z-index: 1001;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        -webkit-transition: left 0.3s ease, right 0.3s ease, bottom 0.3s ease, top 0.3s ease;
+        transition: left 0.3s ease, right 0.3s ease, bottom 0.3s ease, top 0.3s ease;
+        left: -434px;
+        width: 434px;
+    }
+
+        .offcanvas.offcanvas-right {
+            right: -434px;
+            left: auto;
+        }
+
+    .vertical {
+        width: 0.1rem;
+        height: auto;
+        border: none;
+        background: #dacdcd;
+    }
+
+    .color-circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50px;
+        display: inline-block;
+        position: relative;
+        margin-top: 0px;
+        padding-top: 5px;
+        top: 1px;
+    }
+
+    .variat {
+        border-top: 1px solid #0000001c;
+        padding-top: 1.25rem !important;
+        border-bottom: 1px solid #0000004a;
+        padding-bottom: 1.25rem !important;
+    }
+
+    .branch-input {
+        background-color: #f0f0f0;
+        border-radius: 12px;
+        z-index: 1;
+    }
+
+    .branch-text {
+        background-color: #f0f0f0 !important;
+    }
+
+    .branch-input::placeholder {
+        color: #8e8a8a !important;
+        opacity: 70;
+    }
+
+    .item-tree {
+        border-bottom: dashed;
+        position: relative;
+        left: 3px;
+        top: -70px;
+        width: 26px;
+        height: 119px;
+        border-left: dashed;
+        color: #af0000;
+    }
+</style>
+
+
+<div id="kt_quick_panel" class="offcanvas offcanvas-right pt-5 pb-10 ">
+    <!--begin::Header-->
+    <div class="row p-4">
+        <div class="col-10">
+            <h6 class="pl-3 mt-1">Edit Item</h6>
+        </div>
+        <div class="col-2">
+            <div class="offcanvas-close pl-4">
+                <a href="javascript:void(0);" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_panel_close">
+                    <i class="ki ki-close icon-xs text-muted"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="offcanvas-header offcanvas-header-navs d-flex align-items-center justify-content-between mb-5">
+        <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-primary flex-grow-1 px-10" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#kt_quick_panel_logs">General</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#kt_quick_panel_settings">Type</a>
+            </li>
+        </ul>
+
+    </div>
+    <!--end::Header-->
+    <!--begin::Content-->
+    <div class="offcanvas-content px-10">
+        <div class="tab-content">
+            <!--begin::Tabpane-->
+            <div class="tab-pane fade show pt-3 pr-5 mr-n5 active" id="kt_quick_panel_logs" role="tabpanel">
+                <!--begin::Section-->
+                <div class="mb-15">
+                    <!--begin: Item-->
+                    <div class="form-group row">
+                        <div class="col-lg-12 text-center">
+                            <div class="image-input image-input-outline" id="kt_image_1">
+                                <div class="image-input-wrapper" id="canvas-item-image" style="background-image: url('../../../../Assets/AppFiles/Images/default.png')"></div>
+                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change logo">
+                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                    <input type="file" class="logo" name="logo" id="logo" accept=".png, .jpg, .jpeg" required style="width:1px !important;height:1px !important" />
+                                    <input type="hidden" class="Image-Url" />
+                                    <input type="hidden" name="profile_avatar_remove" />
+                                </label>
+                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow cancelimage" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                </span>
+                            </div>
+                            <span class="form-text text-muted">Logo</span>
+                            <span class="form-text text-muted">Image dimensions should be 200 x 200 pixels and Image size must be less than 100 kb</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control branch-text" id="canvas-item-name" placeholder="Enter email .. " />
+                        <input type="hidden" id="canvas-item-id" />
+                        <input type="hidden" id="canvas-item-category-id" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note <span class="text-danger">*</span></label>
+                        <textarea rows="6" class="form-control branch-text" id="canvas-item-description" placeholder="Enter note here ..."></textarea>
+                    </div>
+                    <!--end: Item-->
+                    <!--begin: Item-->
+                    <div class="d-flex">
+                        <span class="switch switch-sm switch-danger">
+                            <label>
+                                <input type="checkbox" checked="checked" id="canvas-item-status" name="select" />
+                                <span></span>
+                            </label>
+                        </span>
+                        <label class="canvas-item-status-label mt-2 pl-4 text-justify" style="font-size: 12px;"></label>
+                    </div>
+                    <!--end: Item-->
+                </div>
+                <!--end::Section-->
+                <!--begin::Section-->
+                <!--end::Section-->
+            </div>
+            <!--end::Tabpane-->
+            <!--begin::Tabpane-->
+            <!--end::Tabpane-->
+            <!--begin::Tabpane-->
+            <div class="tab-pane fade pt-3 pr-5 mr-n5" id="kt_quick_panel_settings" role="tabpanel">
+                <!--begin::Section-->
+                <div class="form-group">
+                    <label class="opacity-70 font-weight-bolder">Add a Section </label>
+                    <div class="input-icon input-icon-right">
+                        <select class="form-control branch-text" id="itemoption-dropdown" onchange="AddItemOption(this)" placeholder="What section would you like to add?">
+                        </select>
+                        @*  <span><i class="flaticon2-search-1 icon-md theme-color"></i></span>*@
+                    </div>
+                </div>
+                <div id="option-values">
+                </div>
+                <!--begin::Section-->
+                <!--end::Section-->
+
+
+            </div>
+
+
+            <!--end::Tabpane-->
+        </div>
+
+        <div class="offcanvas-footer submit-button align-items-center">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <button type="button" class="btn btn-block btn-danger mr-3" onclick="SaveItem(this)">
+                        <i class="flaticon2-check-mark icon-sm"></i> Save
+                    </button>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <!--end::Content-->
+</div>
+
+<div id="kt_quick_category" class="offcanvas offcanvas-right pt-5 pb-10">
+    <!--begin::Header-->
+    <div class="row p-4">
+        <div class="col-10">
+            <h6 class="pl-3 mt-1">Edit Category</h6>
+        </div>
+        <div class="col-2">
+            <div class="offcanvas-close pl-4">
+                <a href="javascript:void(0);" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_category_close">
+                    <i class="ki ki-close icon-xs text-muted"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="offcanvas-header offcanvas-header-navs d-flex align-items-center justify-content-between mb-5">
+        <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-primary flex-grow-1 px-10" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#kt_quick_category_general">General</a>
+            </li>
+        </ul>
+
+    </div>
+    <!--end::Header-->
+    <!--begin::Content-->
+    <div class="offcanvas-content px-10">
+        <div class="tab-content">
+            <!--begin::Tabpane-->
+            <div class="tab-pane fade show pt-3 pr-5 mr-n5 active" id="kt_quick_category_general" role="tabpanel">
+                <!--begin::Section-->
+                <div class="mb-15">
+                    <!--begin: Item-->
+                    <div class="form-group row">
+                        <div class="col-lg-12 text-center">
+                            <div class="image-input image-input-outline" id="kt_image_2">
+                                <div class="image-input-wrapper" id="canvas-category-image" style="background-image: url('../../../../Assets/AppFiles/Images/default.png')"></div>
+                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change logo">
+                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                    <input type="file" name="logo" id="logo" class="logo" accept=".png, .jpg, .jpeg" required style="width:1px !important;height:1px !important" />
+                                    <input type="hidden" name="profile_avatar_remove" />
+                                </label>
+                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow cancelimage" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                </span>
+                            </div>
+                            <span class="form-text text-muted">Logo</span>
+                            <span class="form-text text-muted">Image dimensions should be 200 x 200 pixels and Image size must be less than 100 kb</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control branch-text" id="canvas-category-name" placeholder="Enter email .. " />
+                        <input type="hidden" id="canvas-category-id" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note <span class="text-danger">*</span></label>
+                        <textarea rows="6" class="form-control branch-text" id="canvas-category-description" placeholder="Enter note here ..."></textarea>
+                    </div>
+                    <!--end: Item-->
+                    <!--begin: Item-->
+                    <div class="d-flex">
+                        <span class="switch switch-sm switch-danger">
+                            <label>
+                                <input type="checkbox" checked="checked" id="canvas-category-status" onchange="ChangeStatus(this,'canvas-category-status')" name="select" />
+                                <span></span>
+                            </label>
+                        </span>
+                        <label class="canvas-category-status mt-2 pl-4 text-justify" style="font-size: 12px;">Active</label>
+                    </div>
+                    <!--end: Item-->
+                </div>
+                <!--end::Section-->
+                <!--begin::Section-->
+                <!--end::Section-->
+            </div>
+            <!--end::Tabpane-->
+            <!--begin::Tabpane-->
+            <!--end::Tabpane-->
+            <!--begin::Tabpane-->
+            <!--end::Tabpane-->
+        </div>
+        <div class="offcanvas-footer submit-button align-items-center ">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <button type="button" class="btn btn-danger btn-block mr-3" onclick="EditCategory(this)">
+                        <i class="flaticon2-check-mark icon-sm"></i> Save
+                    </button>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <!--end::Content-->
+
+</div>
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Dashboard-->
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+                        <div class=" align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+                            <!--begin::Info-->
+                            <div class="d-flex align-items-center flex-wrap mr-1">
+                                <!--begin::Heading-->
+                                <div class="d-flex flex-column">
+
+                                    <!--begin::Breadcrumb-->
+                                    <div class="d-flex align-items-center font-weight-bold my-2">
+                                        <!--begin::Item-->
+                                        <a href="/Restaurant/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                                        </a>
+                                        <!--end::Item-->
+                                        <!--begin::Item-->
+                                        <a href="/Restaurant/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                                        <!--end::Item-->
+                                        <!--begin::Item-->
+                                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                                        <a href="/Restaurant/Menu/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">Menus</a>
+                                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Edit</a>
+                                        <!--end::Item-->
+                                    </div>
+                                    <!--end::Breadcrumb-->
+                                </div>
+                                <!--end::Heading-->
+                            </div>
+                            <!--end::Info-->
+                        </div>
+                    </div>
+                    <!--begin::Card-->
+                    @*<div class="card card-custom  gutter-b" id="kt_page_sticky_card">
+                        <div class="card-body">
+
+                        </div>
+                        </div>*@
+                    <div class="card card-custom  gutter-b">
+                        <div class="card-body">
+
+                            <div class="">
+                                <div class="" id="headingImage">
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <div class="d-flex flex-column">
+                                                <div><h4>Menu Items</h4></div>
+                                                <div><h6>Name : <span style="color:red">@ViewBag.MenuName</span></h6></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 justify-content-end">
+
+                                            <button type="button" onclick="OpenModelPopup(this, '/Restaurant/Menu/CreateItem/@ViewBag.MenuId')" class="btn btn-block btn-dark">CREATE NEW ITEM</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator separator-solid my-7"></div>
+                                <div id="menu-list">
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <div id="category-tab" class="categorytab_@item.CategoryId pt-4">
+                                            <div class="card card-custom gutter-b branch-input" id="category_@item.CategoryId">
+                                                <div class="card-body  item-tab">
+                                                    <!--begin::Top-->
+                                                    <div class="d-flex">
+                                                        <!--begin::Pic-->
+                                                        <div class="flex-shrink-0 mr-7">
+                                                            <div class="symbol symbol-50 symbol-lg-70">
+                                                                <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Pic-->
+                                                        <!--begin: Info-->
+                                                        <div class="flex-grow-1">
+                                                            <!--begin::Title-->
+
+                                                            <div class="row align-items-center justify-content-between flex-wrap">
+                                                                <!--begin::User-->
+
+                                                                <div class="kt_quick_category_toggle col-md-10 col-sm-8" onclick="AddCategoryCanvas(this)">
+                                                                    <!--begin::Name-->
+                                                                    <a href="javascript:void(0);" class="d-flex align-items-center text-dark text-hover-primary font-size-h6-sm font-weight-bold mr-3" id="category-name">@item.CategoryName</a>
+                                                                    <input type="hidden" id="category-id" value="@item.CategoryId" />
+                                                                    <!--end::Name-->
+                                                                    <!--begin::Contacts-->
+                                                                    <div class="d-flex flex-wrap">
+                                                                        <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5" id="category-description">@item.CategoryDescription</div>
+                                                                    </div>
+                                                                    <input type="hidden" id="category-image" value="@item.CategoryImage" />
+                                                                    <!--end::Contacts-->
+                                                                </div>
+                                                                <!--begin::User-->
+                                                                <!--begin::Actions-->
+                                                                <div class="col-md-1 col-sm-2">
+                                                                    <div class="my-lg-0 my-1">
+                                                                        <label class="category-status-label opacity-70" style="margin-bottom: 0px;">@item.CategoryStatus</label>
+                                                                        <span class="switch switch-sm switch-danger">
+                                                                            <label>
+                                                                                <input type="checkbox" id="category-status" onchange="ChangeStatusById(this,@item.CategoryId,'Category','category-status-label')" @(item.CategoryStatus == "Active" ? "checked" : "") name="select" />
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="col-md-1 col-sm-2 ">
+
+                                                                    <div class="accordion accordion-light mt-4 accordion-toggle-arrow" id="accordionExample5">
+                                                                        <a href="javascript:void(0);" class="btn btn-icon btn-bg-white" data-toggle="collapse" data-target="#collapse_@item.CategoryId">
+                                                                            <i class="flaticon2-down"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                                <!--end::Actions-->
+                                                            </div>
+
+
+                                                            <!--end::Title-->
+                                                            <!--begin::Content-->
+                                                            <!--end::Content-->
+                                                        </div>
+                                                        <!--end::Info-->
+                                                    </div>
+                                                    <!--end::Top-->
+                                                    <!--begin::Separator-->
+                                                    <!--end::Separator-->
+                                                    <!--begin::Bottom-->
+                                                    <!--end::Bottom-->
+                                                </div>
+                                            </div>
+                                            <div class="category-item-tab collapse" id="collapse_@item.CategoryId">
+                                                <div id="menu-items">
+                                                    @foreach (var MenuItem in item.MenuItems)
+                                                    {
+
+                                                        <div class="category-items">
+                                                            <div class="row justify-content-end">
+                                                                <div class="item-tree">
+                                                                </div>
+                                                                <div class="col-11">
+                                                                    <div class="card card-custom gutter-b branch-input">
+                                                                        <div class="card-body item-tab">
+                                                                            <!--begin::Top-->
+                                                                            <div class="d-flex">
+                                                                                <!--begin::Pic-->
+                                                                                <div class="flex-shrink-0 mr-7">
+                                                                                    <div class="symbol symbol-50 symbol-lg-70">
+                                                                                        <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--end::Pic-->
+                                                                                <!--begin: Info-->
+                                                                                <div class="flex-grow-1">
+                                                                                    <!--begin::Title-->
+
+                                                                                    <div class="row align-items-center justify-content-between flex-wrap">
+                                                                                        <!--begin::User-->
+                                                                                        <div class="col-md-7 col-sm-5 kt_quick_panel_toggle" onclick="AddItemCanvas(this , @MenuItem.ItemId)">
+                                                                                            <!--begin::Name-->
+                                                                                            <a class="d-flex align-items-center text-dark text-hover-primary font-size-h6-sm font-weight-bold mr-3" id="item-name">@MenuItem.Name</a>
+                                                                                            <input type="hidden" id="item-id" value="@MenuItem.Id" />
+                                                                                            <input type="hidden" id="item-category-id" value="@item.CategoryId" />
+
+                                                                                            <!--end::Name-->
+                                                                                            <!--begin::Contacts-->
+                                                                                            <div class="d-flex flex-wrap">
+                                                                                                <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5"><span class="item-description">@MenuItem.Description</span></div>
+                                                                                            </div>
+                                                                                            <!--end::Contacts-->
+                                                                                        </div>
+                                                                                        <!--begin::User-->
+                                                                                        <!--begin::Actions-->
+                                                                                        <div class="col-md-3 col-sm-4">
+                                                                                            <div class="input-group mt-4">
+                                                                                                <div class="input-group-prepend">
+                                                                                                    <span class="input-group-text font-weight-bold" style="color:red;">AED</span>
+                                                                                                </div>
+                                                                                                <input type="number" class="form-control" id="item-price" onchange="PriceChange(this ,@MenuItem.Id)" placeholder="0" value="@MenuItem.Price" />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="d-flex col-md-1 col-sm-3 ">
+                                                                                            <div class="my-lg-0 my-1">
+                                                                                                <label class="item-status-label opacity-70" style="margin-bottom: 0px;">@MenuItem.Status</label>
+                                                                                                <span class="switch switch-sm switch-danger">
+                                                                                                    <label>
+                                                                                                        <input type="checkbox" onchange="ChangeStatusById(this,@MenuItem.Id,'MenuItem','item-status-label')" id="item-status" @(MenuItem.Status == "Active" ? "checked" : "") name="select" />
+                                                                                                        <span></span>
+                                                                                                    </label>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-1 col-sm-3">
+                                                                                            <button type="button" class="btn btn-icon btn-info btn-pill btn-sm mt-lg-6" onclick="DeleteMenuItem(this, @MenuItem.Id , @item.CategoryId)"><i class="fa fa-trash-alt"></i></button>
+                                                                                        </div>
+
+                                                                                        <!--end::Actions-->
+                                                                                    </div>
+
+
+                                                                                    <!--end::Title-->
+                                                                                    <!--begin::Content-->
+                                                                                    <!--end::Content-->
+                                                                                </div>
+                                                                                <!--end::Info-->
+                                                                            </div>
+                                                                            <!--end::Top-->
+                                                                            <!--begin::Separator-->
+                                                                            <!--end::Separator-->
+                                                                            <!--begin::Bottom-->
+                                                                            <!--end::Bottom-->
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+                                                    }
+                                                </div>
+                                                <div class="row justify-content-end">
+                                                    <div class="col-11">
+                                                        <button class="btn-danger btn btn-block" onclick="AddItem(this , @item.CategoryId )"><i class="fa fa-plus"></i> Add Item</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--end::Card-->
+
+
+
+                </div>
+
+            </div>
+
+
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--end::Row-->
+<script>
+    var SuccessMessage = '@ViewBag.SuccessMessage';
+    var ErrorMessage = '@ViewBag.ErrorMessage';
+</script>
+@section Scripts {
+
+    <!--begin::Page Vendors(used by this page)-->
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    @*<script src="~/Assets/Admin/js/vendor/car/insurance.js"></script>*@
+    <script src="~/Admin/js/general/ModalPopup.js"></script>
+    <!--end::Page Scripts-->
+    <!--end::Page Scripts-->
+    <script>
+        var logoPath;
+        var menuItem = {};
+        var menuItemOption = [];
+        var menuItemOptionValues = [];
+        //var url = window.location.href;
+        var MenuId = url.split('/').reverse()[0];
+        jQuery(document).ready(function () {
+
+            var _URL = window.URL || window.webkitURL;
+
+            $(".logo").change(function (e) {
+                var file, img;
+
+
+                if ((file = this.files[0])) {
+                    if (this.files[0].size >= 5000) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Image size should be equal to 300 KB and dimension should be 1920 x 1000!',
+                            //footer: '<a href>Image size should be less than or equal to  100KB and dimension should be 1713x540</a>'
+                        }).then(function (result) {
+                            $(".cancelimage").trigger('click');
+                        });
+                        $(".logo").val("");
+                    }
+                    img = new Image();
+                    img.onload = function () {
+
+                        if (this.width < 200 || this.width > 200) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Image size should be equal to 5 KB and dimension should be 200 x 200!',
+                                //  footer: '<a href>Image dimension should be 1713x540 and size should less than 100 KB</a>'
+                            }).then(function (result) {
+                                $(".cancelimage").trigger('click');
+                            });
+                            $(".logo").val("");
+                        }
+                        else if (this.height < 200 || this.height > 200) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Image size should be equal to 5 KB and dimension should be 200 x 200!',
+                                // footer: '<a href>Image dimension should be 1713x540 and size should less than 100 KB</a>'
+                            }).then(function (result) {
+                                $(".cancelimage").trigger('click');
+                            });
+                            $(".logo").val("");
+                        }
+
+                        else {
+                            img.onerror = function () {
+                                alert("not a valid file: " + file.type);
+                            };
+                        }
+                    };
+
+                    img.src = _URL.createObjectURL(file);
+
+                    logoPath = UploadImageToDraft(file).responseText;
+
+                    //$(e).closest(".Image-Url").val(logoPath);
+
+                }
+
+            });
+        });
+
+        var avatar1 = new KTImageInput('kt_image_1');
+        var avatar1 = new KTImageInput('kt_image_2');
+
+
+        function EditCategory(e) {
+
+            $(e).addClass('spinner spinner-light spinner-left').prop('disabled', true);
+            var status = "Inactive";
+            if ($("#canvas-category-status").is(":checked")) {
+                status = "Active";
+            }
+
+            var data = {
+                Id: $("#canvas-category-id").val(),
+                Name: $("#canvas-category-name").val(),
+                Description: $("#canvas-category-description").val(),
+                Status: status,
+                Url: logoPath,
+            };
+
+            $.ajax({
+                url: '/Restaurant/Menu/EditCategory',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    if (response.success) {
+
+
+                        toastr.success(response.message);
+                        var div = $("#category_" + response.data.id);
+                        $(div).find("#category-name").text(response.data.name);
+                        $(div).find("#category-description").text(response.data.description);
+                        if (response.data.status == "Active") {
+                            $(div).find("#category-status").attr("checked", true);
+                            $(div).find(".category-status-label").text("Active");
+                        }
+                        else {
+                            $(div).find("#category-status").attr("checked", false);
+                            $(div).find(".category-status-label").text("Inactive");
+                        }
+
+
+
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+
+                },
+                error: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                },
+                failure: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                }
+            });
+
+        };
+
+        function DeleteItem(e) {
+            $(e).parents(":eq(10)").empty();
+        };
+
+        function AddItem(f, categoryId) {
+
+            $.ajax({
+                url: '/Restaurant/Menu/GetItems/' + categoryId + '?menuId=' + MenuId,
+                type: 'GET',
+                success: function (response) {
+                    if (response.success) {
+                        var dropdown;
+                        $.each(response.items, function (k, v) {
+                            dropdown += `<option value="${v.value}">${v.text}</option>`
+                        });
+
+                        var html = `<div class="add-item-div" id="item-add-${categoryId}">
+                                                                                                                             <div class="row justify-content-end">
+                                                                                                                                 <div class="item-tree">
+                                                                                                                                 </div>
+                                                                                                                                 <div class="col-11">
+                                                                                                                                     <div class="card card-custom gutter-b branch-input">
+                                                                                                                                         <div class="card-body  item-tab">
+                                                                                                                                             <!--begin::Top-->
+                                                                                                                                             <div class="d-flex">
+                                                                                                                                                 <!--begin::Pic-->
+                                                                                                                                                 <div class="flex-shrink-0 mr-7">
+                                                                                                                                                     <div class="symbol symbol-50 symbol-lg-70">
+                                                                                                                                                         <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                                                                                                                     </div>
+                                                                                                                                                 </div>
+                                                                                                                                                 <!--end::Pic-->
+                                                                                                                                                 <!--begin: Info-->
+                                                                                                                                                 <div class="flex-grow-1">
+                                                                                                                                                     <!--begin::Title-->
+
+                                                                                                                                                     <div class=" d-flex align-items-center justify-content-between flex-wrap">
+                                                                                                                                                         <!--begin::User-->
+                                                                                                                                                         <!--begin::User-->
+                                                                                                                                                         <!--begin::Actions-->
+                                                                                                                                                         <div class="row">
+                                                                                                                                                             <div class="col-md-5 col-sm-4">
+                                                                                                                                                                 <div class="mt-4">
+                                                                                                                                                                     <select id="item-dropdown" class="form-control">
+                                                                                                                                                                     ${dropdown}
+                                                                                                                                                                     </select>
+                                                                                                                                                                 </div>
+                                                                                                                                                             </div>
+                                                                                                                                                             <div class="col-md-4 col-sm-4">
+                                                                                                                                                                 <div class="input-group mt-4">
+                                                                                                                                                                     <div class="input-group-prepend">
+                                                                                                                                                                         <span class="input-group-text font-weight-bold" style="color:red;">AED</span>
+                                                                                                                                                                     </div>
+                                                                                                                                                                     <input type="number" id="add-item-price" class="form-control" placeholder="0" />
+                                                                                                                                                                 </div>
+                                                                                                                                                             </div>
+                                                                                                                                                             <div class="col-md-3">
+                                                                                                                                                             <div class="d-flex">
+                                                                                                                                                             <div class="mt-4 mr-3">
+                                                                                                                                                                 <button class="btn btn-danger" onclick="SaveItemCategory(this ,${categoryId})">Add</button>
+                                                                                                                                                             </div>
+                                                                                                                                                             <div class="mt-4">
+                                                                                                                                                                 <button class="btn btn-dark" onclick="DeleteItem(this)">Discard</button>
+                                                                                                                                                             </div>
+                                                                                                                                                         </div>
+                                                                                                                                                             </div>
+                                                                                                                                                         </div>
+
+                                                                                                                                                     </div>
+                                                                                                                                                 </div>
+                                                                                                                                             </div>
+                                                                                                                                         </div>
+                                                                                                                                     </div>
+                                                                                                                                 </div>
+                                                                                                                             </div>
+
+                                                                                                                  </div>`;
+
+                        $(f).parents(":eq(1)").prev().append(html);
+                    }
+                    else {
+                        toastr.error(response.message);
+                    }
+
+
+                }
+
+            });
+
+
+
+
+        };
+
+        function ChangeStatus(f, source) {
+
+            if ($(f).is(':checked')) {
+
+                $(f).parents(':eq(2)').find("." + source).text("Active");
+            }
+
+            else {
+                $(f).parents(':eq(2)').find("." + source).text("Inactive");
+            }
+
+        };
+
+        function ChangeStatusById(e, id, source, elem) {
+
+            $.ajax({
+                url: '/Restaurant/Menu/' + source + 'ToggleActiveStatus/' + id,
+                type: 'Get',
+                success: function (response) {
+
+                    if (response.success) {
+                        if ($(e).is(':checked')) {
+
+                            $(e).parents(':eq(2)').find("." + elem).text("Active");
+                        }
+
+                        else {
+                            $(e).parents(':eq(2)').find("." + elem).text("Inactive");
+                        }
+                        toastr.success(response.message);
+
+                    } else {
+                        toastr.error(response.message);
+
+                    }
+                },
+
+            });
+
+        };
+
+        function AddItemCanvas(e, itemId) {
+
+            var image = $(e).parent().find("#item-image").val();
+            var gettingImage = document.getElementById("canvas-item-image");
+            var status = $(e).parent().find("#item-status");
+
+            if ($(status).is(':checked')) {
+                $("#canvas-item-status").attr("checked", true);
+                $(".canvas-item-status-label").text("Active");
+            }
+            else {
+                $("#canvas-item-status").attr("checked", false);
+                $(".canvas-item-status-label").text("Inactive");
+            }
+            $("#canvas-item-id").val($(e).parent().find("#item-id").val());
+            $("#canvas-item-name").val($(e).parent().find("#item-name").text());
+            $("#canvas-item-category-id").val($(e).parent().find("#item-category-id").val());
+            $("#canvas-item-description").val($(e).parent().find(".item-description").text());
+            gettingImage.style.backgroundImage = "url(" + image + ")";
+
+            var html = '';
+            var status = '';
+
+            $.ajax({
+                url: '/Restaurant/Menu/MenuItemOptions',
+                type: 'POST',
+                data: {
+                    Id: $("#canvas-item-id").val(),
+                    ItemId: itemId
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $("#itemoption-dropdown").empty();
+                        var dropdown = '<option selected>Select Items</option>';
+
+                        $.each(response.dropdown, function (k, v) {
+
+                            dropdown += `<option value="${v.value}">${v.text}</option>`;
+
+                        });
+                        $("#itemoption-dropdown").append(dropdown);
+                        $("#option-values").empty();
+                        $.each(response.data, function (k, v) {
+
+                            status = v.isRequired == true ? "checked" : "";
+                            html += `   <div class="card item-option-card">
+                                                                                                                                                           <div class="item-option card-body">
+                                                                                                                                                               <div class="d-flex justify-content-lg-between" id="option-${v.id}">
+                                                                                                                                                                   <div class="form-group">
+
+                                                                                                                                                                       <h6 id="canvas-itemoption-name"><span id="canvas-itemoption-name">${v.name}</span>  <span><i class="flaticon-delete icon-sm-ms theme-color" onclick="DeleteOption(this,${v.id})"></i></span></h6>
+                                                                                                                                                                       <input type="hidden" id="canvas-itemoption-id" value="${v.id}"/>
+                                                                                                                                                                   </div>
+                                                                                                                                                                   <div>
+                                                                                                                                                                       <label class="checkbox checkbox-danger flex-row-reverse">
+                                                                                                                                                                           <input type="checkbox" id="canvas-itemoption-status" name="Checkboxes5" onchange="EditMinMax(this,${v.id})" ${status}/>
+                                                                                                                                                                           <span class="ml-3"></span>
+                                                                                                                                                                           <strong>Required</strong>
+                                                                                                                                                                       </label>
+                                                                                                                                                                   </div>
+
+                                                                                                                                                               </div>
+                                                                                                                                                               <div class="row">
+                                                                                                                                                                 <div class="col-md-6">
+                                                                                                                                                                   <div class="form-group clear-margin-input">
+                                                                                                                                                                     <label class="clear-margin-label opacity-70" >Minimum</label>
+                                                                                                                                                                        <input type="text" class="form-control branch-text" id="canvas-itemoption-minimum" value="${v.minimum}" onchange="EditMinMax(this,${v.id})" placeholder="0" />
+                                                                                                                                                                   </div>
+                                                                                                                                                                 </div>
+                                                                                                                                                                 <div class="col-md-6">
+                                                                                                                                                                    <div class="form-group clear-margin-input">
+                                                                                                                                                                     <label class="clear-margin-label opacity-70">Maximum</label>
+                                                                                                                                                                        <input type="text" class="form-control branch-text" id="canvas-itemoption-maximum" value="${v.maximum}" onchange="EditMinMax(this,${v.id})" placeholder="0" />
+                                                                                                                                                                   </div>
+                                                                                                                                                                 </div>
+                                                                                                                                                                 </div>
+                                                                                                                                                                 <div class="separator separator-solid mb-3"></div>
+                                                                                                                                                         <div id="item-option-column" data-attr="${v.id}">`;
+
+                            $.each(v.optionValues, function (a, b) {
+
+                                html += `
+                                                                                                                    <div class="d-flex option-value" data-attr="${b.id}" id="option-values-${b.id}">
+                                                                                                                                           <div class="form-group clear-margin-input">
+                                                                                                                                               <label class="clear-margin-label opacity-70">Title<span><i class="flaticon-delete icon-sm-1x theme-color ml-1" onclick="DeleteOptionValue(this,${b.id})"></i></span></label>
+                                                                                                                                               <input type="text" class="form-control branch-text" id="value-name" value="${b.name}" onchange="EditOptionValues(this,${b.id},'name')" placeholder="Small" />
+                                                                                                                                               <input type="hidden" value="${v.id}" id="value-option-id">
+                                                                                                                                               </div>
+                                                                                                                                           <div class="mt-lg-9 pr-2 pl-2">
+                                                                                                                                               <i class="fas fa-arrow-alt-circle-right theme-color"></i>
+                                                                                                                                           </div>
+                                                                                                                                           <div class="form-group clear-margin-input">
+                                                                                                                                               <label class="clear-margin-label opacity-70">Price</label>
+                                                                                                                                               <div class="input-group input-group-solid">
+                                                                                                                                                   <div class="input-group-prepend branch-text"><span class="input-group-text theme-color">+AED</span></div>
+                                                                                                                                                   <input type="number" class="form-control branch-text" id="value-price" onchange="EditOptionValues(this,${b.id},'price')" value="${b.price}" placeholder="0:00" />
+
+                                                                                                                                               </div>
+                                                                                                                                           </div>
+
+
+                                                                                                                                       </div>`;
+                            });
+
+
+
+                            html += `</div>
+                                                                                                                                   <div class="row">
+                                                                                                                                              <div class="col-md-12 col-sm-12">
+                                                                                                                                                  <button type="button" class="btn-danger btn btn-block" onclick="AddOption(this , ${v.id})"><i class="fa fa-plus"></i> Add New Item</button>
+                                                                                                                                              </div>
+                                                                                                                                          </div>
+                                                                                                                                          </div>
+
+                                                                                                                                      </div>
+                                                                                                                                       </div>`
+
+
+
+                        });
+
+
+                        $("#option-values").append(html);
+
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+
+                },
+                error: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                },
+                failure: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                }
+            });
+
+
+        };
+
+        function AddCategoryCanvas(e) {
+
+            var image = $(e).find("#category-image").val();
+            var gettingImage = document.getElementById("canvas-category-image");
+            var status = $(e).next().find("#category-status");
+
+            if ($(status).is(':checked')) {
+                $("#canvas-category-status").attr("checked", true);
+            }
+            else {
+                $("#canvas-category-status").attr("checked", false);
+            }
+            $("#canvas-category-id").val($(e).find("#category-id").val());
+            $("#canvas-category-name").val($(e).find("#category-name").text());
+            $("#canvas-category-description").val($(e).find("#category-description").text());
+            gettingImage.style.backgroundImage = "url(" + image + ")";
+
+        };
+
+        function AddOption(e, optionId) {
+
+            $.ajax({
+                url: '/Restaurant/Menu/AddItemOptionValue/',
+                type: 'POST',
+                data: {
+                    menuItemOptionId: optionId,
+                },
+
+                success: function (response) {
+                    if (response.success) {
+
+
+                        toastr.success(response.message);
+                        var html = ` <div class="d-flex option-value" data-attr="${response.id}" id="option-values-${response.id}">
+                                                                                                                  <div class="form-group clear-margin-input">
+                                                                                                                      <label class="clear-margin-label opacity-70">Title<span><i class="flaticon-delete icon-sm-1x theme-color ml-1" onclick="DeleteOptionValue(this,${response.id})"></i></span></label>
+                                                                                                                      <input type="text" class="form-control branch-text" id="value-name" value="" onchange="EditOptionValues(this,${response.id},'name')" placeholder="Small" />
+                                                                                                                      <input type="hidden" value="${optionId}" id="value-option-id">
+                                                                                                                      </div>
+                                                                                                                  <div class="mt-lg-9 pr-2 pl-2">
+                                                                                                                      <i class="fas fa-arrow-alt-circle-right theme-color"></i>
+                                                                                                                  </div>
+                                                                                                                  <div class="form-group clear-margin-input">
+                                                                                                                      <label class="clear-margin-label opacity-70">Price</label>
+                                                                                                                      <div class="input-group input-group-solid">
+                                                                                                                          <div class="input-group-prepend branch-text"><span class="input-group-text theme-color">+AED</span></div>
+                                                                                                                          <input type="number" class="form-control branch-text" id="value-price" onchange="EditOptionValues(this,${response.id},'price')" value="" placeholder="0:00" />
+
+                                                                                                                      </div>
+                                                                                                                  </div>
+
+
+                                                                                                              </div>`;
+
+                        $(e).parents(":eq(1)").prev().append(html);
+
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+                },
+
+            });
+
+
+        };
+
+        function SaveItem(e) {
+
+            var menuItem = {};
+            var menuItemOption = [];
+            var menuItemOptionValues = [];
+
+
+            $(".option-value").each(function () {
+
+                menuItemOptionValues.push({
+
+                    Id: $(this).attr("data-attr"),
+                    Value: $(this).find("#value-name").val(),
+                    Price: $(this).find("#value-price").val(),
+                    MenuItemOptionId: $(this).parent().attr("data-attr"),
+                })
+
+            });
+
+
+            $(".item-option-card").each(function () {
+                var isrequired = false;
+                if ($("#canvas-itemoption-status").is(":checked")) {
+                    isrequired = true;
+                };
+
+                menuItemOption.push({
+
+                    Id: $(this).find("#canvas-itemoption-id").val(),
+                    Title: $(this).find("#canvas-itemoption-name").text(),
+                    IsRequired: isrequired,
+                    MenuItemId: $("#canvas-item-id").val(),
+                    MenuItemOptionValues: menuItemOptionValues
+
+                })
+
+            });
+
+            menuItem = {
+
+                Id: $("#canvas-item-id").val(),
+                Name: $("#canvas-item-name").val(),
+                Description: $("#canvas-item-description").val(),
+                Status: $(".canvas-item-status-label").text(),
+                CategoryId: $("#item-category-id").val(),
+                Url: $("#kt_quick_panel").find(".Image-Url").val(),
+                MenuItemOptions: menuItemOption,
+                MenuId: MenuId,
+
+            };
+
+            console.log(menuItem);
+
+
+            $.ajax({
+                url: '/Restaurant/Menu/EditMenuItem/',
+                type: 'POST',
+                data: menuItem,
+                success: function (response) {
+                    if (response.success) {
+
+
+                        toastr.success(response.message);
+                        var div = $("#category_" + response.data.id);
+                        $(div).find("#category-name").text(response.data.name);
+                        $(div).find("#category-description").text(response.data.description);
+                        if (response.data.status == "Active") {
+                            $(div).find("#category-status").attr("checked", true);
+                            $(div).find(".category-status-label").text("Active");
+                        }
+                        else {
+                            $(div).find("#category-status").attr("checked", false);
+                            $(div).find(".category-status-label").text("Inactive");
+                        }
+
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+
+                },
+                error: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                },
+                failure: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                }
+            });
+        };
+
+        function AddCategoryItems(response) {
+            debugger;
+            var itemsHtml = '';
+            $.each(response.menuItems, function (k, v) {
+                itemsHtml += `          <div class="category-items">
+                                                                                                                                                                                                                                                        <div class="row justify-content-end">
+                                                                                                                                                                                                                                                            <div class="item-tree">
+                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                            <div class="col-11">
+                                                                                                                                                                                                                                                                <div class="card card-custom gutter-b branch-input">
+                                                                                                                                                                                                                                                                    <div class="card-body item-tab">
+                                                                                                                                                                                                                                                                        <!--begin::Top-->
+                                                                                                                                                                                                                                                                        <div class="d-flex">
+                                                                                                                                                                                                                                                                            <!--begin::Pic-->
+                                                                                                                                                                                                                                                                            <div class="flex-shrink-0 mr-7">
+                                                                                                                                                                                                                                                                                <div class="symbol symbol-50 symbol-lg-70">
+                                                                                                                                                                                                                                                                                    <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                            <!--end::Pic-->
+                                                                                                                                                                                                                                                                            <!--begin: Info-->
+                                                                                                                                                                                                                                                                            <div class="flex-grow-1">
+                                                                                                                                                                                                                                                                                <!--begin::Title-->
+
+                                                                                                                                                                                                                                                                                <div class="row align-items-center justify-content-between flex-wrap">
+                                                                                                                                                                                                                                                                                    <!--begin::User-->
+                                                                                                                                                                                                                                                                                    <div class="col-md-7 col-sm-5 kt_quick_panel_toggle" onclick="AddItemCanvas(this)">
+                                                                                                                                                                                                                                                                                        <!--begin::Name-->
+                                                                                                                                                                                                                                                                                        <a href="javascript:void(0);" class="d-flex align-items-center text-dark text-hover-primary font-size-h6-sm font-weight-bold mr-3" id="item-name">${v.name}</a>
+                                                                                                                                                                                                                                                                                        <input type="hidden" id="item-id" value="${v.id}" />
+                                                                                                                                                                                                                                                                                        <input type="hidden" id="item-category-id" value="${response.category.id}" />
+                                                                                                                                                                                                                                                                                        <!--end::Name-->
+                                                                                                                                                                                                                                                                                        <!--begin::Contacts-->
+                                                                                                                                                                                                                                                                                        <div class="d-flex flex-wrap">
+                                                                                                                                                                                                                                                                                            <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5"><span class="item-description">${v.description}</span></div>
+                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                        <!--end::Contacts-->
+                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                    <!--begin::User-->
+                                                                                                                                                                                                                                                                                    <!--begin::Actions-->
+                                                                                                                                                                                                                                                                                    <div class="col-md-3 col-sm-4">
+                                                                                                                                                                                                                                                                                        <div class="input-group mt-4">
+                                                                                                                                                                                                                                                                                            <div class="input-group-prepend">
+                                                                                                                                                                                                                                                                                                <span class="input-group-text font-weight-bold" style="color:red;">AED</span>
+                                                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                                            <input type="number" class="form-control" id="item-price" onchange="PriceChange(this,${v.id})" placeholder="0" value="${v.price}" />
+                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                    <div class="d-flex col-md-1 col-sm-3 ">
+                                                                                                                                                                                                                                                                                        <div class="my-lg-0 my-1">
+                                                                                                                                                                                                                                                                                            <label class="item-status-label opacity-70" style="margin-bottom: 0px;">${v.status}</label>
+                                                                                                                                                                                                                                                                                            <span class="switch switch-sm switch-danger">
+                                                                                                                                                                                                                                                                                                <label>
+                                                                                                                                                                                                                                                                                                    <input type="checkbox" checked onchange="ChangeStatusById(this,${v.id},'MenuItem','item-status-label')" id="item-status"  name="select" />
+                                                                                                                                                                                                                                                                                                    <span></span>
+                                                                                                                                                                                                                                                                                                </label>
+                                                                                                                                                                                                                                                                                            </span>
+                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                    </div>
+
+                 <div class="col-md-1 col-sm-3">
+
+                                                                                                    <button type="button" class="btn btn-icon btn-info btn-pill btn-sm mt-lg-6" onclick="DeleteMenuItem(this , ${v.id} , ${response.category.id})"><i class="fa fa-trash-alt"></i></button>
+
+                                                                                                    </div>
+
+                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                        </div>`;
+            })
+
+            if ($(".categorytab_" + response.category.id).length > 0) {
+
+                $(".categorytab_" + response.category.id).find("#menu-items").append(itemsHtml);
+            }
+            else {
+                var html = `<div id="category-tab" class="category_${response.category.id} pt-4">
+                                                                                                                                                                                                                                            <div class="card card-custom gutter-b branch-input" >
+                                                                                                                                                                                                                                                <div class="card-body  item-tab">
+                                                                                                                                                                                                                                                    <!--begin::Top-->
+                                                                                                                                                                                                                                                    <div class="d-flex">
+                                                                                                                                                                                                                                                        <!--begin::Pic-->
+                                                                                                                                                                                                                                                        <div class="flex-shrink-0 mr-7">
+                                                                                                                                                                                                                                                            <div class="symbol symbol-50 symbol-lg-70">
+                                                                                                                                                                                                                                                                <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                        <!--end::Pic-->
+                                                                                                                                                                                                                                                        <!--begin: Info-->
+                                                                                                                                                                                                                                                        <div class="flex-grow-1">
+                                                                                                                                                                                                                                                            <!--begin::Title-->
+
+                                                                                                                                                                                                                                                            <div class="row align-items-center justify-content-between flex-wrap">
+                                                                                                                                                                                                                                                                <!--begin::User-->
+
+                                                                                                                                                                                                                                                                <div class="kt_quick_category_toggle col-md-10 col-sm-8" onclick="AddCategoryCanvas(this)">
+                                                                                                                                                                                                                                                                    <!--begin::Name-->
+                                                                                                                                                                                                                                                                    <a href="javascript:void(0);" class="d-flex align-items-center text-dark text-hover-primary font-size-h6-sm font-weight-bold mr-3" id="category-name">${response.category.name}</a>
+                                                                                                                                                                                                                                                                    <input type="hidden" id="category-id" value="${response.category.id}" />
+                                                                                                                                                                                                                                                                    <!--end::Name-->
+                                                                                                                                                                                                                                                                    <!--begin::Contacts-->
+                                                                                                                                                                                                                                                                    <div class="d-flex flex-wrap">
+                                                                                                                                                                                                                                                                        <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5" id="category-description">${response.category.description}</div>
+                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                    <input type="hidden" id="category-image" value="${response.category.image}" />
+                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                <div class="col-md-1 col-sm-2">
+                                                                                                                                                                                                                                                                    <div class="my-lg-0 my-1">
+                                                                                                                                                                                                                                                                        <label class="category-status-label opacity-70" style="margin-bottom: 0px;">${response.category.status}</label>
+                                                                                                                                                                                                                                                                        <span class="switch switch-sm switch-danger">
+                                                                                                                                                                                                                                                                            <label>
+                                                                                                                                                                                                                                                                                <input type="checkbox" id="category-status" onchange="ChangeStatusById(this,${response.category.id},'Category','category-status-label')"  name="select" />
+                                                                                                                                                                                                                                                                                <span></span>
+                                                                                                                                                                                                                                                                            </label>
+                                                                                                                                                                                                                                                                        </span>
+                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                </div>
+
+
+                                                                                                                                                                                                                                                                <div class="col-md-1 col-sm-2 ">
+
+                                                                                                                                                                                                                                                                    <div class="accordion accordion-light mt-4 accordion-toggle-arrow" id="accordionExample5">
+                                                                                                                                                                                                                                                                        <a href="javascript:void(0);" class="btn btn-icon btn-bg-white" data-toggle="collapse" data-target="#collapse_${response.category.id}">
+                                                                                                                                                                                                                                                                            <i class="flaticon2-down"></i>
+                                                                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                            <div class="category-item-tab collapse" id="collapse_${response.category.id}">
+                                                                                                                                                                                                                                                <div id="menu-items">
+                                                                                                                                                                                                                                                ${itemsHtml}
+                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                <div class="row justify-content-end">
+                                                                                                                                                                                                                                                    <div class="col-11">
+                                                                                                                                                                                                                                                        <button class="btn-danger btn btn-block" onclick="AddItem(this)"><i class="fa fa-plus"></i> Add Item</button>
+                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                        </div>`;
+
+                $("#menu-list").append(html);
+
+
+            }
+
+
+        };
+
+        function PriceChange(e, id) {
+
+            $.ajax({
+                url: '/Restaurant/Menu/ChangePrice/',
+                type: 'POST',
+                data: {
+                    price: $(e).val(),
+                    id: id
+                },
+
+                success: function (response) {
+                    if (response.success) {
+
+
+                        toastr.success(response.message);
+
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+                },
+
+            });
+
+        };
+
+        function AddMenuItemWithCategoryID(e, id) {
+
+            $.ajax({
+                url: '/Restaurant/Menu/ChangePrice/',
+                type: 'POST',
+                data: {
+                    price: $(e).val(),
+                    id: id
+                },
+
+                success: function (response) {
+                    if (response.success) {
+
+
+                        toastr.success(response.message);
+
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+                },
+
+            });
+        }
+
+        function SaveItemCategory(e, categoryId) {
+
+            $(e).addClass('spinner spinner-light spinner-left').prop('disabled', true);
+            var itemId = $(e).parents(":eq(3)").find("#item-dropdown").val();
+            var price = $(e).parents(":eq(3)").find("#add-item-price").val();
+            var url = window.location.href;
+            var MenuId = url.split('/').reverse()[0];
+
+            $.ajax({
+                url: '/Restaurant/Menu/CreateItemCategory/',
+                type: 'POST',
+                data: {
+
+                    itemId: itemId,
+                    categoryId: categoryId,
+                    menuId: MenuId,
+                    price: price
+
+                },
+                success: function (response) {
+                    if (response.success) {
+
+                        var html = `<div class="category-items">
+                                                                                                                                                                      <div class="row justify-content-end">
+                                                                                                                                                                          <div class="item-tree">
+                                                                                                                                                                          </div>
+                                                                                                                                                                          <div class="col-11">
+                                                                                                                                                                              <div class="card card-custom gutter-b branch-input">
+                                                                                                                                                                                  <div class="card-body item-tab">
+                                                                                                                                                                                      <!--begin::Top-->
+                                                                                                                                                                                      <div class="d-flex">
+                                                                                                                                                                                          <!--begin::Pic-->
+                                                                                                                                                                                          <div class="flex-shrink-0 mr-7">
+                                                                                                                                                                                              <div class="symbol symbol-50 symbol-lg-70">
+                                                                                                                                                                                                  <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                                                                                                                                                              </div>
+                                                                                                                                                                                          </div>
+                                                                                                                                                                                          <!--end::Pic-->
+                                                                                                                                                                                          <!--begin: Info-->
+                                                                                                                                                                                          <div class="flex-grow-1">
+                                                                                                                                                                                              <!--begin::Title-->
+
+                                                                                                                                                                                              <div class="row align-items-center justify-content-between flex-wrap">
+                                                                                                                                                                                                  <!--begin::User-->
+                                                                                                                                                                                                  <div class="col-md-7 col-sm-5 kt_quick_panel_toggle" onclick="AddItemCanvas(this)">
+                                                                                                                                                                                                      <!--begin::Name-->
+                                                                                                                                                                                                      <a href="javascript:void(0);" class="d-flex align-items-center text-dark text-hover-primary font-size-h6-sm font-weight-bold mr-3" id="item-name">${response.item.name}</a>
+                                                                                                                                                                                                      <input type="hidden" id="item-id" value="${response.item.id}" />
+                                                                                                                                                                                                      <input type="hidden" id="item-category-id" value="${categoryId}" />
+                                                                                                                                                                                                      <!--end::Name-->
+                                                                                                                                                                                                      <!--begin::Contacts-->
+                                                                                                                                                                                                      <div class="d-flex flex-wrap">
+                                                                                                                                                                                                          <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5"><span class="item-description">${response.item.description}</span></div>
+                                                                                                                                                                                                      </div>
+                                                                                                                                                                                                      <!--end::Contacts-->
+                                                                                                                                                                                                  </div>
+                                                                                                                                                                                                  <!--begin::User-->
+                                                                                                                                                                                                  <!--begin::Actions-->
+                                                                                                                                                                                                  <div class="col-md-3 col-sm-4">
+                                                                                                                                                                                                      <div class="input-group mt-4">
+                                                                                                                                                                                                          <div class="input-group-prepend">
+                                                                                                                                                                                                              <span class="input-group-text font-weight-bold" style="color:red;">AED</span>
+                                                                                                                                                                                                          </div>
+                                                                                                                                                                                                          <input type="number" class="form-control" id="item-price" onchange="PriceChange(this,${response.item.id})" placeholder="0" value="${response.item.price}" />
+                                                                                                                                                                                                      </div>
+                                                                                                                                                                                                  </div>
+                                                                                                                                                                                                  <div class="d-flex col-md-1 col-sm-3 ">
+                                                                                                                                                                                                      <div class="my-lg-0 my-1">
+                                                                                                                                                                                                          <label class="item-status-label opacity-70" style="margin-bottom: 0px;">${response.item.status}</label>
+                                                                                                                                                                                                          <span class="switch switch-sm switch-danger">
+                                                                                                                                                                                                              <label>
+                                                                                                                                                                                                                  <input type="checkbox" onchange="ChangeStatusById(this,${response.item.id},'MenuItem','item-status-label')" id="item-status"  name="select" />
+                                                                                                                                                                                                                  <span></span>
+                                                                                                                                                                                                              </label>
+                                                                                                                                                                                                          </span>
+                                                                                                                                                                                                      </div>
+                                                                                                                                                                                                  </div>
+                       <div class="col-md-1 col-sm-3">
+                                                                                                                <button type="button" class="btn btn-icon btn-info btn-pill btn-sm mt-lg-6" onclick="DeleteMenuItem(this , ${response.item.id} , ${categoryId} )"><i class="fa fa-trash-alt"></i></button>
+                                                                                                    </div>
+                                                                                                                                                                                              </div>
+                                                                                                                                                                                          </div>
+                                                                                                                                                                                      </div>
+                                                                                                                                                                                  </div>
+                                                                                                                                                                              </div>
+                                                                                                                                                                          </div>
+                                                                                                                                                                      </div>
+                                                                                                                                                                   </div>`;
+                        $("#item-add-" + categoryId).remove();
+                        $("#collapse_" + categoryId).find("#menu-items").append(html);
+
+                        toastr.success(response.message);
+
+
+
+
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+
+                },
+                error: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                },
+                failure: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                }
+            });
+        }
+
+        function DeleteOption(e, id) {
+
+            $.ajax({
+                url: '/Restaurant/Menu/DeleteOption/' + id,
+                type: 'GET',
+                success: function (response) {
+                    if (response.success) {
+                        $("#option-" + id).parents(":eq(1)").remove();
+
+                        toaster.success(response.message);
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+
+                },
+
+            });
+
+        }
+
+        function DeleteOptionValue(e, id) {
+
+            $.ajax({
+                url: '/Restaurant/Menu/DeleteOptionValue/' + id,
+                type: 'GET',
+                success: function (response) {
+                    if (response.success) {
+                        $(e).parents(":eq(3)").remove();
+                        toaster.success(response.message);
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+
+                },
+
+            });
+
+        };
+
+        function EditOptionValues(e, id, source) {
+
+            var dest;
+            if (source == 'name') {
+
+                dest = $(e).parents(":eq(1)");
+
+            }
+            else {
+                dest = $(e).parents(":eq(2)");
+            }
+
+            var price = dest.find("#value-price").val();
+            var name = dest.find("#value-name").val();
+            var optionId = dest.find("#value-option-id").val();
+
+            $.ajax({
+                url: '/Restaurant/Menu/UpdateValueOption/',
+                type: 'POST',
+                data: {
+                    Id: id,
+                    Price: price,
+                    OptionId: optionId,
+                    Name: name
+                },
+
+                success: function (response) {
+                    if (response.success) {
+
+                        toastr.success(response.message);
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+
+                },
+
+
+            });
+
+        };
+
+        function EditMinMax(e, id) {
+
+            var dest = $(e).parents(":eq(3)");
+            var status = false;
+            if ($(dest).find("#canvas-itemoption-status").is(":checked")) {
+                status = true;
+            }
+            $.ajax({
+                url: '/Restaurant/Menu/ChangeRequiredItemOption/',
+                type: 'POST',
+                data: {
+                    Id: id,
+                    Max: $(dest).find("#canvas-itemoption-maximum").val(),
+                    Min: $(dest).find("#canvas-itemoption-minimum").val(),
+                    IsRequired: status,
+                },
+
+                success: function (response) {
+                    if (response.success) {
+
+                        toastr.success(response.message);
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+
+                },
+
+
+            });
+        };
+
+
+        function AddItemOption(e) {
+
+
+            if ($(e).val() != "") {
+                var ItemId = $(e).val();
+                var MenuItemId = $("#canvas-item-id").val();
+                var html = '';
+                $.ajax({
+                    url: '/Restaurant/Menu/AddItemOption/',
+                    type: 'POST',
+                    data: {
+                        Id: ItemId,
+                        MenuItemId: MenuItemId,
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            status = response.menuItemOption.isRequired == true ? "checked" : "";
+                            html += `   <div class="card item-option-card">
+                                                                                                                                                               <div class="item-option card-body">
+                                                                                                                                                                   <div class="d-flex justify-content-lg-between" id="option-${response.menuItemOption.id}">
+                                                                                                                                                                       <div class="form-group">
+
+                                                                                                                                                                           <h6 id="canvas-itemoption-name"><span id="canvas-itemoption-name">${response.menuItemOption.title}</span>  <span><i class="flaticon-delete icon-sm-ms theme-color" onclick="DeleteOption(this,${response.menuItemOption.id})"></i></span></h6>
+                                                                                                                                                                           <input type="hidden" id="canvas-itemoption-id" value="${response.menuItemOption.id}"/>
+                                                                                                                                                                       </div>
+                                                                                                                                                                       <div>
+                                                                                                                                                                           <label class="checkbox checkbox-danger flex-row-reverse">
+                                                                                                                                                                               <input type="checkbox" id="canvas-itemoption-status" name="Checkboxes5" onchange="EditMinMax(this,${response.menuItemOption.id})" ${status}/>
+                                                                                                                                                                               <span class="ml-3"></span>
+                                                                                                                                                                               <strong>Required</strong>
+                                                                                                                                                                           </label>
+                                                                                                                                                                       </div>
+
+                                                                                                                                                                   </div>
+                                                                                                                                                                   <div class="row">
+                                                                                                                                                                     <div class="col-md-6">
+                                                                                                                                                                       <div class="form-group clear-margin-input">
+                                                                                                                                                                         <label class="clear-margin-label opacity-70" >Minimum</label>
+                                                                                                                                                                            <input type="text" class="form-control branch-text" id="canvas-itemoption-minimum" value="0" onchange="EditMinMax(this,${response.menuItemOption.id})" placeholder="0" />
+                                                                                                                                                                       </div>
+                                                                                                                                                                     </div>
+                                                                                                                                                                     <div class="col-md-6">
+                                                                                                                                                                        <div class="form-group clear-margin-input">
+                                                                                                                                                                         <label class="clear-margin-label opacity-70">Maximum</label>
+                                                                                                                                                                            <input type="text" class="form-control branch-text" id="canvas-itemoption-maximum" value="0" onchange="EditMinMax(this,${response.menuItemOption.id})" placeholder="0" />
+                                                                                                                                                                       </div>
+                                                                                                                                                                     </div>
+                                                                                                                                                                     </div>
+                                                                                                                                                                     <div class="separator separator-solid mb-3"></div>
+                                                                                                                                                             <div id="item-option-column" data-attr="${response.menuItemOption.id}">`;
+
+                            $.each(response.menuItemOptionValue, function (a, b) {
+
+                                html += `
+                                                                                                                        <div class="d-flex option-value" data-attr="${b.id}" id="option-values-${b.id}">
+                                                                                                                                               <div class="form-group clear-margin-input">
+                                                                                                                                                   <label class="clear-margin-label opacity-70">Title<span><i class="flaticon-delete icon-sm-1x theme-color ml-1" onclick="DeleteOptionValue(this,${b.id})"></i></span></label>
+                                                                                                                                                   <input type="text" class="form-control branch-text" id="value-name" value="${b.name}" onchange="EditOptionValues(this,${b.id},'name')" placeholder="Small" />
+                                                                                                                                                   <input type="hidden" value="${response.menuItemOption.id}" id="value-option-id">
+                                                                                                                                                   </div>
+                                                                                                                                               <div class="mt-lg-9 pr-2 pl-2">
+                                                                                                                                                   <i class="fas fa-arrow-alt-circle-right theme-color"></i>
+                                                                                                                                               </div>
+                                                                                                                                               <div class="form-group clear-margin-input">
+                                                                                                                                                   <label class="clear-margin-label opacity-70">Price</label>
+                                                                                                                                                   <div class="input-group input-group-solid">
+                                                                                                                                                       <div class="input-group-prepend branch-text"><span class="input-group-text theme-color">+AED</span></div>
+                                                                                                                                                       <input type="number" class="form-control branch-text" id="value-price" onchange="EditOptionValues(this,${b.id},'price')" value="${b.price}" placeholder="0:00" />
+
+                                                                                                                                                   </div>
+                                                                                                                                               </div>
+
+
+                                                                                                                                           </div>`;
+                            });
+
+
+
+                            html += `</div>
+                                                                                                                                       <div class="row">
+                                                                                                                                                  <div class="col-md-12 col-sm-12">
+                                                                                                                                                      <button type="button" class="btn-danger btn btn-block" onclick="AddOption(this , ${response.menuItemOption.id})"><i class="fa fa-plus"></i> Add New Item</button>
+                                                                                                                                                  </div>
+                                                                                                                                              </div>
+                                                                                                                                              </div>
+
+                                                                                                                                          </div>
+                                                                                                                                           </div>`
+
+
+                            $("#option-values").append(html);
+                            toastr.success(response.message);
+                        }
+
+                        else {
+
+                            toastr.error(response.message);
+                        }
+
+
+                    },
+
+
+                });
+            };
+        };
+
+        function DeleteMenuItem(e, id, categoryId) {
+            debugger;
+            $(e).find('i').hide();
+            $(e).addClass('spinner spinner-light spinner-left').prop('disabled', true);
+
+            $.ajax({
+                url: '/Restaurant/Menu/DeleteMenuItem/' + id,
+                type: 'GET',
+                success: function (response) {
+                    if (response.success) {
+                        debugger;
+                        $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                        $(e).find('i').show();
+                        $(e).parents(":eq(7)").remove();
+                        /**/
+                        if ($("#collapse_" + categoryId).hasClass("item-tab") == false) {
+
+                            $("##collapse_" + categoryId).remove();
+                        };
+                        toastr.success(response.message);
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+
+                },
+                error: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                },
+                failure: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                }
+            });
+        }
+
+    </script>
+
+
+}

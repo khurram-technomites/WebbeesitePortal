@@ -1,0 +1,90 @@
+﻿@model WebApp.ViewModels.TicketViewModel
+
+
+@{
+    ViewBag.Title = "StatusChange";
+    Layout = null;
+}
+
+<style>
+    #txtstatus option:disabled {
+        background-color: #80808078;
+    }
+</style>
+
+<div class="modal-header">
+    <h5 class="modal-title">User</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="Userform">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">User</label>
+                    <div class="input-group mb-2">
+                        <select asp-for="UserId" class="form-control" asp-items="@ViewBag.UserID" sortOrder="Ascending">
+                            <option value="0">Select User</option>
+                        </select>
+                        <span asp-validation-for="UserId" class="text-danger"></span>
+                        <input asp-for="Id" hidden/>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-flag"></i></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="Userform">Submit</button>
+</div>
+<script>
+
+    var _URL = window.URL || window.webkitURL;
+    $(document).ready(function () {
+
+
+        $("#Userform").submit(function () {
+
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+            var data = new FormData();
+            data.append("UserId", $('#UserId').val());
+            data.append("Id", $('#Id').val());
+            $.ajax({
+                url: "/Admin/Ticket/AssignUser/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+
+                    if (callback) {
+                        callback($('#myModalContent'), element, true, response);
+                    }
+                    location.reload();
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+            return false;
+        });
+
+        //$("#CategoryName").on('change', function () {
+        //    var name = $(this);
+        //    $("#Slug").val($(name).val().replace(/ /g, "-").replace(/'/g, "").toLocaleLowerCase());
+        //});
+    });
+
+</script>
+
+
+
+
+

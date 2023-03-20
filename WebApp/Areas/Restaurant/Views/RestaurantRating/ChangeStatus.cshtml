@@ -1,0 +1,67 @@
+﻿@model IEnumerable<WebApp.ViewModels.RestaurantRatingViewModel>
+@using HelperClasses.Classes
+
+@Html.AntiForgeryToken()
+<table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Restaurant</th>
+            <th>Customer</th>
+            <th>Rating</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody style="display:none">
+        @foreach (var item in Model)
+        {
+            if (item.Status == Enum.GetName(typeof(Status), Status.Processing))
+            {
+
+
+        <tr>
+            <td>@item.CreatedOn.ToString("dd MMM yyyy, h:mm tt")	</td>
+            @*<td hidden>@item.RestaurantId</td>*@
+            <td>@item.Restaurant.NameAsPerTradeLicense</td>
+            <td>@(item.User.Logo + "|" + item.User.FirstName + "|" + item.User.PhoneNumber) </td>
+            <td>
+                <button class="btn btn-bg-light btn-rating p-1" data="@item.Rating">
+                    <i class="la la-star-o"></i>
+                    <i class="la la-star-o"></i>
+                    <i class="la la-star-o"></i>
+                    <i class="la la-star-o"></i>
+                    <i class="la la-star-o"></i>
+                </button>
+            </td>
+            <td nowrap="nowrap">@item.ShowOnWebsite,@item.IsApproved,@item.Id</td>
+        </tr>
+            }
+            if (item.Status == Enum.GetName(typeof(Status), Status.Approved))
+            {
+
+        <tr>
+            <td>@item.CreatedOn.ToString("dd MMM yyyy, h:mm tt")	</td>
+            @*<td hidden>@item.RestaurantId</td>*@
+            <td>@item.Restaurant.NameAsPerTradeLicense</td>
+            <td>@(item.User.Logo + "|" + item.User.FirstName + "|" + item.User.PhoneNumber) </td>
+            <td>
+                <button class="btn btn-bg-light btn-rating p-1" data="@item.Rating">
+                    <i class="la la-star-o"></i>
+                    <i class="la la-star-o"></i>
+                    <i class="la la-star-o"></i>
+                    <i class="la la-star-o"></i>
+                    <i class="la la-star-o"></i>
+                </button>
+            </td>
+            <td nowrap="nowrap">@item.ShowOnWebsite,@item.IsApproved,@item.Id</td>
+        </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+    $('.btn-rating').each(function (k, v) {
+        var rating = parseFloat($(v).attr('data'));
+        $(this).find('i:lt(' + (rating) + ')').addClass("la-star").removeClass("la-star-o");
+    });
+</script>

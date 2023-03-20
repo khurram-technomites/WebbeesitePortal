@@ -1,0 +1,293 @@
+﻿@model WebApp.ViewModels.SparePartExpertiseManagementViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = null;
+}
+
+<style>
+    /*.edit-exp {
+        height: 43rem;
+        min-height: 38rem;
+        overflow-y: scroll;
+    }
+    .cc-scroll::-webkit-scrollbar {
+        width: .5em;
+    }
+
+    .cc-scroll::-webkit-scrollbar-track {*/
+    /*box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.9);*/
+    /*background-color: #000;
+    }
+
+    .cc-scroll::-webkit-scrollbar-thumb {
+        background-color: #d30606;
+        outline: 1px solid #d30606;
+    }*/
+
+
+</style>
+
+<div class="modal-header">
+    <h5 class="modal-title">Update</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body edit-exp cc-scroll">
+
+    <form id="frm-edit">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id, new { id = "id" })
+        @Html.HiddenFor(model => model.CreationDate)
+        <div class="form-group row justify-content-center">
+            <div class="col-12 form-group row justify-content-center">
+                <div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+                    <div class="image-upload uploaded">
+                        <i class="fa fa-camera"></i>
+                        <span>Upload Image</span>
+                        <input type="file" name="Restaurantlogo" id="Restaurantlogo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+                               aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+                        <img id="PreviewImage" src='@Model.ImagePath' />
+
+                        <i class="fa fa-pen" onclick="DeleteFile(this,'@Model.ImagePath')"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Description</label>
+                    <div>
+                        <textarea name="Description" id="Description" rows="10" placeholder="Type Here" class="form-control branch-input">@Model.Description</textarea>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label class="control-label">Expertise</label>
+                    <div class="input-group mb-2">
+                        @Html.DropDownList("ExpertiseId", null, "Select Expertise ", htmlAttributes: new { @class = "form-control", id = "ExpertiseId" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="input-group mt-lg-8">
+                        <button class="btn btn-info" type="button" onclick="AddExpertise(this)">Add Expertise</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row container" id="expertiseDiv">
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="frm-edit">Save Changes</button>
+</div>
+<script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+<script>
+
+    var _URL = window.URL || window.webkitURL;
+    var logoPath = '@Model.ImagePath';
+    var Description;
+    $(document).ready(function () {
+
+        ClassicEditor
+            .create(document.querySelector('#Description'))
+            .then(editor => {
+                Description = editor;
+                Description.setData(`@Html.Raw(Model.Description)`);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+        GetAllExpertise();
+        var avatar1 = new KTImageInput('kt_image_1');
+        var avatar2 = new KTImageInput('kt_image_2');
+
+
+        $(".cancelimage").click(function () {
+            DeleteImage(logoPath);
+        })
+
+        $('.cropper-shape').click(function () {
+
+            $('#CropperModal').removeClass($('.cropper-shape.active').attr('data'));
+
+            $('.cropper-shape').removeClass('active');
+            $(this).addClass('active');
+
+            $('#CropperModal').addClass($(this).attr('data'));
+        })
+
+
+        $('.background-color').click(function () {
+            $('.background-color').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('.cropper-view-box').css('background', $('.background-color.active').attr('data'))
+        })
+
+
+        $('.cropper-aspectratio').click(function () {
+            $('.cropper-aspectratio').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('#image').attr('aspectratio', $(this).attr('data'));
+
+            cropper.setAspectRatio($(this).attr('data'))
+
+        })
+
+        $('i.fa-camera').click(function () {
+            $("#logo").trigger('click');
+        });
+
+        $('i.fa-camera').click(function () {
+            $("#Restaurantlogo").trigger('click');
+        });
+
+        BindImageUploader("#Restaurantlogo", "#image", "#CropperModal", "#PreviewImage");
+
+        $("#frm-edit").submit(function () {
+            debugger;
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+            var data = new FormData();
+            if (logoPath == '') {
+                logoPath = $("#ImageValue").val();
+            }
+            data.append("Id", $('#id').val());
+            data.append("Description", Description.getData());
+            data.append("ImagePath", logoPath);
+            data.append("CreationDate", $('#CreationDate').val());
+            $.ajax({
+                url: "/SparePart/SparePartExpertiseManagement/Edit/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+
+                    if (callback) {
+                        callback($('#myModalContent'), element, true, response);
+                    }
+
+                },
+                error: function (er) {
+                    toastr.error(er);
+                    location.reload();
+                }
+
+            });
+            return false;
+        });
+    });
+
+    function AddExpertise(w) {
+        var id = $("#ExpertiseId").val();
+        $(w).addClass("spinner spinner-notch spinner-left")
+        debugger;
+        $.ajax({
+            url: "/SparePart/SparePartExpertiseManagement/AddExpertise",
+            type: "Post",
+            data: {
+                id: id,
+                managementId: $("#id").val()
+            },
+            success: function (response) {
+                var title = response.data.title.replaceAll(" ", "");
+                var html = ` <div class="col-md-6 mb-4" id="mainExp">
+                <div class="row" >
+                    <div class="col-md-9">
+                        <input type="text" readonly class="form-control" name="title" value="${title}" />
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-icon btn-danger" type="button" onclick="DeleteExpertise(this,${response.data.id},'${title}',${id})"><i class="fa fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            </div>`;
+
+                $("#expertiseDiv").append(html);
+                $(w).removeClass("spinner spinner-notch spinner-left")
+
+                $(`#ExpertiseId option[value=${id}]`).remove()
+            }
+
+        })
+
+        return false;
+    }
+
+    function DeleteExpertise(e, id, title, expertiseId) {
+        $(e).find("i").remove();
+        $(e).addClass("spinner spinner-notch spinner-center");
+
+        $.ajax({
+            url: "/SparePart/SparePartExpertiseManagement/DeleteExpertise/" + id,
+            type: "Get",
+            success: function (response) {
+                if (response.success) {
+                    $(e).closest("#mainExp").remove();
+                    toastr.success(response.message);
+
+                    $('#ExpertiseId').append($('<option>', {
+                        value: expertiseId,
+                        text: title
+                    }));
+                }
+            }
+
+        })
+
+        return false;
+    }
+
+    function GetAllExpertise() {
+        $.ajax({
+            url: "/SparePart/SparePartExpertiseManagement/GettAllExpertise/" + $("#id").val(),
+            type: "get",
+            success: function (response) {
+                var html = "";
+                $.each(response.data, function (k, v) {
+                    $(`#ExpertiseId option[value=${v.expertiseId}]`).remove()
+                    html += `<div class="col-md-6 mb-4" " id="mainExp">
+                <div class="row">
+                    <div class="col-md-9">
+                        <input type="text" name="title" readonly class="form-control" value="${v.title}" />
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-icon btn-danger" type="button" onclick="DeleteExpertise(this,${v.id},'${v.title}',${v.expertiseId})"><i class="fa fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            </div>`;
+                });
+
+                $("#expertiseDiv").append(html);
+            }
+
+        })
+    }
+
+</script>

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<WebApp.ViewModels.SparePartsDealerViewModel>
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<style>
+    #kt_datatable1 tbody tr td:last-child {
+        white-space: nowrap;
+    }
+</style>
+<link href="~/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<div id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                            <div class="card-title">
+                                <h3 class="card-label">
+                                    Spare Parts Dealers
+                                    <span class="d-block text-muted pt-2 font-size-sm">Manage Spare Parts Dealers Listing Here...</span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable3">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Name(Trade License)</th>
+                                        @*<th style="width:180px;">Name</th>*@
+                                        <th>Contact</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.CreationDate.ToString("dd MMM yyyy, hh:mm tt")</td>
+
+                                            <td>
+                                                @{ 
+                                                    string url = item.Logo == null ? "" : item.Logo.Replace(" ", "%20");
+                                                }
+                                                @(url + "|" + item.NameAsPerTradeLicense + "|" + item.ContactPersonEmail)
+                                            </td>
+                                            <td>+971 @item.ContactPersonNumber</td>
+                                            <td>
+                                                @item.Status
+                                            </td>
+                                            <td nowrap="nowrap">@item.Id</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

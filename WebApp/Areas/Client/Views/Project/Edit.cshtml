@@ -1,0 +1,442 @@
+﻿@model WebApp.ViewModels.GarageProjectViewModel
+@using HelperClasses.Classes
+
+@{
+    Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+
+    .ck-editor {
+        width: 100% !important;
+    }
+</style>
+<link href="~/css/cropper.css" rel="stylesheet" />
+<link href="~/Admin/css/general/ImageUploader.css" rel="stylesheet" />
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="/Client/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a href="/Client/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="/Client/Project/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">Project</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Update</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+        </div>
+    </div>
+
+    <!--end::Info-->
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Dashboard-->
+            <div class="row justify-content-center">
+                <!--begin::Dashboard-->
+                <div class="col-md-12">
+                    <!--begin::Card-->
+                    @*<div class="card card-custom  gutter-b" id="kt_page_sticky_card">
+                    <div class="card-body">
+
+                    </div>
+                    </div>*@
+
+                    <div class="card card-custom  gutter-b">
+                        <div class="modal-header">
+                            <h5 class="modal-title pt-2">Update</h5>
+                            <div class="card-header flex-wrap border-0 pt-0 pb-0 justify-content-end">
+                                <div class="card-toolbar">
+                                    <!--begin::Button-->
+
+                                    <button type="submit" id="sv-btn" form="Userform" class="btn btn-info font-weight-bolder">
+                                        <span class="svg-icon svg-icon-md">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                                    <circle fill="#000000" cx="9" cy="15" r="6"></circle>
+                                                    <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3"></path>
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span> Save
+                                    </button>
+                                    <!--end::Button-->
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card-body">
+
+                            <form id="Userform">
+                                @Html.AntiForgeryToken()
+                                <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                @Html.HiddenFor(model => model.Id, new { id = "Id" })
+                                @Html.HiddenFor(model => model.GarageId, new { id = "GarageId" })
+                                @Html.HiddenFor(model => model.Status, new { id = "Status" })
+
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Project Title</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Item name here ...",                                                  required = "required" } })
+                                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-pen"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Description</label>
+                                            <div class="input-group mb-2">
+                                                <textarea name="Description" id="Description" rows="6" placeholder="Type Here" class="form-control branch-input">@Model.Description</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row p-6" style="height: 200px;">
+
+                                    <div class="card-title mt-6"><h4>Gallery Images</h4></div>
+                                    <div class="col-md-12 col-sm-12 img-area" style="display:flex;">
+                                        <input type="file" id="gallery" style="display:none;" accept=".png, .jpg, .jpeg" />
+                                        <div id="upld-btn-conctr" class="btn btn-block btn-info col-lg-2 rounded d-flex flex-column justify-content-center align-items-center thumbnail-image-h-w BtnSave">
+                                            <div id="TakePhotoDiv">
+                                                <span class="fa fa-camera m-0 p-0">
+                                                    <p class=" m-0 p-0">Upload Photo</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @foreach (var Image in Model.GarageProjectImages)
+                                        {
+                                            <div class="col-lg-1 rounded mx-2 position-relative thumbnail-image-h-w res-imgs" id="restaurantImageId" data-imgId="@Image.Id" style="background-image: url( @Image.ImagePath.Replace(" ", "%20") );background-size: 110px 70px;">
+                                                <i class="fa fa-trash position-absolute text-danger trash-icon cancelimage" id="RemoveImage" data-action="cancel" data-toggle="tooltip" onclick="DeleteGalleryImage(this)" style="margin-left: 60%"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+
+
+                            </form>
+                        </div>
+
+                        <!--end::Card-->
+
+
+
+                    </div>
+
+                </div>
+
+
+                <!--end::Dashboard-->
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::Entry-->
+    </div>
+</div>
+
+<div class="modal fade" id="CropperModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90vw;">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="img-container">
+                    <img id="image" src="https://avatars0.githubusercontent.com/u/3456749" style="width:80vw;height:80vh" aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0">
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: space-between;">
+                <div class="cropper-actions">
+                    <div class="aspectratio-section">
+                        <h6>ASPECT RATIO</h6>
+                        <div class="aspectratios">
+                            <a href="javascript:;" class="cropper-aspectratio active" data="NaN"><span class="free-style"></span>FREE STYLE</a>
+                            <a href="javascript:;" class="cropper-aspectratio" data="1"><span class="box"></span> SQUARE (1:1)</a>
+                        </div>
+                    </div>
+                    <div class="shapes-section">
+                        <h6>SHAPES</h6>
+                        <div class="shapes">
+                            <a href="javascript:;" class="cropper-shape active" data="round"><span class="round"></span> ROUND/OVAL</a>
+                            <a href="javascript:;" class="cropper-shape" data="square"><span class="square"></span> SQUARE/RECTANGLE</a>
+                        </div>
+                    </div>
+                    <div class="backgrounds-section">
+                        <h6>BACKGROUNDS</h6>
+                        <div class="backgrounds">
+                            <a href="javascript:;" class="background-color active" data="#FFFFFF"><span style="background: #FFFFFF"></span> WHITE</a>
+                            <a href="javascript:;" class="background-color" data="#000000"><span style="background: #000000"></span> BLACK</a>
+                            <a href="javascript:;" class="background-color" data="#00000000"><span style="background: #00000000"></span> TRANSPARENT</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" id="crop">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+
+    <script src="/Admin/js/client/Projects/list.js"></script>
+    <!--end::Page Scripts-->
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <script src="~/js/cropper.js"></script>
+
+    <script src="~/js/compressor.js"></script>
+    <script src="~/Admin/js/general/ImageUploader-2.0.js"></script>
+    <script src="~/js/FileUpload.js"></script>
+
+
+    <script>
+        var _URL = window.URL || window.webkitURL;
+        var logoPaths = [];
+        var GalleryImgCount = 0;
+        var Description;
+
+
+        $(document).ready(function () {
+
+            //$('i.fa-camera').click(function () {
+            //
+            //    $("#logo").trigger('click');
+            //});
+
+            ClassicEditor
+                .create(document.querySelector('#Description'))
+                .then(editor => {
+                    Description = editor;
+                    Description.setData(`@Html.Raw(Model.Description)`);
+                })
+                .catch(error => {
+                });
+
+
+            $("#RadioButton").prop("checked", true);
+            $("#MaxValue").hide();
+
+            $('.cropper-shape').click(function () {
+
+                $('#CropperModal').removeClass($('.cropper-shape.active').attr('data'));
+
+                $('.cropper-shape').removeClass('active');
+                $(this).addClass('active');
+
+                $('#CropperModal').addClass($(this).attr('data'));
+            })
+
+
+            $('.background-color').click(function () {
+                $('.background-color').removeClass('active');
+                $(this).addClass('active');
+
+
+                $('.cropper-view-box').css('background', $('.background-color.active').attr('data'))
+            })
+
+
+            $('.cropper-aspectratio').click(function () {
+                $('.cropper-aspectratio').removeClass('active');
+                $(this).addClass('active');
+
+
+                $('#image').attr('aspectratio', $(this).attr('data'));
+
+                cropper.setAspectRatio($(this).attr('data'))
+
+            })
+
+            $('i.fa-camera').click(function () {
+                $("#Restaurantlogo").trigger('click');
+            });
+            BindImageUploader("#Restaurantlogo", "#image", "#CropperModal", "#PreviewImage");
+
+
+            //$('#upld-btn-conctr').on('click', () => {
+            //    $('#gallery').click();
+            //});
+
+
+            //$("#gallery").change(function () {
+            //    debugger;
+            //    var html = '';
+            //    $("#TakePhotoDiv").find("p").hide()
+            //    $("#TakePhotoDiv").find("i").removeClass("fa fa-camera-retro m-0 p-0").addClass("spinner spinner-center");
+            //    for (var i = 0; i < this.files.length; i++) {
+            //        GalleryImgCount = this.files.length;
+            //        var file = this.files[i];
+
+            //        var data = new FormData();
+            //        data.append('GarageProjectImages', file);
+
+            //        $.ajax({
+            //            url: "/File/Upload",
+            //            type: "POST",
+            //            processData: false,
+            //            contentType: false,
+            //            async: true,
+            //            data: data,
+            //            success: function (response) {
+            //                $('.BtnSave').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+
+            //                if (response.includes("Draft")) {
+            //                    ImageCallback(response)
+            //                }
+            //            },
+            //            error: function (er) {
+            //                toastr.error(er);
+            //            }
+            //        });
+            //    }
+            //});
+
+
+            //function ImageCallback(url) {
+            //    var html = '';
+
+            //    logoPaths.push(url);
+            //    html = `<div class="item"><div class="rounded mx-2 position-relative thumbnail-image-h-w res-imgs" style="background-image:url(${url}); background-repeat: round;background-color: grey">
+            //                                                <i class="fa fa-trash position-absolute text-danger trash-icon cancelimage" onClick="DeleteGalleryImage(this)"></i>
+            //                                            </div></div>`;
+            //    $('.Gallery-Slider').append(html);
+
+            //    if (counter == GalleryImgCount) {
+            //        $("#TakePhotoDiv").find("p").show()
+            //        $("#TakePhotoDiv").find("i").removeClass("spinner spinner-center").addClass("fa fa-camera-retro m-0 p-0");
+            //        counter = 1;
+            //        GalleryImgCount = 0;
+            //    }
+            //    else {
+            //        counter++;
+            //    }
+
+            //    //tns({
+            //    //    container: "#Gallery-Slider",
+            //    //    items: 1,
+            //    //    fixedWidth: 83,
+            //    //    nav: false,
+            //    //    controls: false,
+            //    //    mouseDrag: true,
+            //    //    swipeAngle: false,
+            //    //    speed: 400,
+            //    //    mode: "carousel",
+            //    //    loop: false
+            //    //});
+            //}
+
+            $('#upld-btn-conctr').on('click', () => {
+                $('#gallery').click();
+            });
+            $("#gallery").change(function () {
+                debugger;
+                $("#TakePhotoDiv").hide();
+                $("#TakePhotoSpinner").show();
+
+                var file = this.files[0];
+                var draftImg = UploadImageToDraft(file).responseText;
+                logoPaths.push(draftImg);
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    var html = `<div class="col-lg-1 rounded mx-2 position-relative thumbnail-image-h-w res-imgs" style="background-image:url(${draftImg}); background-size:110px 70px;">
+                                                                                                                                            <i class="fa fa-trash position-absolute text-danger trash-icon cancelimage" onClick="DeleteGalleryImage(this)" style="margin-left: 60%"></i>
+                                                                                                                                </div>`;
+                    $('.img-area').append(html);
+
+                    $("#TakePhotoDiv").show();
+                    $("#TakePhotoSpinner").hide();
+                }
+                reader.readAsDataURL(file);
+            });
+
+
+            $("#Userform").submit(function () {
+                debugger;
+                var Images = [];
+
+                $("#sv-btn").addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+                $.each(logoPaths, (k, v) => {
+                    Images.push({
+                        ImagePath: v
+                    });
+                });
+
+                $.ajax({
+                    url: "/Client/Project/Edit/",
+                    type: "POST",
+                    data: {
+                        Model: {
+                            Id: $('#Id').val(),
+                            GarageId: $('#GarageId').val(),
+                            Status: $('#Status').val(),
+                            Title: $('#Title').val(),
+                            Description: $('#Description').val(),
+                            GarageProjectImages: Images
+
+                        }
+                    },
+                    success: function (response) {
+                        toastr.success('Updated successfully ...');
+                        $('#sv-btn').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        location.reload();
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+                return false;
+            });
+        });
+
+
+
+        function DeleteGalleryImage(object) {
+            var path = $(object).parent().closest('div').css("background-image").replace('url("', '').replace('")', '');
+            logoPaths.splice($.inArray(path, logoPaths), 1);
+            $(object).parent().remove();
+            path = path.replace("%20", " ");
+
+            DeleteImage(path, 'GarageProject')
+            toastr.success('Delete successfully ...');
+
+        }
+    </script>
+}

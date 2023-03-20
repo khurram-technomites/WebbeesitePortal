@@ -1,0 +1,87 @@
+﻿@model WebApp.ViewModels.SparePartBannerSettingViewModel
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Website Banner</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="BannerImageform" action="PromotionEdit" method="post">
+        @Html.HiddenFor(Model => Model.Id)
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-12" style="margin-top:20px">
+                <div class="bgi-no-repeat bgi-size-cover rounded min-h-200px shadow-sm" style="background-position: 50% 50%;background-image: url(@Model.ImagePath.Replace(" ", "%20"))"></div>
+                <div class="form-group mt-3">
+                    <label class="control-label">Title</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="Title" id="Title" placeholder="Title" required value="@Model.Title" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="flaticon2-open-text-book"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <label class="control-label">Tag</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="Tag" id="Tag" placeholder="Tag" required value="@Model.Tag" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="flaticon2-open-text-book"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <label class="control-label">Description</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="Description" id="Description" placeholder="Description" required value="@Model.Description" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="flaticon2-open-text-book"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="BannerImageform">Submit</button>
+</div>
+
+<script>
+
+	$(document).ready(function () {
+
+		$('#BannerImageform').submit(function () {
+
+			$.ajax({
+				url: this.action,
+				type: this.method,
+				data: jQuery(this).serialize(),
+				success: function (response) {
+
+					if (response.success) {
+						toastr.success(response.message);
+						$('#myModal').modal('hide');
+					} else {
+						toastr.error(response.message);
+						$('#BannerImageform').closest('.modal').find('button[type=submit]').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+					}
+				}
+			});
+			return false;
+		});
+	});
+
+</script>

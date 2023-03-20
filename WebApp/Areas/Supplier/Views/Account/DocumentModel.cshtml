@@ -1,0 +1,156 @@
+﻿@model long
+
+@{
+    Layout = null;
+}
+
+<style>
+    .label.label-xl {
+        height: 53px;
+        width: 55px;
+        font-size: 1.2rem;
+    }
+
+    .branch-input {
+        background-color: #e8e8e8;
+    }
+
+        .branch-input::placeholder {
+            color: #8e8a8a;
+            opacity: 70;
+        }
+</style>
+<div class="modal-header">
+    <h5 class="modal-title">Upload Document</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="DocumentForm">
+        <div class="row">
+            <div class="col-6">
+                <input hidden value="@Model" type="text" name="SupplierId" />
+                <label>Name</label>
+                <div class="input-group" >
+                    <select id="NameDocs" name="NameDocs" required class="form-control">
+                        <option value="">Select document ...</option>
+                        <option value="Trade License Copy">Trade License Copy</option>
+                        <option value="Emirates ID front">Emirates ID front</option>
+                        <option value="Emirates ID back">Emirates ID back</option>
+                        <option value="Passport Main Page">Passport Main Page</option>
+                        <option value="Artiles of Association">Artiles of Association</option>
+                        <option value="Passport Visa Page">Passport Visa Page</option>
+                        <option value="3-parties contract / agreement">3-parties contract / agreement</option>
+                        <option value="Signature Authorization">Signature Authorization</option>
+                    </select>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-card"></i></span></div>
+                </div>
+            </div>
+            <div class="col-6">
+                <label>Expiry Date</label>
+                <div class="input-group">
+                    <input type="datetime" id="ExpiryDate" name="ExpiryDate" class="form-control" required="required" />
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-clock"></i></span></div>
+                </div>
+            </div>
+            <div class="col-12 mt-10">
+                <div class="input-group">
+                    <input type="file" id="fileUpload" name="FileUpload" class="form-control" required="required" />
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-upload"></i></span></div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-block btn-info BtnSave" id="SaveDocument">Save</button>
+</div>
+
+<script>
+    var filePath, file;
+    $(document).ready(function () {
+        $("input[name=ExpiryDate]").datepicker();
+
+        $("#SaveDocument").click(function () {
+            $('#SaveDocument').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+            var data = new FormData();
+            data.append("DocumentType", $('select[name=NameDocs]').val());
+            data.append("ExpiryDateTime", $('input[name=ExpiryDate]').val());
+            data.append("Path", filePath);
+            data.append("SupplierId", $('input[name=SupplierId]').val());
+
+            $.ajax({
+                url: '/Supplier/Document/AddDocument/',
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    if (response.success) {
+                        toastr.options = {
+                            "positionClass": "toast-bottom-right",
+                        };
+                        var DocumentHTML = `<div class="row mt-1">
+                                            <div class="col-sm-5">
+                                                <a href="${response.data.path}" class="font-weight-bolder mr-2" target="_blank">
+                                                    ${response.data.documentType}
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <p>${response.data.expiryDateTime}</p>
+                                                </div>
+                                                <div class="col-sm-1">
+
+                                                </div>
+                                                <div class="col-sm-2 pl-2">
+                                                    <button type="button" class="btn btn-bg-secondary btn-icon btn-sm mr-1" onclick="DeleteDocument(this, '${response.data.id}')"><i class="fa fa-trash"></i></button>
+                                                </div>
+                                            </div>`
+
+
+                        $(".DocWrap").append(DocumentHTML);
+                        $('#SaveDocument').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        filePath = '';
+                        $('#myModal').modal('hide');
+                        toastr.success(response.message)
+
+                    }
+
+                    else {
+                        $('#SaveDocument').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        toastr.error(response.message);
+                    }
+                },
+                error: function (error) {
+                    toastr.options = {
+                        "positionClass": "toast-bottom-right",
+                    };
+                    $('#SaveDocument').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                    toastr.error('Something went wrong ...');
+                }
+
+
+            });
+        })
+    })
+
+    $("#fileUpload").change(function (e) {
+
+        if ((file = this.files[0])) {
+            if (this.files[0].size >= 5000000) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Document size should be equal to 5 MB !',
+                })
+                $("#fileUpload").val("");
+            }
+
+            filePath = UploadImageToDraft(file).responseText;
+        }
+
+    });
+
+</script>

@@ -1,0 +1,135 @@
+﻿@model WebApp.ViewModels.CountryViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Update</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="frm-edit">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        @*@Html.HiddenFor(model => model.Status, new { id = "Status" })*@
+
+        @*<div class="form-group row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="image-input image-input-outline" id="kt_image_1">
+                    <div class="image-input-wrapper" style="background-image: url('')"></div>
+                    <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change logo">
+                        <i class="fa fa-pen icon-sm text-muted"></i>
+                        <input type="file" name="Image" id="Image" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" />
+                        <input type="hidden" name="profile_avatar_remove" />
+                    </label>
+                    <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow cancelimage" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                        <i class="ki ki-bold-close icon-xs text-muted"></i>
+                    </span>
+                </div>
+                <span class="form-text text-muted">Logo</span>
+                <span class="form-text text-muted">Image dimensions should be 200 x 200 pixels and Image size must be less than 100 kb</span>
+            </div>
+
+        </div>*@
+        <div class="row">
+            @*<div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">Parent Category</label>
+                        <div class="input-group mb-2">
+                            @Html.DropDownList("ParentCategoryID", null, "Select Parent Category", htmlAttributes: new { @class = "form-control" })@Html.ValidationMessageFor(model => model.ParentCategoryID, "", new { @class = "text-danger" })
+                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-server"></i></span></div>
+                        </div>
+                    </div>
+                </div>*@
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Name</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter sport name here ...", required = "required" } })@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Name (Ar)</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.NameAr, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter sport name (Ar) here ...", dir = "rtl", required = "required" } })@Html.ValidationMessageFor(model => model.NameAr, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <input type="text" class="" value="-" name="CategoryNameAr" hidden="" />
+
+            @*<div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">Slug</label>
+                        <div class="input-group mb-2">
+                            @Html.EditorFor(model => model.Slug, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Slug name here ...", required = "required", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.Slug, "", new { @class = "text-danger" })
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fa fa-link"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+
+
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="frm-edit">Save Changes</button>
+</div>
+<script>
+
+    var _URL = window.URL || window.webkitURL;
+    $(document).ready(function () {
+
+
+        $("#frm-edit").submit(function () {
+
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+            var data = new FormData();
+            data.append("Id", $('#Id').val());
+            data.append("Name", $('#Name').val());
+            data.append("NameAr", $('#NameAr').val());
+            data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+            $.ajax({
+                url: "/Admin/Country/Edit/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+
+                    if (callback) {
+                        callback($('#myModalContent'), element, true, response);
+                    }
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+            return false;
+        });
+
+        //$("#CategoryName").on('change', function () {
+        //    var name = $(this);
+        //    $("#Slug").val($(name).val().replace(/ /g, "-").replace(/'/g, "").toLocaleLowerCase());
+        //});
+    });
+
+</script>

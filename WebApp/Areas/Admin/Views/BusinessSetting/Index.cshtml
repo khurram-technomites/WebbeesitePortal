@@ -1,0 +1,533 @@
+﻿@model WebApp.ViewModels.BusinessSettingViewModel
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="/Admin/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a href="/Admin/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Business Settings</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Dashboard-->
+            <!--begin::Card-->
+            <div class="card card-custom" id="kt_page_sticky_card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">
+                            Configure Business settings Here...
+                            <i class="mr-2"></i>
+                        </h3>
+                    </div>
+                    <div class="card-toolbar">
+                        <a href="/Admin/Dashboard/Index" class="btn btn-light-primary font-weight-bolder mr-2">
+                            <i class="ki ki-long-arrow-back icon-sm"></i> Back
+                        </a>
+                        <button type="button" class="btn btn-info font-weight-bolder" id="edit-profile">
+                            <i class="fa fa-pen icon-sm "></i> Change
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger font-weight-bolder" id="edit-cancel" style="display:none;">
+                                <i class="ki ki-close icon-sm"></i> Cancel
+                            </button>
+                            <button type="button" class="btn btn-success font-weight-bolder" id="save-changes" style="display:none;">
+                                <i class="ki ki-check icon-sm"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-8">
+                            @*@using (Html.BeginForm("Update", "BusinessSetting", new { area = "Admin", id = (Model != null ? Model.Id : 0) }, FormMethod.Post, new { id = "Userform", @class = "form" }))
+                                {*@
+                            <form asp-area="Admin" asp-controller="BusinessSetting" asp-action="Update" id="Userform">
+                                <input asp-for="Id" style="opacity:0%" hidden>
+                                <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <h4 class="card-label">
+                                            Whatsapp Integration
+                                        </h4>
+                                        <hr />
+                                    </div>
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Title</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-comment-alt "></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Title AR</label>
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-comment-alt"></i></span></div>
+                                                    @Html.EditorFor(model => model.TitleAr, new { htmlAttributes = new { @class = "form-control text-right", placeholder = "Enter text ar here...", type = "text", required = "required", dir = "rtl" } })
+                                                    @Html.ValidationMessageFor(model => model.TitleAr, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="intr-form-group mb-3">
+                                            <label class="control-label">Whatsapp No</label>
+                                            <div class="input-group">
+                                                <input type="hidden" id="WhatsAppCode" class="code" value="@(Model.WhatsApp!= null && Model.WhatsApp.Contains('-') == true ?Model.WhatsApp.Split('-').First() : 971)" />
+                                                <input name="WhatsApp" id="WhatsApp" required value="@(Model.WhatsApp!= null && Model.WhatsApp.Contains('-') == true  ?Model.WhatsApp.Split('-').Last() :Model.WhatsApp)" placeholder="Enter contact 1 here...r" class="form-control branch-input intr-phone" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Whatsapp No</label>
+                                                <div class="input-group mb-2">
+                                                    @Html.EditorFor(model => model.WhatsApp, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter whatsapp number here...", type = "text", required = "required", min = 0, oninput = "this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" } })
+                                                    @Html.ValidationMessageFor(model => model.WhatsApp, "", new { @class = "text-danger" })
+                                                    <div class="input-group-append"><span class="input-group-text"><i class="fab fa-whatsapp-square"></i></span></div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Message</label>
+                                            <div class="input-group mb-2">
+                                                <textarea class="form-control" name="FirstMessage" id="FirstMessage" rows="3" placeholder="Enter your first message here...">@Model.FirstMessage</textarea>
+                                                @Html.ValidationMessageFor(model => model.FirstMessage, "", new { @class = "text-danger" })
+                                                <div class="input-group-append "><span class="input-group-text"><i class="fa fa-comment-dots"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Message AR</label>
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-append "><span class="input-group-text"><i class="fa fa-comment-dots"></i></span></div>
+                                                    <textarea class="form-control" name="FirstMessageAr" id="FirstMessageAr" rows="3" placeholder="Enter your first message ar here..." dir="rtl">@Model.FirstMessageAr</textarea>
+                                                    @Html.ValidationMessageFor(model => model.FirstMessageAr, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-12 col-sm-12 mt-5">
+                                        <h4 class="card-label">
+                                            Contact Settings
+                                        </h4>
+                                        <hr />
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Map IFrame</label>
+                                            <div class="input-group mb-2">
+                                                <textarea class="form-control" name="MapIframe" id="MapIframe" rows="4" placeholder="Enter map IFrame here..." required="">@Model.MapIframe</textarea>
+                                                @Html.ValidationMessageFor(model => model.MapIframe, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-map-marker"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Address</label>
+                                            <div class="input-group mb-2">
+                                                <textarea class="form-control" name="StreetAddress" id="StreetAddress" rows="3" placeholder="Enter street address here..." required="">@Model.StreetAddress</textarea>
+                                                @Html.ValidationMessageFor(model => model.StreetAddress, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-home"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Address AR</label>
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-home"></i></span></div>
+                                                    <textarea class="form-control text-right" dir="rtl" name="StreetAddressAr" id="StreetAddressAr" rows="3" placeholder="Enter street address ar here..." required="">@Model.StreetAddressAr</textarea>
+                                                    @Html.ValidationMessageFor(model => model.StreetAddressAr, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>*@
+
+                                    @*  <div class="col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Opening Hours</label>
+                                                <div class="input-group mb-2">
+                                                    <textarea class="form-control" name="Days" id="Days" rows="3" placeholder="Enter opening hours here...">@Model.WorkingDays</textarea>
+                                                    @Html.ValidationMessageFor(model => model.WorkingDays, "", new { @class = "text-danger" })
+                                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar-alt"></i></span></div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="intr-form-group mb-3">
+                                            <label class="control-label">Contact 1</label>
+                                            <div class="input-group">
+                                                <input type="hidden" id="Contact1Code" class="code" value="@(Model.Contact!= null && Model.Contact.Contains('-') == true ?Model.Contact.Split('-').First() : 971)" />
+                                                <input name="Contact" id="Contact" required value="@(Model.Contact!= null && Model.Contact.Contains('-') == true  ?Model.Contact.Split('-').Last() :Model.Contact)" placeholder="Enter contact 1 here...r" class="form-control branch-input intr-phone" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="intr-form-group mb-3">
+                                            <label class="control-label">Contact 2</label>
+                                            <div class="input-group">
+                                                <input type="hidden" id="Contact2Code" class="code" value="@(Model.Contact2!= null && Model.Contact2.Contains('-') == true ?Model.Contact2.Split('-').First() : 971)" />
+                                                <input name="Contact2" id="Contact2" required value="@(Model.Contact2!= null && Model.Contact2.Contains('-') == true  ?Model.Contact2.Split('-').Last() :Model.Contact2)" placeholder="Enter contact 1 here...r" class="form-control branch-input intr-phone" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Contact 1</label>
+                                                <div class="input-group mb-2">
+                                                    @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter contact 1 here...", type = "text", required = "required", min = 0, oninput = "this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" } })
+                                                    @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+                                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Contact 2</label>
+                                                <div class="input-group mb-2">
+                                                    @Html.EditorFor(model => model.Contact2, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter contact 2 here...", type = "number", min = "0", oninput = "this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" } })
+                                                    @Html.ValidationMessageFor(model => model.Contact2, "", new { @class = "text-danger" })
+                                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Fax No</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter fax number here..." } })
+                                                @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-fax"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Email 1</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter email 1 here...", type = "email", required = "required" } })
+                                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Email 2</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Email2, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter email 2 here...", type = "email", required = "required" } })
+                                                @Html.ValidationMessageFor(model => model.Email2, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 mt-5">
+                                        <h4 class="card-label">
+                                            Social Media Links
+                                        </h4>
+                                        <hr />
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Facebook</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Facebook, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter facebook link here...", } })
+                                                @Html.ValidationMessageFor(model => model.Facebook, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fab fa-facebook"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Instagram</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Instagram, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter instagram link here...", } })
+                                                @Html.ValidationMessageFor(model => model.Instagram, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fab fa-instagram-square"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Youtube</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Youtube, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter youtube link here...", } })
+                                                @Html.ValidationMessageFor(model => model.Youtube, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fab fa-youtube"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Twitter</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Twitter, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter twitter link here...", } })
+                                                @Html.ValidationMessageFor(model => model.Twitter, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fab fa-twitter"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Snapchat</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Snapchat, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter snapchat link here...", } })
+                                                @Html.ValidationMessageFor(model => model.Snapchat, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fab fa-snapchat"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*   <div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">LinkedIn</label>
+                                                <div class="input-group mb-2">
+                                                    @Html.EditorFor(model => model.linke, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter linkedin link here...", } })
+                                                    @Html.ValidationMessageFor(model => model.LinkedIn, "", new { @class = "text-danger" })
+                                                    <div class="input-group-append"><span class="input-group-text"><i class="fab fa-linkedin"></i></span></div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                    @*   <div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Behance</label>
+                                                <div class="input-group mb-2">
+                                                    @Html.EditorFor(model => model.be, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter behance link here...", } })
+                                                    @Html.ValidationMessageFor(model => model.Behance, "", new { @class = "text-danger" })
+                                                    <div class="input-group-append"><span class="input-group-text"><i class="fab fa-behance"></i></span></div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                    @* <div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Pinterest</label>
+                                                <div class="input-group mb-2">
+                                                    @Html.EditorFor(model => model.Pinterest, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter pinterest link here...", } })
+                                                    @Html.ValidationMessageFor(model => model.Pinterest, "", new { @class = "text-danger" })
+                                                    <div class="input-group-append"><span class="input-group-text"><i class="fab fa-pinterest"></i></span></div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                    <!-- Car Tax & Maru Compare Begin -->
+                                    @*<div class="col-md-12 col-sm-12">
+                                            <h4 class="card-label">
+                                                Tax Setting
+                                            </h4>
+                                            <hr />
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label"></label>
+                                                <span class="switch ml-1">
+                                                    <label>
+                                                        <input type="checkbox" name="IsTaxInclusiveCheck" id="IsTaxInclusiveCheck" disabled="" value="" @(Model != null && Model.IsTaxInclusive.HasValue && Model.IsTaxInclusive.Value ? "checked" : "") onchange="TaxInclusive();" />
+                                                        <span class="bg-light-primary"></span>
+                                                        <input type="text" hidden name="IsTaxInclusive" id="IsTaxInclusive" value="@(Model != null && Model.IsTaxInclusive.HasValue && Model.IsTaxInclusive.Value ? "true" : "false" )" />
+                                                    </label> <span class="ml-2">Tax Inclusive</span>
+                                                </span>
+                                            </div>
+                                        </div>*@
+                                    @*<div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label"></label>
+                                                <span class="switch ml-1">
+                                                    <label>
+                                                        <input type="checkbox" name="IsMaruCompareCheck" id="IsMaruCompareCheck" disabled="" value="" @(Model != null && Model.IsMaruCompare.HasValue && Model.IsMaruCompare.Value ? "checked" : "") onchange="MaruCompare();" />
+                                                        <span class="bg-light-primary"></span>
+                                                        <input type="text" hidden name="IsMaruCompare" id="IsMaruCompare" value="@(Model != null && Model.IsMaruCompare.HasValue && Model.IsMaruCompare.Value ? "true" : "false" )" />
+                                                    </label> <span class="ml-2">Maru Compare</span>
+                                                </span>
+                                            </div>
+                                        </div>*@
+
+                                    <!-- Car Tax & Maru Compare End-->
+                                    @*<div class="col-md-12 col-sm-12">
+                                            <h4 class="card-label">
+                                                Loyalty And Redemption Setting
+                                            </h4>
+                                            <hr />
+                                        </div>
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Enaled Loyalty And Redemption</label>
+                                                <span class="switch">
+                                                    <label>
+                                                        @Html.CheckBox("IsLoyaltyEnabled")
+                                                        <span></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div>*@
+
+                                    <!-- Coupon For First Registration -->
+                                    @*<div class="col-md-12 col-sm-12">
+                                            <h4 class="card-label">
+                                                Coupon For First Registration
+                                            </h4>
+                                            <hr />
+                                        </div>
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Coupon</label>
+                                                <div class="input-group mb-2">
+                                                    @Html.DropDownList("CouponID", null, "Select Coupon", htmlAttributes: new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.CouponID, "", new { @class = "text-danger" })
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">
+                                                            <i class="fa fa-gift"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                    <!-- Coupon For First Registration End-->
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Card-->
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Row-->
+
+<script>
+	var SuccessMessage = '@ViewBag.SuccessMessage';
+	var ErrorMessage = '@ViewBag.ErrorMessage';
+</script>
+
+@section Scripts {
+    <script src="/Admin/js/admin/businessSetting/Update.js"></script>
+    
+
+    <script>
+        $(document).ready(function () {
+           var contactNo ;
+           var contactNo2;
+            
+            $("#save-changes").click(function () {
+                debugger;
+                if($('#Contact').val() != '')
+                {
+                    contactNo = "+" + $('#Contact1Code').val() + "-" + $('#Contact').val();
+                }
+                else  {
+                    contactNo = ""
+                }
+                if ($('#Contact2').val() != '') {
+                    contactNo2 = "+" + $('#Contact2Code').val() + "-" + $('#Contact2').val()
+                }
+                else {
+                    contactNo2 = ""
+                }
+                $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+                var data = new FormData();
+                data.append("Id", $('#Id').val());
+                data.append("Title", $('#Title').val());
+                data.append("TitleAr", $('#TitleAr').val());
+                data.append("FirstMessage", $('#FirstMessage').val());
+                data.append("FirstMessageAr", $('#FirstMessageAr').val());
+                data.append("MapIframe", $('#MapIframe').val());
+                data.append("WhatsApp", $('#WhatsAppCode').val() + "-" + $('#WhatsApp').val());
+                data.append("WorkingDays", $('#WorkingDays').val());
+                data.append("StreetAddress", $('#StreetAddress').val());
+                data.append("StreetAddressAr", $('#StreetAddressAr').val());
+                data.append("Days", $('#Days').val());
+                data.append("Contact", contactNo);
+                data.append("Contact2", contactNo2);
+                data.append("Fax", $('#Fax').val());
+                data.append("Email", $('#Email').val());
+                data.append("Email2", $('#Email2').val());
+                data.append("Facebook", $('#Facebook').val());
+                data.append("Instagram", $('#Instagram').val());
+                data.append("Youtube", $('#Youtube').val());
+                data.append("Twitter", $('#Twitter').val());
+                data.append("Snapchat", $('#Snapchat').val());
+                data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+                $.ajax({
+                    url: "/Admin/BusinessSetting/Update/",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+                        toastr.success(response.message);
+                        location.reload();
+
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+                return false;
+            });
+
+            //$("#CategoryName").on('change', function () {
+            //    var name = $(this);
+            //    $("#Slug").val($(name).val().replace(/ /g, "-").replace(/'/g, "").toLocaleLowerCase());
+            //});
+        });
+        if (SuccessMessage) {
+            toastr.success(SuccessMessage);
+        }
+        else if (ErrorMessage) {
+            $('#edit-profile').trigger('click');
+            toastr.error(ErrorMessage);
+        }
+
+    </script>
+
+}

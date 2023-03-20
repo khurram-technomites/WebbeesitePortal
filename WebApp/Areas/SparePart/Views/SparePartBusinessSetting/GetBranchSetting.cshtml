@@ -1,0 +1,323 @@
+﻿@model IEnumerable<WebApp.ViewModels.SparePartBranchBusinessSettingViewModel>
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+
+@{
+    ViewBag.Title = "Branch Settings";
+    Layout = null;
+}
+
+<style>
+    .list-repeat {
+        box-shadow: 0px 0px 7px 1px #e0dede;
+    }
+</style>
+
+<div class="modal-header">
+    <h5 class="modal-title">Business Branch Settings</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <div id="kt_repeater_1">
+        <div class="form-group row">
+            <div class="col-md-12" id="repeatList">
+
+                @Html.AntiForgeryToken()
+                <!--Lists Create-->
+
+                @if (Model.Count() != 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <div class="row form-group list-repeat align-items-center m-0 mt-5 mb-5 p-8 rounded">
+                            <div hidden>
+                                <input type="number" class="form-control Id" value="@item.Id" />
+                            </div>
+                            <div hidden>
+
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 text-center" hidden>
+                                <div class="flex-shrink-0 mr-7">
+                                    <div class="symbol symbol-50 symbol-lg-120">
+                                        <input type="number" class="form-control BusinessSettingId" value="@item.SparePartBusinessSettingId" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Branch Name</label>
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control Name" value="@item.Name" placeholder="Enter branch name here ..." disabled />
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-comment-alt "></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Contact Person Name</label>
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control ContactPersonName" value="@item.ContactPersonName" placeholder="Enter branch name here ..." disabled />
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user  "></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Contact 1</label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">+971</span>
+                                        </div>
+                                        @*@{
+                                                var cntct = item.Contact1 != null ? item.Contact1.Substring(3, item.Contact1.Length - 3) : "0";
+                                                var cntct2 = item.Contact2 != null ? item.Contact2.Substring(3, item.Contact2.Length - 3) : "0";
+                                            }*@
+                                        <input type="number" onblur="validate(this.value,this)" class="form-control Contact1" value="@item.Contact1" placeholder="Enter contact 1 here ..." disabled />
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                    </div>
+                                    <span class="form-text text-danger confPassError" style="font-size: 9px;"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Contact 2</label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">+971</span>
+                                        </div>
+                                        <input type="number" onblur="validate(this.value,this)" class="form-control Contact2" value="@item.Contact2" placeholder="Enter contact 2 here ..." disabled />
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                    </div>
+                                    <span class="form-text text-danger confPassError" style="font-size: 9px;"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Email</label>
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control Email" value="@item.Email" placeholder="Enter email here ..." disabled />
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Address</label>
+                                    <div class="input-group mb-2">
+                                        <textarea class="form-control StreetAddress" rows="4" placeholder="Enter street address here..." disabled>@item.Address</textarea>
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-home"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 location-div">
+                                <div class="form-group">
+                                    <label class="wo-titleinput mb-0">Search Location</label>
+                                    <div class="wo-form-icon">
+                                        <input type="text" class="form-control branch-Address  show-map-input Address" disabled id="Address" value="@item.CompleteAddress" placeholder="Choose location" required>
+                                        <a href="javascript:void(0);" class="wo-right-icon get-current-location" onclick="getLocation(this)">
+                                            <i class="flaticon2-map"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" class="wo-right-icon pin-on-map" @*data-toggle="modal" data-target="#map-modal"*@ onclick="openMap(this)">
+                                            Pin On Map
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="MapSearchResult" style="display:none">
+                                </div>
+                                <input type="hidden" name="Latitude" class="Latitude" value="@item.Latitude" />
+                                <input type="hidden" name="Longitude" class="Longitude" value="@item.Longitude" />
+                            </div>
+
+
+                            <div class="col-md-12 text-right">
+                                <div class="card-toolbar">
+                                    <button type="button" class="btn btn-danger font-weight-bolder font-weight-bolder Delete mr-2" onclick="Delete(this, @item.Id)">
+                                        <i class="la la-trash-o"></i>Delete
+                                    </button>
+                                    <button type="button" class="btn btn-primary font-weight-bolder edit-profile" onclick="Change(this, @item.Id)">
+                                        <i class="fa fa-pen icon-sm"></i> Change
+                                    </button>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-danger font-weight-bolder edit-cancel" style="display:none;" onclick="Cancel(this, @item.Id)">
+                                            <i class="ki ki-close icon-sm"></i> Cancel
+                                        </button>
+                                        <button type="submit" class="btn btn-success font-weight-bolder save-changes" style="display:none;" onclick="Save(this, @item.Id)">
+                                            <i class="ki ki-check icon-sm"></i> Save Changes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="row form-group list-repeat align-items-center m-0 mt-5 mb-5 p-8 rounded">
+
+                        <div hidden>
+                            <input type="number" class="form-control hidden Id" value="" hidden />
+                        </div>
+                        <div class="col-md-12 col-sm-12 text-center" hidden>
+                            <div class="flex-shrink-0 mr-7">
+                                <div class="symbol symbol-50 symbol-lg-120">
+                                    <input type="number" class="form-control  BusinessSettingId" value="@ViewBag.BusinessSettingID" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <h4 class="card-label BranchName">
+                                Branch Name
+                            </h4>
+                            <hr />
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Branch Name</label>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control Name" value="" placeholder="Enter branch name here ..." disabled />
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-comment-alt "></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Contact Person Name</label>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control ContactPersonName" value="" placeholder="Enter contact person name here ..." disabled />
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user "></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Contact 1</label>
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">+971</span>
+                                    </div>
+                                    <input type="number" onblur="validate(this.value,this)" class="form-control Contact1" value="" placeholder="Enter contact 1 here ..." disabled />
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                </div>
+                                <span class="form-text text-danger confPassError" style="font-size: 9px;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Contact 2</label>
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">+971</span>
+                                    </div>
+                                    <input type="number" onblur="validate(this.value,this)" class="form-control Contact2" value="" placeholder="Enter contact 2 here ..." disabled />
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                </div>
+                                <span class="form-text text-danger confPassError" style="font-size: 9px;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Fax No</label>
+                                <div class="input-group mb-2">
+                                    <input type="tel" class="form-control Fax" value="" placeholder="Enter fax here ..." disabled />
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-fax"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Email</label>
+                                <div class="input-group mb-2">
+                                    <input type="email" class="form-control Email" value="" placeholder="Enter email here ..." disabled />
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Address</label>
+                                <div class="input-group mb-2">
+                                    <textarea class="form-control StreetAddress" rows="6" placeholder="Enter address here..." disabled></textarea>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-home"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 location-div">
+                            <div class="form-group">
+                                <label class="wo-titleinput mb-0">Search Location</label>
+                                <div class="wo-form-icon">
+                                    <input type="text" class="form-control branch-Address  show-map-input Address" disabled id="Address" value="" placeholder="Choose location" required>
+                                    <a href="javascript:void(0);" class="wo-right-icon get-current-location" onclick="getLocation(this)">
+                                        <i class="flaticon2-map"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" class="wo-right-icon pin-on-map" @*data-toggle="modal" data-target="#map-modal"*@ onclick="openMap(this)">
+                                        Pin On Map
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="MapSearchResult" style="display:none">
+                            </div>
+                            <input type="hidden" name="Latitude" class="Latitude" value="" />
+                            <input type="hidden" name="Longitude" class="Longitude" value="" />
+                        </div>
+
+                        <div class="col-md-12 text-right">
+                            <div class="card-toolbar">
+                                <button type="button" class="btn btn-danger font-weight-bolder font-weight-bolder Delete mr-2" onclick="Delete(this, 0)">
+                                    <i class="la la-trash-o"></i>Delete
+                                </button>
+                                <button type="button" class="btn btn-primary font-weight-bolder edit-profile" onclick="Change(this, 0)">
+                                    <i class="fa fa-pen icon-sm"></i> Change
+                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-danger font-weight-bolder edit-cancel" style="display:none;" onclick="Cancel(this, 0)">
+                                        <i class="ki ki-close icon-sm"></i> Cancel
+                                    </button>
+                                    <button type="submit" class="btn btn-success font-weight-bolder save-changes" style="display:none;" onclick="Save(this, 0)">
+                                        <i class="ki ki-check icon-sm"></i> Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <!--Lists Create-->
+            </div>
+        </div>
+        <div class="form-group row">
+            @*<label class="col-lg-2 col-form-label text-right"></label>*@
+            <div class="col-lg-12">
+                <a href="javascript:;" class="btn btn-sm font-weight-bolder btn-light-primary" onclick="AddBranch(this)">
+                    <i class="la la-plus"></i>Add Branch
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>
+
+
+<script>
+
+
+    var BusinessSettingID = @ViewBag.BusinessSettingID;
+
+</script>
+<!--end::Row-->
+<script src="~/Assets/Admin/js/pages/crud/forms/widgets/form-repeater.js"></script>
+<!--begin::Page Scripts(used by this page)-->
+<script src="~/Admin/js/sparepart/businessSetting/branch.js"></script>
+<!--end::Page Scripts-->

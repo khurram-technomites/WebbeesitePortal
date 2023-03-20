@@ -1,0 +1,109 @@
+﻿@model WebApp.ViewModels.CustomerViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Details</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <div class="float-right mb-3">
+                <i class="fa fa-calendar"></i>
+                <b>@Html.DisplayNameFor(model => model.CreationDate)</b>
+                @{
+                    var date = Model.CreationDate.ToString("dd MMM yyyy, h:mm tt");
+                    <label class="control-label" readonly="readonly">@date</label>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Customer Name</label>
+                <div class="input-group mb-3">
+                    <label class="form-control" readonly="readonly">@Model.Name</label>
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Email</label>
+                <div class="input-group mb-3">
+                    <label class="form-control" readonly="readonly">@Model.Email</label>
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">@Html.DisplayNameFor(model => model.FirstName)</label>
+                    <div class="input-group mb-2">
+                        <label class="form-control" readonly="readonly">@Html.DisplayFor(model => model.FirstName)</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">@Html.DisplayNameFor(model => model.LastName)</label>
+                    <div class="input-group mb-2">
+                        <label class="form-control" readonly="readonly">@Html.DisplayFor(model => model.LastName)</label>
+                    </div>
+                </div>
+            </div>*@
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Mobile No</label>
+                <div class="input-group mb-3">
+                    <label class="form-control" readonly="readonly">@Model.Contact</label>
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      @*  <div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Role</label>
+                <div class="input-group mb-3">
+                    <label class="form-control" readonly="readonly">@Model.Role</label>
+                    <div class="input-group-append">
+                        <span class="input-group-text" placeholder="Enter Role"><i class="fa fa-user-secret"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        @*        <div class="col-md-12 col-sm-12">
+                <label class="control-label"></label>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        @{
+                            if (Model.IsActive)
+                            {
+                                <span class="label label-lg font-weight-bold label-light-success label-inline">Active</span>
+                            }
+                            else
+                            {
+                                <span class="label label-lg font-weight-bold label-light-danger label-inline">InActive</span>
+                            }
+                        }
+                    </label>
+                </div>
+            </div>*@
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>

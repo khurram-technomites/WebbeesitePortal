@@ -1,0 +1,836 @@
+﻿@model WebApp.ViewModels.SparePartsDealerViewModel
+@using HelperClasses.Classes
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .tns-outer {
+        width: 100% !important;
+    }
+
+    input[type='radio']:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: #d1d3d1;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
+
+    input[type='radio']:checked:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: #FF3F40;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
+
+    /*  .owl-carousel{
+        overflow: initial;
+    }*/
+    .vertical {
+        width: 0.1rem;
+        height: auto;
+        border: none;
+        background: #dacdcd;
+    }
+
+    .color-circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50px;
+        display: inline-block;
+        position: relative;
+        margin-top: 0px;
+        padding-top: 5px;
+        top: 1px;
+    }
+
+    .variat {
+        border-top: 1px solid #0000001c;
+        padding-top: 1.25rem !important;
+        border-bottom: 1px solid #0000004a;
+        padding-bottom: 1.25rem !important;
+    }
+
+
+    .branch-input::placeholder {
+        color: #8e8a8a;
+        opacity: 70;
+    }
+
+    .thumbnail-image-h-w {
+        height: 80px;
+        width: 80px;
+    }
+
+    .bg-img-cover {
+        background: url('https://cdn.eathlos.com/Images/GarageImages/Fougito%20Garage/3d0bd866-158b-4e2c-b51c-8b8c50df2109.jfif');
+        background-size: 110px 70px;
+    }
+
+    .trash-icon {
+        background: white;
+        width: 20px;
+        height: 20px;
+        border: 50%;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 11px;
+        top: 5%;
+        right: 5%;
+    }
+
+    /*.bg-8E7C7C14 {
+        background-color: #8E7C7C14;
+    }*/
+
+    .vertical {
+        margin-right: 16px;
+    }
+
+
+
+
+
+
+
+
+    div.pac-container {
+        /*for search locaton on map model popup txtaddress*/
+        z-index: 99999999999 !important;
+    }
+
+    .wo-right-icon {
+        position: absolute;
+        top: 30px;
+        font-size: 12px;
+        color: #FF3F40;
+        font-weight: 900;
+    }
+
+        .wo-right-icon:hover {
+            color: #c91e1f;
+        }
+
+    .pin-on-map {
+        right: 50px;
+        padding-right: 5px;
+        border-right: 1px solid rgb(255 63 64 / 5%);
+    }
+
+    .get-current-location {
+        top: 25px;
+        right: 30px;
+    }
+
+        .get-current-location i {
+            color: #FF3F40;
+        }
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map {
+        height: 100%;
+    }
+
+
+
+    .pac-card {
+        background-color: #fff;
+        border: 0;
+        border-radius: 2px;
+        box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+        margin: 10px;
+        padding: 0 0.5em;
+        font: 400 18px Roboto, Arial, sans-serif;
+        font-family: Roboto;
+        padding: 0;
+    }
+
+    #pac-container {
+        z-index: 1051 !important;
+    }
+
+    .pac-container {
+        z-index: 1051 !important;
+    }
+
+    .pac-controls {
+        padding: 5px 11px;
+    }
+
+        .pac-controls label {
+            font-family: Roboto;
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+    #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 503px;
+        height: 40px;
+    }
+
+        #pac-input:focus {
+            border-color: #4d90fe;
+        }
+</style>
+
+<link href="~/css/zoom.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <div class="d-flex flex-column">
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <a href="/Admin/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <a href="/Admin/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript: window.history.go(-1);" class="text-white text-hover-white opacity-75 hover-opacity-100">Spare Part Dealers</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body">
+                            <div class="" id="headingImage">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="d-flex flex-column">
+                                            <div><h4>Spare Parts Dealer Details</h4></div>
+                                            <div><h6>Reference Code : <span style="color:red">@Model.ReferenceCode</span></h6></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row justify-content-end">
+                                            <div class="col-5">
+                                                @{
+                                                    if (Model.Status == Enum.GetName(typeof(Status), Status.Active))
+                                                    {
+                                                    <button type="button" id="DeactiveBtn" data-attr="Draft" onclick="activeChange(this,false,'@Model.Id')" class="btn btn-sm mr-4 btn-outline-danger float-right">
+                                                        <i class="fa fa-times-circle" aria-hidden="true"></i>Deactivate
+                                                    </button>
+
+
+                                                        }
+
+                                                        if (Model.Status == Enum.GetName(typeof(Status), Status.Inactive))
+                                                        {
+
+                                                    <button type="button" id="ActiveButton" data-attr="Draft" onclick="activeChange(this,true,'@Model.Id')" class="btn btn-sm mr-4 btn-outline-success float-right">
+                                                        <i class="fa fa-check-circle" aria-hidden="true"></i>Activate
+                                                    </button>
+                                                        }
+                                                        if (Model.Status == Enum.GetName(typeof(Status), Status.Processing))
+                                                        {
+                                                    <button type="button" id="ApproveBtn" data-attr="Draft" onclick="activeChange(this,true,'@Model.Id')" class="btn btn-sm mr-1 btn-outline-success">
+                                                        <i class="fa fa-check-circle" aria-hidden="true"></i>Approve
+                                                    </button>
+                                                    <button type="button" id="RejectBtn" data-attr="Draft" onclick="Reject(this,false,'@Model.Id')" class="btn btn-sm mr-1 btn-outline-danger"><i class="fa fa-times-circle" aria-hidden="true"></i>Reject</button>
+                                                        }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body pl-12" id="formInputs">
+
+
+
+
+
+
+
+                                <div class="form-group row justify-content-center">
+                                    <div class="col-lg-6 text-center">
+                                        <div class="image-input image-input-outline" id="kt_image_res">
+                                            <div class="image-input-wrapper" style="background-image: url(@Model.Logo != null ? Model.Logo.Replace(" ", "%20") : ""); background-repeat: round"></div>
+                                        </div>
+                                        <span class="form-text text-muted">Logo</span>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <input name="GarageId" value="@Model.Id" hidden />
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card-title"><h4>Spare Parts Dealer Info</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Name As Per Trade License</label>
+                                                            <input type="text" class="form-control branch-input" asp-for="NameAsPerTradeLicense" required placeholder="Enter your Garage name" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">About Us</label>
+                                                            <div class="input-group mb-2">
+                                                                <textarea name="Description" id="Description" rows="10" placeholder="Type Here" class="form-control branch-input" disabled>@Model.Description</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="card-title"><h4>Login Credentials</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Email</label>
+                                                            <input name="UEmail" value="@Model.User.Email" required placeholder="Enter your email address" class="form-control branch-input" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="card-title"><h4>Bank Details</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Bank Name</label>
+                                                            <input name="Bank" value="@Model.Bank" required placeholder="Enter bank name" class="form-control branch-input" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Bank Account Number</label>
+                                                            <input type="number" value="@Model.BankAccountNumber" name="AccountNumber" required placeholder="Entery bank account number" class="form-control branch-input" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Account Holder Name</label>
+                                                            <input type="text" value="@Model.BankAccountHolderName" name="AccountHolder" required placeholder="Entery bank account holder name" class="form-control branch-input" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">IBAN</label>
+                                                            <input type="text" name="IBAN" value="@Model.BankAccountNumber" required placeholder="Entery IBAN" class="form-control branch-input" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr class="vertical" />
+                                            <div class="col-md-5">
+                                                <div class="card-title"><h4>Contact Person Details</h4></div>
+                                                <div class="row">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Name</label>
+                                                                <input type="text" name="BNameAsPerTradeLicense" id="" value="@Model.ContactPersonName" required placeholder="Enter branch name" class="form-control branch-input" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Email Address</label>
+                                                                <input type="email" name="BEmail" id="" value="@Model.ContactPersonEmail" required class="form-control branch-input" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Phone Number</label>
+                                                                <input type="number" name="OrderingPhoneNumber" id="" value="@Model.ContactPersonNumber" required placeholder="Enter phone number" class="form-control branch-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="card-title"><h4>Spare Parts Dealer Schedule</h4></div>
+                                                    @*<div class="container text-center owl-carousel owl-theme">*@
+
+                                                    @{
+                                                        if (!Model.DealerSchedules.Any())
+                                                        {
+                                                        <div class="d-flex mb-4 justify-content-center" style="width:100%">
+                                                            <span class="text-danger">No Document Found</span>
+                                                        </div>
+                                                        }
+                                                        else
+                                                        {
+                                                        <div class="my-slider d-flex mb-4 slider" id="schedule-tags" style="width:100%">
+                                                            @foreach (var schedule in Model.DealerSchedules)
+                                                                {
+                                                            <div class="item">
+                                                                <span class="mr-2 label label-inline lbl-style pt-4" id="dispatch" style="display:inline-table;width:12rem">
+                                                                    @schedule.Day
+                                                                    <p class="opacity-70 font-size-sm">@schedule.FormattedOpeningTime - @schedule.FormattedClosingTime</p>
+
+                                                                </span>
+                                                            </div>
+
+                                                                }
+                                                        </div>
+                                                        }
+                                                    }
+
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="card-title"><h4>Spare Parts Dealer Documents</h4></div>
+                                                    @{
+
+                                                        if (!Model.SparePartsDealerDocuments.Any())
+                                                        {
+                                                        <div class="d-flex mb-4 justify-content-center" style="width:100%">
+                                                            <span class="text-danger">No Document Found</span>
+                                                        </div>
+
+                                                        }
+                                                        else
+                                                        {
+                                                        <div class="my-slider d-flex mb-4 slider" id="schedule-Document" style="width:100%">
+                                                            @foreach (var items in Model.SparePartsDealerDocuments)
+                                                                {
+
+                                                            <div class="item" id="@items.Id">
+                                                                <span class="mr-2 label label-inline lbl-style pt-4" id="dispatch" style="display:inline-table;width:12rem">
+                                                                    <a href="@items.Path" class="text-danger" target="_blank">
+                                                                        @items.Type
+                                                                    </a>
+                                                                    <p class="opacity-70 font-size-sm">Expiry: @items.FormattedDate</p>
+                                                                </span>
+                                                            </div>
+
+                                                                }
+                                                        </div>
+                                                        }
+                                                    }
+
+                                                </div>
+
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="card-title"><h4>Dealer Repair Specifications</h4></div>
+                                                    @{
+
+                                                        if (!Model.DealerInventorySpecifications.Any())
+                                                        {
+                                                        <div class="d-flex mb-4 justify-content-center" style="width:100%">
+                                                            <span class="text-danger">No Document Found</span>
+                                                        </div>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            List<long> list = new List<long>();
+                                                        <div class="my-slider d-flex mb-4 slider" id="schedule-Document" style="width:100%">
+                                                            @foreach (var items in Model.DealerInventorySpecifications)
+                                                                {
+                                                                    if (!list.Contains(items.CarMakeId))
+                                                                    {
+                                                            <div class="item">
+                                                                <div class="mr-2 label label-inline lbl-style pt-4" id="dispatch" style="display:inline-table;width:12rem;padding-bottom:11px">
+                                                                    <div class="row">
+                                                                        <img src="@items.CarMake.Logo" style="width:50px; margin-left:10px;"  />
+
+                                                                        <div class="align-self-center" style="margin-left:10px">
+                                                                            <p class="m-0 text-danger">@items.CarMake.Name</p>
+                                                                            <p class="m-0">@Model.DealerInventorySpecifications.Count(x=>x.CarMakeId == items.CarMakeId) Models</p>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            
+                                                                        </div>
+
+                                                                        
+                                                                    </div>
+                                                                    
+</div>
+                                                            </div>
+
+                                                                        list.Add(items.CarMakeId);
+                                                                    }
+
+
+
+                                                                }
+                                                        </div>
+                                                        }
+                                                    }
+
+                                                </div>
+
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="card-title"><h4>Video</h4></div>
+                                                    <video id="VideoTag" width="100%" height="auto" controls="controls" preload="metadata" style="width: 100%;height: auto;">
+                                                        <source id="videoSource" src="@Model.Video#t=0.5" type="video/mp4">
+                                                    </video>
+
+                                                </div>
+
+
+
+
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="card-title mt-6"><h4>Gallery Images</h4></div>
+                                            <div class="col-md-12 col-sm-12 img-area" style="display:flex;width:100%">
+                                                @*<input type="file" id="logo" style="display:none;" accept=".png, .jpg, .jpeg" />
+                                                    <div id="upld-btn-conctr" class="btn btn-block btn-info col-lg-2 rounded d-flex flex-column justify-content-center align-items-center thumbnail-image-h-w">
+                                                        <div id="TakePhotoDiv">
+                                                            <i class="fa fa-camera m-0 p-0"></i>
+                                                            <p class=" m-0 p-0">Upload Photo</p>
+                                                        </div>
+                                                    </div>*@
+                                                @*<div id="RestaurantGalleryDiv">*@
+                                                @foreach (var garageImage in Model.DealerImages)
+                                                {
+
+                                                @*<div class="col-lg-1 rounded mx-2 position-relative thumbnail-image-h-w res-imgs" id="restaurantImageId" data-imgId="@garageImage.Id" style="background-image: url( @garageImage.Image.Replace(" ", "%20" ) );background-size: 110px 70px;">
+                                                    </div>*@
+
+                                                <img src="@garageImage.Image.Replace(" ", "%20")" class="item" data-action="zoom" style="height:10rem;width:10rem;margin-left:10px">
+
+                                                }
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="card-title mt-6"><h4>Spare Parts Dealer Location</h4></div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="row">
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="wo-titleinput mb-0">Search Location</label>
+                                                            <div class="wo-form-icon">
+                                                                <input type="text" class="form-control show-map-input Address" id="Address" name="Address" placeholder="Choose location" disabled value="@Model.Address">
+                                                                @*<a href="javascript:void(0);" class="wo-right-icon get-current-location" onclick="getLocation()">
+                                                                        <i class="flaticon2-map"></i>
+                                                                    </a>
+                                                                    <a href="javascript:void(0);" class="wo-right-icon pin-on-map"
+                                                                       data-toggle="modal" data-target="#map-modal"
+                                                                       onclick="openMap()">
+                                                                        Pin On Map
+                                                                    </a>*@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="MapSearchResult" style="display:none">
+                                                        </div>
+                                                        <input type="hidden" name="Latitude" id="Latitude" value="@Model.Latitude" />
+                                                        <input type="hidden" name="Longitude" id="Longitude" value="@Model.Longitude" />
+
+                                                        <div id="map" class="mt-4 mb-4 border border-dark ">
+                                                            <div id="googleMap" style="width:100%;height:400px;"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                @*<div id="map" class="mt-4 mb-4 border border-dark ">
+                                                        <div id="googleMap" style="width:100%;height:400px;"></div>
+                                                    </div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @*<script src="~/assets/admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/2.0.2/js/bootstrap-transition.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
+    <script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+    <script src="~/js/zoom.js"></script>
+
+    <script>
+        //$("#TakePhotoSpinner").hide();
+        'use strict';
+        var slider;
+        var _URL = window.URL || window.webkitURL;
+        var arrows;
+        var ResLogoPath = '';
+        var Description
+        var logoPath = [];
+        if (KTUtil.isRTL()) {
+            arrows = {
+                leftArrow: '<i class="la la-angle-right"></i>',
+                rightArrow: '<i class="la la-angle-left"></i>'
+            }
+        } else {
+            arrows = {
+                leftArrow: '<i class="la la-angle-left"></i>',
+                rightArrow: '<i class="la la-angle-right"></i>'
+            }
+        }
+
+        // Class definition
+        var KTImageInputDemo = function () {
+            // Private functions
+            var initDemos = function () {
+                var avatar1 = new KTImageInput('kt_image_1');
+            }
+
+            return {
+                // public functions
+                init: function () {
+                    initDemos();
+                }
+            };
+        }();
+        $(document).ready(function () {
+
+            $("#formInputs :input").prop("disabled", true);
+
+            ClassicEditor
+                .create(document.querySelector('#Description'))
+               .then(editor => {
+                   Description = editor;
+                   Description.setData(`@Html.Raw(Model.Description)`);
+                   editor.isReadOnly = true;
+                   editor.on('change:isReadOnly', (evt, propertyName, isReadOnly) => {
+                       if (isReadOnly) {
+                           toolbarElement.style.display = 'none';
+                       } else {
+                           toolbarElement.style.display = 'flex';
+                       }
+                   });
+               })
+               .catch(error => {
+               });
+
+            const tnsCarousel = document.querySelectorAll('.my-slider');
+            tnsCarousel.forEach(slider => {
+                const tnsSlider = tns({
+                    container: slider,
+                    items: 3,
+                    slideBy: "page",
+                    fixedWidth: 160,
+                    nav: false,
+                    controls: false,
+                    mouseDrag: true,
+                    swipeAngle: false,
+                    speed: 400
+                });
+            });
+
+            $('#kt_image_res').hover(
+                function () {
+                    $(this).animate({ 'zoom': 3 }, 400);
+                },
+                function () {
+                    $(this).animate({ 'zoom': 1 }, 400);
+                });
+        })
+
+        function myMap() {
+            var lati = parseFloat($("#Latitude").val());
+            var longi = parseFloat($("#Longitude").val());
+
+            if (lati == 0 || isNaN(parseFloat(lati)) && longi == 0 || isNaN(parseFloat(longi))) {
+
+                lati = 25.2048;
+                longi = 55.2708;
+            }
+
+            var Latlng;
+            const myLatlng = { lat: lati, lng: longi };
+            const map = new google.maps.Map(document.getElementById("googleMap"), {
+                zoom: 13,
+                center: myLatlng,
+            });
+
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                icon: "/Images/icons/marker.png"
+            });
+
+
+            //let infowindow = new google.maps.InfoWindow({
+            //	content: "kk"
+            //});
+
+            //infowindow.open(map, marker);
+
+            // Create the initial InfoWindow.
+            let infoWindow = new google.maps.InfoWindow({
+                content: "Click the map to get Your Address",
+                position: myLatlng,
+            });
+            infoWindow.open(map, marker);
+            // Configure the click listener.
+            map.addListener("click", (mapsMouseEvent) => {
+                // Close the current InfoWindow.
+                infoWindow.close();
+                // Create a new InfoWindow.
+                infoWindow = new google.maps.InfoWindow({
+                    position: mapsMouseEvent.latLng,
+                });
+                infoWindow.setContent(
+                    JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2),
+                    Latlng = mapsMouseEvent.latLng,
+                );
+                infoWindow.open(map);
+                $('#Latitude').val(Latlng.lat);
+                $('#Longitude').val(Latlng.lng);
+                //alert($('#Latitude').val() + " | " + $('#Longitude').val());
+            });
+        }
+
+
+        function activeChange(element, flag, id) {
+            swal.fire({
+                title: 'Are you sure?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, do it!'
+            }).then(function (result) {
+                if (result.value) {
+                    $(element).find('i').hide();
+                    $(element).addClass('spinner spinner-left spinner-sm').attr('disabled', true);
+
+                    $.ajax({
+                        url: '/Admin/SparePartsDealer/ToggleActiveStatus?Id=' + id + '&flag=' + flag,
+                        type: 'Get',
+                        success: function (response) {
+                            if (response.success) {
+                                toastr.success(response.message);
+
+                                location.reload();
+
+
+                            } else {
+                                toastr.error(response.message);
+                                $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                $(element).find('i').show();
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            if (xhr.status == 403) {
+                                try {
+                                    var response = $.parseJSON(xhr.responseText);
+                                    swal.fire(response.Error, response.Message, "warning").then(function () {
+                                    });
+                                } catch (ex) {
+                                    swal.fire("Access Denied", "Your are not authorize to perform this action, For further details please contact administrator !", "warning").then(function () {
+                                    });
+                                }
+
+                                $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                $(element).find('i').show();
+
+                            }
+                        }
+                    });
+                } else {
+                    //swal("Cancelled", "Your imaginary file is safe :)", "error");
+                }
+            });
+        }
+
+        function Reject(element, flag, id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                type: 'warning',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'Reject!',
+                showCancelButton: true
+            }).then((result) => {
+                if (result.value) {
+                    $(element).find('i').hide();
+                    $(element).addClass('spinner spinner-left spinner-sm').attr('disabled', true);
+
+                    $.ajax({
+                        url: '/Admin/SparePartsDealer/ToggleActiveStatus?Id=' + id + '&flag=' + flag + '&RejectionReason=' + result.value,
+                        type: 'Get',
+                        success: function (response) {
+                            if (response.success) {
+                                toastr.success(response.message);
+
+                                location.href = "/Admin/SparePartsDealer/Index";
+
+
+                            } else {
+                                toastr.error(response.message);
+                                $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                $(element).find('i').show();
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            if (xhr.status == 403) {
+                                try {
+                                    var response = $.parseJSON(xhr.responseText);
+                                    swal.fire(response.Error, response.Message, "warning").then(function () {
+                                    });
+                                } catch (ex) {
+                                    swal.fire("Access Denied", "Your are not authorize to perform this action, For further details please contact administrator !", "warning").then(function () {
+                                    });
+                                }
+
+                                $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                $(element).find('i').show();
+
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8&libraries=places&callback=myMap"></script>
+}

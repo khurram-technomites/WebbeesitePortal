@@ -1,0 +1,539 @@
+﻿@model WebApp.ViewModels.VendorViewModel
+@using HelperClasses.Classes
+@using WebApp.ViewModels
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .Selected {
+    }
+    /**/
+    .ck.ck-editor {
+        position: relative;
+        z-index: 0;
+        width: 100%;
+    }
+
+    font-size-11 {
+        font-size: 11px !important;
+    }
+
+    custom-bg-input {
+        background-color: #f6f5f5;
+    }
+    /*#tns1-mw {
+                        width: 83% !important
+                    }*/
+</style>
+<link href="~/Admin/css/admin/restaurant/edit.css" rel="stylesheet" />
+<link href="~/css/cropper.css" rel="stylesheet" />
+<link href="~/Admin/css/general/ImageUploader.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+<link rel="stylesheet" href="~/css/intlTelInput.css" />
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <div class="d-flex flex-column">
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <a href="/Vendor/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <a href="/Admin/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript: window.history.go(-1);" class="text-white text-hover-white opacity-75 hover-opacity-100">Vendor</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Create</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body">
+                            <div class="" id="headingImage">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="d-flex flex-column">
+                                            <div><h4>Vendor Profile</h4></div>
+                                            @*<div><h6>Reference Code : <span style="color: #ffb000">@Model.ReferenceCode</span></h6></div>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row justify-content-end">
+                                            <div class="col-5">
+                                                <button type="button" id="DraftButton" data-attr="Draft" onclick="SaveVendor(this)" class="btn btn-block btn-info">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body pr-0 pl-0 pt-4" id="formInputs">
+                                <hr />
+                                <div class="form-group row">
+                                    <input name="Id" id="VendorID" hidden />
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-6 border-right-lg">
+                                                <div class="card-title"><h4>Personal Information</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Name As Per Trade License</label>
+                                                            <input name="NameAsPerTradeLicense" type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Trade License No</label>
+                                                            <input name="TradeLicenseNo" type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Full Name</label>
+                                                            <input name="FullName" type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Email</label>
+                                                            <input name="Email" type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Email Here" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="card-title"><h4>Login</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Phone Number</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend"><span class="input-group-text border-0 bg-dark-o-15">+971</span></div>
+                                                                <input name="PhoneNumber" placeholder="Enter your Phone number" class="form-control branch-input bg-dark-o-15 border-0" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Password</label>
+                                                            <input type="password" name="Password" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                            <small class="text-danger">* Leave this field unchange if you don't wish to change the password</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="card-title"><h4>Documents</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-12" id="TradeLicenseDiv">
+                                                        <div class="form-group mb-3" onclick="TradeLicensePopUp()">
+                                                            <label class="control-label" style="font-size:11px;">Tradte License</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center" style=" border: #c1c1c1 2px dashed;">
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold">Upload</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12" id="IdProofDiv">
+                                                        <div class="form-group mb-3" onclick="TradeLicensePopUp()">
+                                                            <label class="control-label" style="font-size:11px;">ID Proof</label>
+                                                            <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center" style=" border: #c1c1c1 2px dashed;">
+                                                                <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold">Upload</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card-title"><h4>Personal Information</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-6 pr-lg-1">
+                                                        <div class="intr-form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Contact Number 1</label>
+                                                            <div class="input-group">
+                                                                  <input type="hidden" id="ContactNumber1Code" class="code" value="971"/>
+                                                                <input name="ContactNumber1" placeholder="Enter your Phone number" class="form-control intr-phone branch-input bg-dark-o-15 border-0" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 pl-lg-1">
+                                                        <div class="intr-form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Contact Number 2</label>
+                                                            <div class="input-group">
+                                                                  <input type="hidden" id="ContactNumber2Code" class="code" value="971"/>
+                                                                <input name="ContactNumber2" placeholder="Enter your Phone number" class="form-control intr-phone branch-input bg-dark-o-15 border-0" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="intr-form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Business Whatsapp</label>
+                                                            <div class="input-group">
+                                                                      <input type="hidden" id="WhatsappCode" class="code" value="971"/>
+                                                                <input name="Whatsapp" placeholder="Enter your Whatsapp number" class="form-control intr-phone branch-input bg-dark-o-15 border-0" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Office Address</label>
+                                                            <input name="OfficeAddress" type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Website</label>
+                                                            <input type="text" name="Website" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 pl-lg-1">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Business Country</label>
+                                                            <select asp-for="CountryId" class="form-control" asp-items="@(new SelectList((ViewBag.Country) ,"Id","Name"))" sortOrder="Ascending">
+                                                                <option value="0">Select Country</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-sm-6 pr-lg-1">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">Business City</label>
+                                                            <select class="form-control branch-input" name="CityId" id="CityId" required>
+                                                                <option>Select city</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group mb-3">
+                                                            <label class="control-label" style="font-size:11px;">TRN Number</label>
+                                                            <input type="text" name="TrnNumber" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="TradeLicense" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="DocumentForm">
+                    <div class="row">
+                        <div class="col-12">
+                            <input hidden value="@Model" type="text" name="RestaurantId" />
+                            <label>Name</label>
+                            <div class="input-group">
+                                <select id="NameDocs" name="NameDocs" required class="form-control">
+                                    <option value="">Select document ...</option>
+                                    <option class="TradeLicenseOp" value="Trade License">Trade License</option>
+                                    <option class="IDProofOp" value="ID Proof">ID Proof</option>
+                                </select>
+                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-card"></i></span></div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label>Ref Number</label>
+                            <div class="input-group">
+                                <input type="text" id="RefNumber" name="RefNumber" class="form-control" required="required" />
+                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-clock"></i></span></div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label>Expiry Date</label>
+                            <div class="input-group">
+                                <input type="datetime" id="ExpiryDate" name="ExpiryDate" class="form-control" required="required" />
+                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-clock"></i></span></div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-10">
+                            <div class="input-group">
+                                <input type="file" id="fileUpload" name="FileUpload" class="form-control" required="required" />
+                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-upload"></i></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-block btn-info BtnSave" id="SaveSchedule" form="DocumentForm">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @*<script src="~/assets/admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>*@
+    <script src="~/Admin/js/general/ModalPopup.js"></script>
+     <script src="~/js/intlTelInput/intlTelInput.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
+    <script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+    <script>
+
+        'use strict';
+        var _URL = window.URL || window.webkitURL;
+        var documentlist = [];
+        var Description
+        // Class definition
+        var filePath, file, AppendDiv, DivTitle, DeleteID, DivExistID;;
+        $(document).ready(function() {
+            initIntlInputs()
+
+
+            $("#SaveSchedule").click(function() {
+
+                var c = $('input[name=RefNumber]').val();
+                var b = $('input[name=ExpiryDate]').val();
+                var a = $('select[name=NameDocs]').val();
+                filePath
+
+
+
+                if (c == "" || b == "" || a == "" || filePath == undefined) {
+                    toastr.error("Please fill all fields");
+                }
+                else {
+                    debugger;
+                    if (a == "Trade License") {
+                        AppendDiv = "#TradeLicenseDiv";
+                        DivTitle = "Trade License";
+                        DeleteID = 0;
+                        DivExistID = "TradeLicenseExist";
+
+                    }
+                    else {
+                        AppendDiv = "#IdProofDiv";
+                        DivTitle = "ID Proof";
+                        DeleteID = 1;
+                        DivExistID = "IDProofExist";
+                    }
+                    var ExpiryDate = $('input[name=ExpiryDate]').val();
+                    var RefNumber = $('input[name=RefNumber]').val()
+                    $('#SaveSchedule').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+                    let list = {
+                        "Type": $('select[name=NameDocs]').val(),
+                        "ExpiryDateTime": $('input[name=ExpiryDate]').val(),
+                        "Path": filePath,
+                        "RefNumber": $('input[name=RefNumber]').val(),
+
+                    }
+                    documentlist.push(list)
+                    console.log(documentlist)
+                    $(AppendDiv).empty()
+                    var DocumentHTML = `<div class="form-group mb-3">
+                                                                                    <input value="TRUE" id="${DivExistID}" hidden />
+                                                                                                <label class="control-label" style="font-size:11px;">${DivTitle}</label>
+                                                                                                    <div class="bg-dark-o-15 w-100 p-4 rounded d-flex justify-content-between align-items-center">
+                                                                                                        <div class="float-left d-flex align-items-center">
+                                                                                                            <div class="bg-dark-o-20 rounded d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                                                                                                                <a href=" ${filePath}" target="_blank"><i class="fa fa-download font-size-h1 text-black-50"></i></a>
+                                                                                                            </div>
+                                                                                                            <div class="pl-1">
+                                                                                                                <p class="m-0 text-black-50 line-height-md font-size-xs">
+                                                                                                                    <span class="TRADE-LICENSE-EXP-DATE"> ${ExpiryDate}</span><br />
+                                                                                                                    <span class="font-weight-bold text-dark TRADE-LICENSE-REFNUMBER"> ${RefNumber}</span><br />
+                                                                                                                    <span class="TRADE-LICENSE-FILE-NAME">${DivTitle}.pdf</span>
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="float-right">
+                                                                                                            <i class="fa fa-trash text-danger my-cursor" onclick="DeleteDocument(this,${DeleteID})"></i>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                            </div>`;
+                    $(AppendDiv).append(DocumentHTML);
+                    $('#SaveSchedule').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                    FileExists();
+                    ClearField()
+                    $('#TradeLicense').modal('hide');
+                    toastr.success("Uploaded Successfully")
+                }
+            })
+
+        });
+
+        function ClearField() {
+            $('input[name=RefNumber]').val('')
+            $('input[name=ExpiryDate]').val('')
+            $('select[name=NameDocs]').val('')
+            filePath = '';
+            $('#fileUpload').val('')
+        }
+
+        $('#CountryId').change(function() {
+
+            var count = 0;
+            var $dropdown = $("#CityId");
+            if ($(this).val() == 0) {
+                $dropdown.empty();
+                $dropdown.append($("<option />").val('').text("Please Select Country First!"));
+            }
+            else {
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/Vendor/GetCityBycountryId?countryId=' + $(this).val(),
+                    success: function(response) {
+                        $dropdown.empty();
+                        $dropdown.append($("<option />").val('').text("Select city"));
+                        var cities = response.data;
+                        $.each(cities, function(k, v) {
+                            $dropdown.append($("<option />").val(v.id).text(v.name));
+                            count++;
+                        });
+                    }
+                });
+            }
+        });
+        function SaveVendor(element) {
+
+            $('#DraftButton').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+            var data = {
+
+                NameAsPerTradeLicense: $('input[name="NameAsPerTradeLicense"]').val(),
+                FullName: $('input[name="FullName"]').val(),
+                ContactNumber1:$('input[id="ContactNumber1Code"]').val() + ' ' + $('input[name="ContactNumber1"]').val(),
+                ContactNumber2: $('input[id="ContactNumber2Code"]').val() + ' ' +$('input[name="ContactNumber2"]').val(),
+                Whatsapp: $('input[id="WhatsappCode"]').val() + ' ' + $('input[name="Whatsapp"]').val(),
+                OfficeAddress: $('input[name="OfficeAddress"]').val(),
+                Website: $('input[name="Website"]').val(),
+                CityId: $('#CityId').val(),
+                CountryId: $('#CountryId').val(),
+                Email: $('input[name="Email"]').val(),
+                TrnNumber: $('input[name="TrnNumber"]').val(),
+                TradeLicensePath: $('input[name="TradeLicensePath"]').val(),
+                IDProofPath: $('input[name="IDProofPath"]').val(),
+                TradeLicenseNo: $('input[name="TradeLicenseNo"]').val(),
+                Email: $('input[name="Email"]').val(),
+                VendorDocuments: documentlist,
+                User:
+                {
+                    Password: $('input[name="Password"]').val(),
+                    PhoneNumber: '971' + $('input[name="PhoneNumber"]').val()
+                }
+            }
+            $(element).find('i').hide();
+            $(element).addClass('spinner spinner-left spinner-sm').attr('disabled', true);
+            $.ajax({
+                url: '/Admin/Vendor/Create',
+                type: 'POST',
+                data: { 'model': data },
+                success: (response) => {
+                    if (response.success) {
+                        //$('#DraftButton').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        toastr.success("Vendor Created successfully ...");
+                        window.location.href = response.url;
+                    }
+                    else {
+                        $('#DraftButton').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        toastr.error(response.message);
+                    }
+                    //location.reload();
+                },
+                error: function(error) {
+                    toastr.options = {
+                        "positionClass": "toast-bottom-right",
+                    };
+                    $('#DraftButton').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                    //toastr.error('Something went wrong ...');
+                }
+            })
+        }
+
+        function TradeLicensePopUp() {
+            FileExists()
+            $("#TradeLicense").modal('show');
+            $("input[name=ExpiryDate]").datepicker();
+        }
+        function DeleteDocument(elem, Type) {
+            debugger;
+            let DivID, DivLabel;
+            debugger;
+            $(elem).removeClass("fa fa-trash text-danger my-cursor").addClass("spinner spinner-sm spinner-center");
+            if (Type == 0) {
+                DivID = "#TradeLicenseDiv";
+                DivLabel = "Trade License";
+            } else if (Type == 1) {
+                DivID = "#IdProofDiv";
+                DivLabel = "ID Proof"
+            }
+            for (var i = documentlist.length - 1; i >= 0; --i) {
+                if (documentlist[i].Type == DivLabel) {
+                    documentlist.splice(i, 1);
+                }
+            }
+            console.log(documentlist)
+            $(DivID).empty();
+            var DocumentHTML = ` <div class="form-group mb-3" onclick="TradeLicensePopUp()">
+                                                                                                <label class="control-label" style="font-size:11px;">${DivLabel}</label>
+                                                                                                <div class="bg-dark-o-15 w-100 p-5 rounded d-flex justify-content-center align-items-center" style=" border: #c1c1c1 2px dashed;">
+                                                                                                    <p class="m-0 pb-2 pt-2 text-dark-50 font-weight-bold">Upload</p>
+                                                                                                </div>
+                                                                                            </div>`
+            $(DivID).append(DocumentHTML);
+            toastr.success("Deleted Successfully")
+        }
+        function FileExists() {
+            debugger;
+
+            let TradeLicenseExist = $("#TradeLicenseExist").val();
+            let IDProofExist = $("#IDProofExist").val();
+
+            if (TradeLicenseExist == "TRUE") {
+                $(".TradeLicenseOp").attr("hidden", true);
+            }
+            else {
+                $(".TradeLicenseOp").attr("hidden", false);
+            }
+
+            if (IDProofExist == "TRUE") {
+                $(".IDProofOp").attr("hidden", true);
+            }
+            else {
+                $(".IDProofOp").attr("hidden", false);
+            }
+
+        }
+        $("#fileUpload").change(function(e) {
+
+            if ((file = this.files[0])) {
+                if (this.files[0].size >= 5000000) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Document size should be equal to 5 MB !',
+                        //footer: '<a href>Image size should be less than or equal to  100KB and dimension should be 1713x540</a>'
+                    })
+                    $("#fileUpload").val("");
+                }
+                filePath = UploadImageToDraft(file).responseText;
+            }
+        });
+    </script>
+}

@@ -1,0 +1,190 @@
+﻿@model WebApp.ViewModels.SparePartsDealerViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Details</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 text-center">
+            <div class="flex-shrink-0 mr-7">
+                <div class="symbol symbol-50 symbol-lg-120">
+                    <img alt="Pic" src="@Model.Logo.Replace(" ", "%20")">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">CreationDate</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.CreationDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Name(TradeLicense)</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.NameAsPerTradeLicense, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">NameAr(TradeLicense)</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.NameArAsPerTradeLicense, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Address</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-address-book"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Description</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-paragraph"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">DescriptionAr</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.DescriptionAr, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-paragraph"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Latitude</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Longitude</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Name(ContactPerson)</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.ContactPersonName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Number(ContactPerson)</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.ContactPersonNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Email(ContactPerson)</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.ContactPersonEmail, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-at"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Status</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-check"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">ReferenceCode</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.ReferenceCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-id-card"></i></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2>Spare Parts Dealer Schedules</h2>
+    <div class="row">
+        @foreach(var DealerSchedule in Model.DealerSchedules)
+        {
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Day</label>
+                <div class="input-group mb-2">
+                    <input class="form-control" value="@DealerSchedule.Day" readonly />
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar-day"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Opening Time</label>
+                <div class="input-group mb-2">
+                    <input class="form-control" value="@DealerSchedule.OpeningTime" readonly />
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-clock"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Closing Time</label>
+                <div class="input-group mb-2">
+                    <input class="form-control" value="@DealerSchedule.ClosingTime" readonly />
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-clock"></i></span></div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    <h2>Spare Parts Dealer Images</h2>
+    <div class="row">
+        @foreach(var DealerImage in Model.DealerImages)
+        {
+        <div class="col-md-4 col-sm-12">
+            <div class="flex-shrink-0 mr-7">
+                <div class="symbol symbol-50 symbol-lg-120">
+                    <img alt="Pic" src="@DealerImage.Image">
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>

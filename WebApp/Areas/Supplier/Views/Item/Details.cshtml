@@ -1,0 +1,316 @@
+﻿@model WebApp.ViewModels.SupplierItemViewModel
+@using HelperClasses.Classes
+@{
+    Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/cropper.css" rel="stylesheet" />
+<link href="~/Admin/css/general/ImageUploader.css" rel="stylesheet" />
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container-fluid align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="d-flex align-items-center flex-wrap mr-1">
+                        <!--begin::Heading-->
+                        <div class="d-flex flex-column">
+
+                            <!--begin::Breadcrumb-->
+                            <div class="d-flex align-items-center font-weight-bold my-2">
+                                <!--begin::Item-->
+                                <a href="/Supplier/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                                    <i class="flaticon2-shelter text-white icon-1x"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="/Supplier/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                                <a href="/Supplier/Item/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">Items</a>
+                                <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                                <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Detail</a>
+                                <!--end::Item-->
+                            </div>
+                            <!--end::Breadcrumb-->
+                        </div>
+                        <!--end::Heading-->
+                    </div>
+                </div>
+            </div>
+
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Dashboard-->
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <!--begin::Card-->
+                    @*<div class="card card-custom  gutter-b" id="kt_page_sticky_card">
+                        <div class="card-body">
+
+                        </div>
+                        </div>*@
+                    <div class="card card-custom  gutter-b">
+
+                        <div class="card-body">
+
+                            <form>
+                                @Html.AntiForgeryToken()
+                                <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+                                @Html.HiddenFor(model => model.Id, new { id = "Id" })
+                                @Html.HiddenFor(model => model.SupplierId, new { id = "SupplierId" })
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+                                        <div class="image-upload uploaded">
+                                            <span>Upload Image</span>
+                                            <input type="file" name="logo" id="logo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" />
+                                            <img id="PreviewImage" src='@Model.Thumbnail' onerror="$(this).attr('src', ''); $(this).closest('.image-upload').addClass('empty').removeClass('uploaded')" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Item Name</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Item name here ...", required = "required" } })
+                                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Category</label>
+                                            <div class="input-group mb-2">
+                                                <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.CategoryId,"Id","Name"))" required></select>
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Packaging</label>
+                                            <div class="input-group mb-2">
+                                                <input type="text" asp-for="Packaging" placeholder="10 kgs" class="form-control" />
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Expiry</label>
+                                            <div class="input-group mb-2">
+                                                <input type="date" asp-for="ExpiryDateTime" class="form-control" />
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Regular Price</label>
+                                            <div class="input-group mb-2">
+                                                <input type="number" asp-for="RegularPrice" placeholder="0" step=".01" min="0" class="form-control" />
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Sale Price</label>
+                                            <div class="input-group mb-2">
+                                                <input type="number" asp-for="SalePrice" placeholder="0" step=".01" min="0" class="form-control" />
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Description</label>
+                                            <div class="input-group mb-2">
+                                                <textarea class="form-control" name="Description" id="Description" rows="3" placeholder="Enter Description name here ..." required="required">@Model.Description</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="card-title mt-6"><h4>Gallery Images</h4></div>
+                                    <div class="col-md-12 col-sm-12 img-area" style="display:flex;height:70px">
+
+                                        @foreach (var Image in Model.SupplierItemImages)
+                                        {
+                                            <div class="col-lg-1 rounded mx-2 position-relative thumbnail-image-h-w res-imgs" id="restaurantImageId" data-imgId="@Image.Id" style="background-image: url( @Image.Path.Replace(" ", "%20" ) );background-size: 110px 70px;">
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <h3>Inventory Management</h3>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row">
+                                            <label class="control-label col-sm-10 d-flex justify-content-end">Manage stock manually</label>
+                                            <span class="d-flex justify-content-end switch switch-danger">
+                                                <label>
+                                                    @{
+                                                            if (Model.IsManagedStock)
+                                                            {
+                                                                <input type="checkbox" id="IsDefault" name="IsDefault" checked>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="checkbox" id="IsDefault" name="IsDefault">
+                                                            }
+                                                        }
+                                                    @*@{
+                                                        if (Model.StockStatus == Enum.GetName(typeof(ItemStock), ItemStock.InStock))
+                                                        {
+
+                                                            <input type="checkbox" id="StockStatus" name="StockStatus" checked readonly>
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="checkbox" id="StockStatus" name="StockStatus" readonly>
+                                                        }
+                                                    }*@
+
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <hr />
+                                @{
+                                    if (Model.IsManagedStock)
+                                    {
+                                        <div id="ManageStockManually" class="row">
+
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Stock Quantity</label>
+                                                    <div class="input-group mb-2">
+                                                        <input type="number" asp-for="Stock" placeholder="0" class="form-control" />
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Threshold</label>
+                                                    <div class="input-group mb-2">
+                                                        <input type="number" asp-for="Threshold" placeholder="0" class="form-control" />
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div id="ManageStockCheck" class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">In Stock</label>
+                                                    <span class="d-flex justify-content-start switch switch-danger">
+                                                        <label>
+                                                            @{
+                                                                if (Model.StockStatus == Enum.GetName(typeof(ItemStock), ItemStock.InStock))
+                                                                {
+
+                                                                    <input type="checkbox" id="StockStatus" name="StockStatus" checked readonly>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="checkbox" id="StockStatus" name="StockStatus" readonly>
+                                                                }
+                                                            }
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+
+
+                            </form>
+                        </div>
+
+                        <!--end::Card-->
+
+
+
+                    </div>
+
+                </div>
+
+
+                <!--end::Dashboard-->
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::Entry-->
+    </div>
+</div>
+
+<div class="modal fade" id="CropperModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90vw;">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="img-container">
+                    <img id="image" src="https://avatars0.githubusercontent.com/u/3456749" style="width:80vw;height:80vh">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info" id="crop">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+
+    <script src="/Admin/js/restaurant/Item/list.js"></script>
+    <!--end::Page Scripts-->
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <script src="~/js/cropper.js"></script>
+
+    <script src="~/Admin/js/general/ImageUploader.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $("form :input").prop("disabled", true)
+        });
+
+
+    </script>
+}

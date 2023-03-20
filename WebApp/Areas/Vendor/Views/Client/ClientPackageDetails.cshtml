@@ -1,0 +1,56 @@
+﻿@model IEnumerable<WebApp.ViewModels.ClientModulesViewModel>
+@{
+    ViewData["Title"] = "ClientPackageDetails";
+}
+  <div >
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body">
+
+                            <div class="card-body pr-0 pl-0 pt-4 pb-0" id="formInputs">
+                                <div class="form-group row">
+                                    @*<input name="GarageId" value="@Model.Id" hidden />*@
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card-title"><h4>Package Details</h4>  
+                                                    </div>
+                                                <div class="overflow-auto my-scroll" style="height: 400px;">
+                                                    <div class="w-100 modulesection">
+                                                        @foreach (var module in Model)
+                                                        {
+                                                            <!--Start-->
+                                                            <div class="col-sm-12 mb-5">
+                                                                <div class="w-100 p-5 rounded" style="background-color: #efefef;">
+                                                                    <div class="align-items-center d-md-flex">
+                                                                        <div class="align-items-center d-flex justify-content-between w-100">
+                                                                            <div class="" style=" line-height: 18px;">
+                                                                                <span class="font-weight-bold font-size-h6 text-dark servicename">@module.Module.ServiceName</span><br>
+                                                                                <span class="m-0 font-weight-bold" style="color: #a1a1a1;">@module.Module.Description</span>
+                                                                            </div>
+                                                                            <div class="ml-sm-5">
+                                                                                <h6 class="mr-4 m-0 font-weight-bold text-dark">AED <span id="price">@module.TotalPrice</span></h6>
+                                                                                <span>Expiry Date @module.ExpiryDate.ToShortDateString()</span>
+                                                                            </div>
+                                                                        </div>
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--End-->
+                                                        }
+
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+  
+

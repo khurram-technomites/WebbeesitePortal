@@ -1,0 +1,258 @@
+﻿@model WebApp.ViewModels.GarageTeamManagementViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+
+<style>
+    .ck-editor {
+        width: 100% !important;
+    }
+
+    .image-upload i.fa-camera-retro {
+        z-index: 1;
+        border-radius: 50%;
+        position: absolute;
+        bottom: -5px;
+        background: #d0d0d0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        color: #7e7e7e;
+        transition: top ease 2s;
+        cursor: pointer;
+    }
+</style>
+
+<div class="modal-header">
+    <h5 class="modal-title">Update</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="frm-edit">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id, new { id = "Id" })
+        @Html.HiddenFor(model => model.CreationDate, new { id = "CreationDate" })
+
+
+
+        <div class="row">
+            <div class="col-12 form-group row justify-content-center">
+                <div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+                    <div class="image-upload uploaded">
+                        <i class="fa fa-camera"></i>
+                        <span>Upload Image</span>
+                        <input type="file" name="Restaurantlogo" id="Restaurantlogo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" />
+                        <img id="ServiceBannerPreview" src='@Model.ImagePath' />
+                        @*<i class="fa fa-trash" onclick="DeleteFile(this,'@Model.Image')"></i>*@
+
+                        <i class="fa fa-pen" onclick="DeleteFile(this,'@Model.ImagePath')"></i>
+                    </div>
+                    @* <div class="image-upload empty">
+                    <i class="fa fa-camera" style="bottom: 5rem !important"></i>
+                    <span>Upload Icon</span>
+                    <input type="file" name="ServiceBanner" id="ServiceBanner" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+                    aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+                    <img id="ServiceBannerPreview" />
+                    <i class="fa fa-pen" onclick="DeleteFile(this,'')" style="bottom: 5rem !important"></i>
+                    </div>*@
+                </div>
+            </div>
+
+            @*            <div class="col-10">
+            <div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+            <div class="image-upload banner @(Model != null && !string.IsNullOrEmpty(Model.ImagePath)? "uploaded" : "empty")">
+            <i class="fa fa-camera" style="display:flex !important" id="ServiceIcon"></i>
+            <span>Upload Banner</span>
+            <input type="file" name="ServiceBanner" id="ServiceBanner" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0"/>
+            <img id="ServiceBannerPreview" class="image-preview" src='@(Model != null && !string.IsNullOrEmpty(Model.ImagePath)?Model.ImagePath:"/Assets/images/no-data.png")' />
+            <i class="fa fa-trash" onclick="DeleteFile(this,'')"></i>
+            </div>
+            </div>
+            </div>*@
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label">Name</label>
+                    <div class="input-group mb-2">
+                        <input asp-for="Name" class="form-control" required />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Designation" class="control-label">Designation</label>
+                    <div class="input-group mb-2">
+                        <input asp-for="Designation" class="form-control" required />
+                        <span asp-validation-for="Designation" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-address-card"></i></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Facebook" class="control-label">Facebook</label>
+                    <div class="input-group mb-2">
+                        <input asp-for="Facebook" class="form-control" required type="url" placeholder="https://Facebook.com" pattern="https://.*" />
+                        <span asp-validation-for="Facebook" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fab fa-facebook-f"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Twitter" class="control-label">Twitter</label>
+                    <div class="input-group mb-2">
+                        <input asp-for="Twitter" class="form-control" required type="url" placeholder="https://Twitter.com" pattern="https://.*" />
+                        <span asp-validation-for="Twitter" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fab fa-twitter"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Instagram" class="control-label">Instagram</label>
+                    <div class="input-group mb-2">
+                        <input asp-for="Instagram" class="form-control" required type="url" placeholder="https://Instagram.com" pattern="https://.*" />
+                        <span asp-validation-for="Facebook" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fab fa-instagram"></i></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+@*        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Instagram" class="control-label">Instagram</label>
+                    <div class="input-group mb-2">
+                        <input asp-for="Instagram" class="form-control" required />
+                        <span asp-validation-for="Facebook" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fas fa-paragraph"></i></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="frm-edit">Save Changes</button>
+</div>
+<script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+<script>
+    var _URL = window.URL || window.webkitURL;
+    var logoPath="@Model.ImagePath";
+
+    $(document).ready(function () {
+
+        ClassicEditor
+            .create(document.querySelector('#Description'))
+            .then(editor => {
+                Description = editor;
+                //Description.setData('`);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+
+        //Image Validation End
+
+        var avatar1 = new KTImageInput('kt_image_1');
+        var avatar2 = new KTImageInput('kt_image_2');
+
+        $(".cancelimage").click(function () {
+            DeleteImage(logoPath);
+        })
+        //Image Cropper
+
+        $('.cropper-shape').click(function () {
+
+            $('#CropperModal').removeClass($('.cropper-shape.active').attr('data'));
+
+            $('.cropper-shape').removeClass('active');
+            $(this).addClass('active');
+
+            $('#CropperModal').addClass($(this).attr('data'));
+        })
+
+
+        $('.background-color').click(function () {
+            $('.background-color').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('.cropper-view-box').css('background', $('.background-color.active').attr('data'))
+        })
+
+
+        $('.cropper-aspectratio').click(function () {
+            $('.cropper-aspectratio').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('#image').attr('aspectratio', $(this).attr('data'));
+
+            cropper.setAspectRatio($(this).attr('data'))
+
+        })
+
+        $('i.fa-camera').click(function () {
+            $(this).closest('.image-upload').children('input[type="file"]').trigger('click');
+            //$("#Restaurantlogo").trigger('click');
+        });
+
+        BindImageUploader("#Restaurantlogo", "#image", "#CropperModal", "#ServiceBannerPreview");
+
+        $("#frm-edit").submit(function () {
+            debugger;
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+            var data = new FormData();
+            data.append("Id", $('#Id').val());
+            data.append("CreationDate", $('#CreationDate').val());
+            data.append("Name", $('#Name').val());
+            data.append("Designation", $('#Designation').val());
+            data.append("Facebook", $('#Facebook').val());
+            data.append("Twitter", $('#Twitter').val());
+            data.append("Instagram", $('#Instagram').val());
+            data.append("ImagePath", logoPath);
+            data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+            $.ajax({
+
+                url: "/Client/TeamManagement/Edit/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    if (callback) {
+                        callback($('#myModalContent'), element, true, response);
+                    }
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+
+            });
+            return false;
+        });
+    });
+
+
+</script>

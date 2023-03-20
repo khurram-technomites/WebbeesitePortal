@@ -1,0 +1,105 @@
+﻿@model IEnumerable<WebApp.ViewModels.GarageViewModel>
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #kt_datatable1 tbody tr td:last-child {
+        white-space: nowrap;
+    }
+</style>
+<link href="~/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <div class="d-flex flex-column">
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <a href="/Admin/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <a href="/Admin/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Clients</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                            <div class="card-title">
+                                <h3 class="card-label">
+                                    Clients
+                                    <span class="d-block text-muted pt-2 font-size-sm">Manage Clients Here...</span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Name(Trade License)</th>
+                                        @*<th style="width:180px;">Name</th>*@
+                                        <th>Number</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="display:none">
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @(item.CreationDate.ToString("dd MMM yyyy, hh:mm tt"))
+                                            </td>
+                                            <td>
+                                                @(item.Logo + "|" + item.NameAsPerTradeLicense + "|" + item.ContactPersonEmail)
+                                                @*@item.ContactPersonName
+                                                    <span style="font-size:12px;"><a href="javascript:void(0);">@item.ContactPersonEmail</a></span>*@
+                                            </td>
+                                            <td>@(!string.IsNullOrEmpty(item.ContactPersonNumber) ? +971 + item.ContactPersonNumber.Replace("971", "") : "-") </td>
+                                            <td style="width: 11%;">
+                                                @*<label class="label label-inline label-primary">@item.Status</label>*@
+                                                @item.Status
+                                            </td>
+                                            <td nowrap="nowrap">@item.Id</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script src="/Admin/js/general/ModalPopup.js"></script>
+<script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+<script src="/Admin/js/admin/garage/list.js"></script>
+                                                @*<script>
+    $("#ExcelButton").click(function () { location.href = '/Admin/Garage/GarageMakeReport' })
+    </script>*@
+                                            }

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<WebApp.ViewModels.GarageViewModel>
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Vendor/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #kt_datatable1 tbody tr td:last-child {
+        white-space: nowrap;
+    }
+</style>
+<link href="~/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <div class="d-flex flex-column">
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <a href="/Admin/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <a href="/Vendor/Client/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Clients</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Clients</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                @{
+                        <div class="col-xl-12" id="garagePartialView">
+                            @await Html.PartialAsync("~/Areas/Vendor/Views/Client/List.cshtml", Model)
+                        </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/Admin/js/vendor/client/list.js"></script>
+    @*<script>
+        $("#ExcelButton").click(function () { location.href = '/Admin/Garage/GarageMakeReport' })
+        </script>*@
+}

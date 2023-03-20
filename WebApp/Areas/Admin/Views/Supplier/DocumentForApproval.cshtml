@@ -1,0 +1,69 @@
+﻿@model WebApp.ViewModels.SupplierViewModel
+@{
+    ViewBag.Title = "View Document";
+    Layout = null;
+}
+
+<div class="card card-custom gutter-b card-documents">
+    <div class="card-body p-10">
+        <!--begin::Accordion-->
+        <div class="accordion accordion-light accordion-toggle-plus accordion-light-borderless accordion-svg-toggle" id="">
+            <div class="card">
+
+                <div class="card-toolbar">
+                    <h1><b><strong>Supplier Document</strong></b></h1>
+                </div>
+
+
+                <div class="card-body pl-12">
+
+                    <div class="checkbox-list vendor-documents mt-2">
+                        <div class="row mt-1">
+                            <div class="col-sm-5">
+                                <h5><b><strong>Document Name</strong></b></h5>
+
+                            </div>
+                            <div class="col-sm-2">
+                                <h5><b><strong>Expiry Date</strong></b></h5>
+
+                            </div>
+                            <div class="col-sm-1">
+
+                            </div>
+                            @*<div class="col-sm-2 pl-2">
+                                <h5><b><strong>Actions</strong></b></h5>
+                            </div>*@
+                        </div>
+                        <div class="DocWrap">
+                            @{
+                                foreach (var document in Model.SupplierDocuments)
+                                {
+                                    <div class="row mt-1">
+                                        <div class="col-sm-5">
+                                            <a href="@document.Path" class="font-weight-bolder mr-2" target="_blank">
+                                                @document.DocumentType
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>@document.ExpiryDateTime.ToShortDateString()</p>
+
+                                        </div>
+                                        <div class="col-sm-1">
+
+                                        </div>
+                                        @*<div class="col-sm-2 pl-2">
+                                            <button type="button" class="btn btn-bg-secondary btn-icon btn-sm mr-1" onclick="DeleteDocument(this, '@document.Id')"><i class="fa fa-trash"></i></button>
+                                        </div>*@
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--end::Accordion-->
+    </div>
+</div>

@@ -1,0 +1,144 @@
+﻿@model WebApp.ViewModels.RestaurantDeliveryStaffViewModel
+
+@{
+	Layout = null;
+}
+
+
+<div class="modal-header">
+	<h5 class="modal-title">Create</h5>
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<i aria-hidden="true" class="ki ki-close"></i>
+	</button>
+</div>
+<div class="modal-body">
+
+	<form asp-action="Create" asp-controller="RestaurantDeliveryStaff" id="Userform">
+		@Html.AntiForgeryToken()
+		<div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+		<div class="row">
+			<div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+				<div class="image-upload empty">
+					<i class="fa fa-camera"></i>
+					<span>Upload Image</span>
+					<input type="file" name="logo" id="logo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" />
+					<img id="PreviewImage" src='' />
+					@*<i class="fa fa-trash"></i>*@
+					<i class="fa fa-pen"></i>
+				</div>
+			</div>
+			<div class="col-md-12 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Branch</label>
+					<div class="input-group mb-2">
+						<select name="BranchId" id="BranchId" class="form-control" asp-items="@(new SelectList(ViewBag.branches,"Id","NameAsPerTradeLicense"))" required></select>
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-building"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">First Name</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter first name here ...", required = "required" } })@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Last Name</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter last name here ...", required = "required" } })@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Email</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter email here ...", required = "required" } })@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Phone Number</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter phone number here ...", required = "required" } })@Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Password</label>
+					<div class="input-group mb-2">
+						<input type="password" class="form-control" required id="Password" name="Password" />
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-lock"></i></span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	<button type="submit" class="btn btn-info" form="Userform">Submit</button>
+</div>
+
+
+<script>
+	var _URL = window.URL || window.webkitURL;
+	var logoPath = '';
+	$(document).ready(function () {
+
+		$('i.fa-camera').click(function () {
+			$("#logo").trigger('click');
+		});
+
+		aspectratio =1;
+		minCroppedWidth = 50;
+		minCroppedHeight = 50;
+
+		BindImageUploader("#logo", "#image", "#CropperModal", "#PreviewImage");
+
+		$("#Userform").submit(function () {
+
+			$(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+			var data = new FormData();
+			data.append("FirstName", $('#FirstName').val());
+			data.append("LastName", $('#LastName').val());
+			data.append("Password", $('#Password').val());
+			data.append("Email", $('#Email').val());
+			data.append("Logo", logoPath);
+			data.append("PhoneNumber", $('#PhoneNumber').val());
+			data.append("RestaurantBranchId", $('#BranchId').val());
+
+			$.ajax({
+				url: "/Restaurant/RestaurantDeliveryStaff/Create/",
+				type: "POST",
+				processData: false,
+				contentType: false,
+				data: data,
+				success: function (response) {
+
+					if (callback) {
+						callback($('#myModalContent'), element, false, response);
+					}
+                    //location.reload();
+				},
+				error: function (er) {
+					toastr.error(er);
+				}
+			});
+			return false;
+		});
+	});
+
+</script>

@@ -1,0 +1,149 @@
+﻿@model IEnumerable<WebApp.ViewModels.SupplierCouponViewModel>
+
+@{
+    Layout = null;
+}
+
+<style>
+
+    .fougito-band {
+        z-index: 0;
+        background-image: linear-gradient(309deg, #e9073b, #ff0000);
+        transform: skewY(319deg);
+        width: 10%;
+        right: 0;
+        position: absolute;
+        bottom: 0px;
+        height: 22px;
+    }
+
+
+    .content-fougito {
+        color: white;
+        font-weight: 800;
+        max-width: 4em;
+        left: 0 auto;
+        font-size: 10px;
+        margin-left: 34px;
+        margin-top: 4px;
+        transform: skew(13deg, 355deg);
+    }
+
+    .modal-header {
+        padding: 0.8rem 0.75rem;
+    }
+
+    .modal .modal-header .modal-title {
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+
+    .card {
+        border: 1px solid #E4E6EF !important;
+    }
+
+    .card-body {
+        z-index: 1;
+        position: relative;
+        overflow: hidden;
+    }
+</style>
+
+
+<div class="modal-header">
+    <h5 class="modal-title">My Coupon</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+
+<div class="modal-body">
+    @foreach(var item in Model)
+    {
+    <div class="card card-custom gutter-b" onclick="CouponValidate(this,@item.Id)">
+        <div class="card-body">
+
+            <!--begin::Top-->
+            <div class="d-flex">
+
+
+                <!--begin::Pic-->
+                <div class="flex-shrink-0 mr-7">
+                    <div class="symbol symbol-50 symbol-lg-70">
+                        <img alt="Pic" src="/Images/Logo/menu-default.png">
+                    </div>
+                </div>
+                <!--end::Pic-->
+                <!--begin: Info-->
+                <div class="flex-grow-1">
+                    <!--begin::Title-->
+                    <div class="row align-items-center justify-content-between flex-wrap general-info">
+                        <!--begin::User-->
+                        <div class="col-10">
+                            <!--begin::Name-->
+                            <!--end::Name-->
+                            <!--begin::Contacts-->
+                            <div class="d-flex flex-wrap flex-column">
+                                <a href="javascript:void(0);" id="menu-item-count" class="text-muted theme-red font-weight-bolder">@(item.DiscountPercentage != null ? item.DiscountPercentage + "% OFF" : item.DiscountAmount + "AED OFF")</a>
+                                <a href="javascript:void(0);" id="menu-name" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">@item.Name</a>
+                                <a href="javascript:void(0);" id="menu-item-count" class="text-muted opacity-50">Max Order Amount: AED @item.MaxAmount</a>
+                            </div>
+                            <!--end::Contacts-->
+                        </div>
+                        <!--begin::User-->
+                        <!--begin::Actions-->
+                        <div class="col-2">
+                            <div class="status">
+                                <label class="theme-red font-weight-boldest" data-attr="@item.RemainingDays" id="remainingDays">@item.RemainingDays Days Left</label>
+
+                            </div>
+                        </div>
+                        <!--end::Actions-->
+                    </div>
+
+                </div>
+                <!--end::Info-->
+            </div>
+            <div class="separator separator-solid my-3 separator-secondary"></div>
+            @if(item.SupplierId == null)
+            {
+            <div class="fougito-band">
+                <div class="content-fougito">fougito</div>
+            </div>
+            }
+          
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="font-weight-bolder opacity-50">Place an order on Eid and Get AED10 OFF in your order</label>
+                </div>
+                <div class="col-md-12">
+                    <strong class="theme-red">T&C</strong>
+                </div>
+            </div>
+            <!--end::Top-->
+            <!--begin::Separator-->
+            <!--end::Separator-->
+            <!--begin::Bottom-->
+            <!--end::Bottom-->
+        </div>
+    </div>
+    }
+    
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $(".basket-popup").removeClass("modal-sm");
+        $(".basket-popup").addClass("modal-lg");
+
+    });
+</script>
+
+
+
+
+
+
+
+

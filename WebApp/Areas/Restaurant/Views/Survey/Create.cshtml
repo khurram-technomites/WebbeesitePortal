@@ -1,0 +1,93 @@
+﻿@model WebApp.ViewModels.Survey.SurveyViewModel
+
+@{
+    Layout = null;
+}
+
+
+<div class="modal-header">
+    <h5 class="modal-title">Create</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form asp-action="Create" asp-controller="Survey" id="Userform">
+
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row">
+           
+          
+            <div class="col-md-12 col-sm-6">
+                <div class="form-group">
+                    <label class="control-label">Branch</label>
+                    <div class="input-group mb-2">
+                        @Html.DropDownList("RestaurantBranch", null, "Select Branch", htmlAttributes: new { @class = "form-control", id = "RestaurantBranch" })@Html.ValidationMessageFor(model => model.RestaurantBranchId, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-building"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Survey Name</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Survey name here ...", required = "required" } })@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-pen"></i></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="Userform">Submit</button>
+</div>
+
+<script>
+	var _URL = window.URL || window.webkitURL;
+	var logoPath = '';
+	$(document).ready(function () {
+
+
+		$("#Userform").submit(function () {
+
+			$(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+            var data = new FormData();
+         
+            data.append("RestaurantBranchId", $('#RestaurantBranch').val());
+			data.append("Name", $('#Name').val());
+
+			data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+
+			$.ajax({
+				url: "/Restaurant/Survey/Create/",
+				type: "POST",
+				processData: false,
+				contentType: false,
+				data: data,
+				success: function (response) {
+
+					if (callback) {
+                        callback($('#myModal'), element, false, response);
+					}
+				},
+				error: function (er) {
+					toastr.error(er);
+				}
+			});
+
+			return false;
+		});
+
+
+
+	});
+
+
+</script>

@@ -1,0 +1,135 @@
+﻿@model IEnumerable<WebApp.ViewModels.SupplierCouponViewModel>
+
+@{
+    Layout = null;
+}
+
+<style>
+    .modal-header {
+        padding: 0.8rem 0.75rem;
+    }
+
+    .modal .modal-header .modal-title {
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+</style>
+
+
+<div class="modal-header">
+    <h5 class="modal-title ml-lg-25">My Coupon</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+
+<div id="menu-list" class="sortable ui-sortable">
+    <div class="card card-custom gutter-b sortable-default branch-input menu-item-card" data-attr="119" id="menu-119">
+        <div class="card-body">
+
+            <!--begin::Top-->
+            <div class="d-flex">
+
+                <img src="/Images/Icons/Path 72.svg" class="tile_header mr-2 ui-sortable-handle">
+                <!--begin::Pic-->
+                <div class="flex-shrink-0 mr-7">
+                    <div class="symbol symbol-50 symbol-lg-120">
+                        <img alt="Pic" src="/Images/Logo/menu-default.png">
+                    </div>
+                </div>
+                <!--end::Pic-->
+                <!--begin: Info-->
+                <div class="flex-grow-1">
+                    <!--begin::Title-->
+                    <div class="row align-items-center justify-content-between flex-wrap general-info">
+                        <!--begin::User-->
+                        <div class="col-8">
+                            <!--begin::Name-->
+                            <a href="#" id="menu-name" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">Abu Dhabi | Full-Day Menu</a>
+
+                            <!--end::Name-->
+                            <!--begin::Contacts-->
+                            <div class="d-flex flex-wrap">
+                                <a href="#" id="menu-item-count" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-2 opacity-70">0 : items</a>
+                            </div>
+                            <!--end::Contacts-->
+                        </div>
+                        <!--begin::User-->
+                        <!--begin::Actions-->
+                        <div class="col-4">
+                            <div class="status">
+                                <label class="menu-status-label" id="">Active</label>
+                                <span class="switch switch-sm switch-danger">
+                                    <label>
+                                        <input type="checkbox" id="menu-status" checked="" onchange="ChangeStatusById(this , 119)" name="select">
+                                        <span></span>
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+                        <!--end::Actions-->
+                    </div>
+                    <!--end::Title-->
+                    <!--begin::Content-->
+                    <div class="row align-items-center">
+                        <!--begin::Description-->
+
+                        <div class="col-8">
+                            <strong class="font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">Note : </strong>
+                            <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5"><em id="menu-description">Full-Day Menu</em></div>
+                        </div>
+                        <div class="col-4 action-buttons">
+
+                            <a href="/Restaurant/Menu/GetMenuItem/119" class="btn btn-danger font-weight-bold btn-edit-menu">
+                                <i class="fa fa-pencil-alt mr-2"></i> Edit Menu
+                            </a>
+                            <a href="javascript:;" title="Duplicate" class="btn btn-danger btn-setting mr-2 ml-2" data-id="119" onclick="DuplicateMenu(this, 119)">
+                                <i class="fas fa-copy"></i>
+                            </a>
+                            <a href="javascript:;" class="btn btn-danger btn-setting mr-2" data-id="119" onclick="DeleteMenu(this, 119)">
+                                <i class="fa fa-trash-alt"></i>
+                            </a>
+
+                            <a href="javascript:;" class="kt_quick_panel_toggle btn btn-danger btn-setting" data-id="119" onclick="AddCanvasCategory(this)">
+                                <i class="flaticon2-gear"></i>
+                            </a>
+                            <div id="schedule-time" hidden="">
+                                <input type="hidden" id="BreakFast-StartTime" data-attr="">
+                                <input type="hidden" id="BreakFast-EndTime" data-attr="">
+                                <input type="hidden" id="Lunch-StartTime" data-attr="">
+                                <input type="hidden" id="Lunch-EndTime" data-attr="">
+                                <input type="hidden" id="Dinner-StartTime" data-attr="">
+                                <input type="hidden" id="Dinner-EndTime" data-attr="">
+                                <input type="hidden" id="isPeriodic" data-attr="False">
+                            </div>
+                            <input type="hidden" id="restaurantBranchId" value="56">
+
+                        </div>
+
+
+                        <!--end::Description-->
+                        <!--begin::Progress-->
+                        <!--end::Progress-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Info-->
+            </div>
+            <!--end::Top-->
+            <!--begin::Separator-->
+            <!--end::Separator-->
+            <!--begin::Bottom-->
+            <!--end::Bottom-->
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,113 @@
+﻿@model WebApp.ViewModels.CityViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Create</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="Userform">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Name As Per Trade License</label>
+                <div class="input-group mb-2">
+                 
+                 <input name="NameAsPerTradeLicense" type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Email</label>
+                <div class="input-group mb-2">
+                 
+                    <input name="Email"  type="text" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Email Here" />
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Phone Number</label>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend"><span class="input-group-text border-0 bg-dark-o-15">+971</span></div>
+                <input name="PhoneNumber"  placeholder="Enter your Phone number" class="form-control branch-input bg-dark-o-15 border-0" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Password</label>
+                <div class="input-group mb-2">
+                
+            <input type="password" name="Password"  class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="Userform">Submit</button>
+</div>
+
+<script>
+    var _URL = window.URL || window.webkitURL;
+
+    $(document).ready(function () {
+        $("#Userform").submit(function () {
+            debugger
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+               var data = {
+                    Password: $('input[name="Password"]').val(),
+                    PhoneNumber: '971' + '-' + $('input[name="PhoneNumber"]').val(),
+                Garage:
+                {
+                    NameAsPerTradeLicense: $('input[name="NameAsPerTradeLicense"]').val(),
+                    ContactPersonNumber: $('input[name="PhoneNumber"]').val(),
+                    ContactPersonEmail: $('input[name="Email"]').val(),
+                    
+                }
+            }
+
+            $.ajax({
+                url: "/Vendor/Client/QuickCreate",
+                type: "POST",
+                data: { 'garageRegisterDTO': data },
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = "/Vendor/Client/Client/" + response.data.Result.Id
+                    }
+                    else {
+                         $("#Userform").closest('.modal').find('button[type=submit]').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                         toastr.error(response.message);
+                    }
+                    
+                    //if (callback) {
+                    //    callback($('#myModalContent'), element, false, response);
+                    //}
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+            return false;
+        });
+    });
+
+</script>

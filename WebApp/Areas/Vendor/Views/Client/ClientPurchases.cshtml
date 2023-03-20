@@ -1,0 +1,167 @@
+﻿@model IEnumerable<WebApp.ViewModels.ClientModulePurchasesViewModel>
+@{
+    ViewData["Title"] = "ClientPackageDetails";
+}
+<div>
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+
+            <div class="card-body pr-0 pl-0 pt-4 pb-0" id="formInputs">
+                <div class=" row">
+                    @*<input name="GarageId" value="@Model.Id" hidden />*@
+                    <div class="col-lg-12">
+                        <div class="row">
+                            @* <div class="col-md-8">
+
+                            </div>*@
+                            @if (Model.Count() > 0)
+                            {
+                                <div class="col-md-3">
+                                    <div class="card-title">
+                                        <h4>Purchases </h4>
+                                    </div>
+
+                                    @foreach (var module in Model)
+                                    {
+
+                                    <div class=" mb-5 purchases" onclick="LoadDetails(@module.Id,this)" style="width:110%;">
+                                        <div class=" p-5 rounded" style=" background-color: #efefef;">
+                                            <div class="align-items-center d-md-flex">
+                                                <div class="align-items-center d-flex justify-content-between w-100">
+                                                    <div class="" style=" line-height: 18px;">
+                                                        <span class="font-weight-bold font-size-h6 text-dark ">@module.CreationDate.ToString("dd MMM yyyy")</span><br>
+                                                        <span class="m-0 font-weight-bold" style="color: #a1a1a1;"></span>
+                                                    </div>
+                                                    <div class="ml-sm-5">
+                                                        @if (module.Total != module.AmountToBePaid)
+                                                        {
+                                                            <h6 class="mr-4 m-0 font-weight-bold text-dark"><span style="font-size:smaller">AED <del>@module.Total</del></span><br /><span style="font-weight: bold;">AED @module.AmountToBePaid</span></h6>
+                                                        }
+                                                        else
+                                                        {
+                                                            <h6 class="mr-4 m-0 font-weight-bold text-dark">AED <span>@module.AmountToBePaid</span> </h6>
+                                                        }
+
+
+                                                        @if (module.PaymentStatus == "UnPaid")
+                                                        {
+                                                            <a href="@module.PaymentUrl" target="_blank" class="btn btn-sm btn-warning">Pay Now</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>@module.PaymentStatus</span>
+                                                        }
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    }
+
+
+                                </div>
+
+                                <div class=" col-md-8" style="margin-left: 50px">
+                                    <div class="card-title">
+                                        <h4>Details</h4>
+                                    </div>
+                                    <div class="d-flex flex-column  justify-content-center align-items-center" hidden="hidden" id="view">
+                                        <div hidden="hidden" class="text-center m-30" id="loader">
+                                            <div class="spinner-border" role="status">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="overflow-auto my-scroll w-100 detailsection" style="height: 400px">
+                                    </div>
+
+                                </div>
+                            }
+                            else
+                            {
+                                 <div style="margin:auto" >
+                                        <div>
+                                            <div   role="status">
+                                                 <p style="color:red;font-size:x-large">No Purchase Found</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                               
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    function LoadDetails(id, element) {
+        debugger;
+        $('.purchases').css('border', '');
+        $('.detailsection').empty()
+        $('#loader').removeAttr("hidden", "hidden")
+        $('.detailsection').attr("hidden", "hidden")
+        $(element).css({ 'border': '1px solid #FF9900', 'border-radius': '0.42rem' });
+        $.ajax({
+            url: '/Vendor/Client/PurchaseDetails?Id=' + id,
+            type: 'Get',
+            success: function(response) {
+                $('.detailsection').empty()
+                if (response.success) {
+                    var html = ''
+                    $(response.data).each(function(v, i) {
+                        html += ` <div class="col-sm-12 mb-5">
+                                                                                <div class="w-100 p-5 rounded" style="background-color: #efefef;">
+                                                                                    <div class="align-items-center d-md-flex">
+                                                                                        <div class="align-items-center d-flex justify-content-between w-100">
+                                                                                            <div class="" style=" line-height: 18px;">
+                                                                                                <span class="font-weight-bold font-size-h6 text-dark servicename">${i.module.serviceName}</span><br>
+                                                                                                <span class="m-0 font-weight-bold" style="color: #a1a1a1;">${i.module.description}</span>
+                                                                                            </div>
+                                                                                            <div class="ml-sm-5">
+                                                                                                <h6 class="mr-4 m-0 font-weight-bold text-dark">AED <span id="price">${i.totalPrice}</span></h6>
+                                                                                                <span>Quantity ${i.quantity}</span>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>`
+                    })
+                    $('#loader').attr("hidden", "hidden")
+                    $('.detailsection').removeAttr("hidden", "hidden")
+                    $('.detailsection').append(html)
+                } else {
+                    toastr.error(response.message);
+
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                if (xhr.status == 403) {
+                    try {
+                        var response = $.parseJSON(xhr.responseText);
+                        swal.fire(response.Error, response.Message, "warning").then(function() {
+                            $('#myModal').modal('hide');
+                        });
+                    } catch (ex) {
+                        swal.fire("Access Denied", "Your are not authorize to perform this action, For further details please contact administrator !", "warning").then(function() {
+                            $('#myModal').modal('hide');
+                        });
+                    }
+
+                    $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                    $(element).find('i').show();
+
+                }
+            }
+        });
+    }
+
+</script>
+
+

@@ -1,0 +1,103 @@
+﻿@model IEnumerable<WebApp.ViewModels.CarMakeViewModel>
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+
+@{
+    ViewBag.Title = "Countries";
+    ViewBag.Page = "List";
+    Layout = null;
+}
+<style>
+    #kt_datatable1 tbody tr td:last-child {
+        white-space: nowrap;
+    }
+</style>
+<!--begin::Row-->
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b">
+            <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        Car make
+                        <span class="d-block text-muted pt-2 font-size-sm">Manage Car make Here...</span>
+                    </h3>
+                </div>
+                <div class="card-toolbar">
+                    <!--begin::Dropdown-->
+                    @*<div class="dropdown dropdown-inline mr-2">
+                            @using (Html.BeginForm("CountriesReport", "Country", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <button type="submit" class="btn btn-dark btn-sm" @(Model.Count() > 0 ? "": "disabled")>
+                                    <i class="far fa-file-excel"></i>
+                                    Export Excel
+                                </button>
+                            }
+                        </div>*@
+                    @*<button onclick="exportData()" class="btn btn-dark btn-sm">*@
+                    @*<div class="dropdown dropdown-inline mr-2">
+                            <a href="~/Assets/AppFiles/Documents/CSVSample/BulkCountry.xlsx" download type="button" class="btn btn-dark btn-sm">
+                                <i class="far fa-file-excel"></i>
+                                Sample CSV
+                            </a>
+                        </div>*@
+
+                    @*<div class="dropdown dropdown-inline mr-2">
+                            <button type="button" class="btn btn-dark btn-sm" onclick="OpenModelPopup(this, '/Admin/Country/BulkUpload')" data="/Admin/Country/BulkUpload">
+                                <i class="fa fa-plus"></i>
+                                Bulk Upload
+                            </button>
+                        </div>*@
+                    <!--end::Dropdown-->
+                    <!--begin::Button-->
+                    @*<a href="javascript:;" class="btn btn-custom font-weight-bolder" onclick="OpenModelPopup(this, '/Admin/Country/Create')">
+                            <span class="svg-icon svg-icon-md svg-icon-light">
+                                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24" />
+                                        <circle fill="#000000" cx="9" cy="15" r="6" />
+                                        <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                    </g>
+                                </svg>
+                                <!--end::Svg Icon-->
+                            </span>New Record
+                        </a>*@
+                    <!--end::Button-->
+                </div>
+            </div>
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <!--begin: Datatable-->
+                <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody style="display:none">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                 <td>@item.CreationDate.ToString("dd MMM yyyy, h:mm tt")	</td>
+                                 <td>@item.Name</td>
+
+                                <td>@(item.Status == Enum.GetName(typeof(Status) , Status.Active)  ? true : false)</td>
+                                <td nowrap="nowrap">@(item.Status == Enum.GetName(typeof(Status) , Status.Active ) ? true : false) , @item.Id</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!--end: Datatable-->
+            </div>
+        </div>
+        <!--end::Card-->
+    </div>
+</div>
+<!--end::Row-->

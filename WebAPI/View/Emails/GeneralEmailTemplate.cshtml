@@ -1,0 +1,56 @@
+﻿@model HelperClasses.DTOs.Emails.GeneralEmailDTO
+    <!DOCTYPE html>
+    <html>
+    <head>
+    </head>
+    <body>
+
+        <div style="background:#e8e8e8; font-family: 'Inter', sans-serif;">
+            <div section="main" style="max-width: 600px; margin: auto; padding-top: 50px;padding-bottom: 50px;">
+                <div class="template" style="background :#fff; margin: 7% 0%; border-radius: 10px;">
+                    <div class="logo" style="text-align: center">
+                        <a href="" style="text-decoration: none; " target="_blank">
+                            <img src="@Model.Restaurant.Logo" style="height:150px; width:auto">
+                        </a>
+
+
+                    </div>
+                    <div class="content" style="padding: 0px 30px 16px;">
+                        <div style="background: #f6f6f6;padding:2rem">
+                            <h3 style="text-align: left;">Dear @Model.Name</h3>
+
+                            <p style="text-align: left; font-size: 12px">
+                                @Html.Raw(Model.HTMLBody)
+                            </p>
+                            <br />
+                            @{
+                        if (!string.IsNullOrEmpty(Model.ButtonLink))
+                        {
+                                <a href="@Model.ButtonLink" style="border: none; color: white; padding: 3% 6%; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; width: 85%; background-color: #120e0e; border-radius: 4px;">@Model.ButtonText</a>
+                        }
+                            }
+
+                        </div>
+                    </div>
+                    <div class="followus" style="padding: 10px 25px; text-align: left; background: #fff; display: flex;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                        <div style="width:100%">
+                            <p style="font-size:12px">
+                                Restaurant employees or representatives will NEVER ask you for your personal information i.e. your bank account details, password, PIN, CVV, OTP etc. For your own safety, DO NOT share these details with anyone over phone, SMS, or email.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="ftr-links">
+                    <small style="margin-left: 45%;">Powered by</small>
+                    <br />
+                    <a href="https://webbeesite.com" target="_blank" style=" margin-left: 41%;">
+                    <img src="https://v1-cdn-webbeesite.azurewebsites.net/Images/logo/email-logo.png">
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

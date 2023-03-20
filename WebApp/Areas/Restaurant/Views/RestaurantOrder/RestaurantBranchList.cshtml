@@ -1,0 +1,32 @@
+﻿@model IEnumerable<WebApp.ViewModels.RestaurantOrderViewModel>
+
+@Html.AntiForgeryToken()
+<!--begin: Datatable-->
+<table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Order No</th>
+            <th>Customer</th>
+            <th>Branch</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody style="display:none">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CreationDate.Value.ToString("dd MMM yyyy,h:mm:ss")</td>
+                <td>@item.OrderNo</td>
+                <td>@(item.CustomerName != null ? item.CustomerName : "-")|@(item.CustomerContact != null ? item.CustomerContact : "-")</td>
+                <td>@item.RestaurantBranch.NameAsPerTradeLicense</td>
+                <td class="price">@item.Currency @item.TotalAmount</td>
+                <td>@item.Status</td>
+                <td nowrap="nowrap">@item.Id</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!--end: Datatable-->

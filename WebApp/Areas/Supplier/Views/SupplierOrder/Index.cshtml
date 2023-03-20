@@ -1,0 +1,239 @@
+﻿@model IEnumerable<WebApp.ViewModels.SupplierOrderViewModel>
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #kt_datatable1 tbody tr td:last-child {
+        white-space: nowrap;
+    }
+</style>
+
+<!--begin::Page Vendors Styles(used by this page)-->
+<link href="~/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<!--end::Page Vendors Styles-->
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="/Supplier/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a href="/Supplier/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Orders</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container" id="Order">
+            <!--begin::Dashboard-->
+            <div class="row">
+                <div class="col-xl-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                            <div class="card-title">
+                                <h3 class="card-label">
+                                    Orders Management
+                                    <span class="d-block text-muted pt-2 font-size-sm">Manage Orders Here...</span>
+                                </h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <div class="mr-2" style="display:block !important;">
+                                    <div class="input-group row">
+                                        @*<label class="col-form-label text-right col-lg-3 col-sm-12"></label>*@
+                                        <div class="col-md-12">
+                                            <div class="input-group" id="kt_daterangepicker_6">
+                                                <input type="text" class="form-control" id="DateRangePicker" onchange="ChangeBranch(this)" placeholder="Select date & time range" />
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="la la-calendar-check-o"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown dropdown-inline mr-2">
+
+                                    <div class="input-group">
+                                        <select class="form-control" id="Status" onchange="ChangeBranch(this)">
+                                            <option value="All">All</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Processing">Processing</option>
+                                            <option value="Confirmed">Confirmed</option>
+                                            <option value="Preparing">Preparing</option>
+                                            <option value="OrderReady">Order Ready</option>
+                                            <option value="OntheWay">OntheWay</option>
+                                            <option value="Delivered">Delivered</option>
+                                            <option value="Canceled">Canceled</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+                                <!--end::Button-->
+                            </div>
+                        </div>
+                        <div class="card-body" id="Orders">
+                            @Html.AntiForgeryToken()
+                            <!--begin: Datatable-->
+                            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Order No</th>
+                                        <th>Restaurant</th>
+                                        <th>Amount</th>
+                                        <th>Order Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="display:none">
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td>@item.CreationDate.ToString("dd MMM yyyy,h:mm:ss")</td>
+                                        <td>@item.OrderNo</td>
+                                        <td>@(item.RestaurantName != null ? item.RestaurantName : "-")|@(item.RestauantContact != null ? item.RestauantContact : "-")</td>
+                                        <td class="price">@item.Currency @item.Amount</td>
+                                        <td>@(item.OrderRequiredDate.ToString() != "1/1/0001 12:00:00 AM" ? item.OrderRequiredDate.ToString("dd MMM yyyy,h:mm:ss") : "-") </td>
+                                        <td>@item.Status</td>
+                                        <td nowrap="nowrap">@item.Id</td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <!--end: Datatable-->
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+@*<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+    <!-- begin:: Subheader -->
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+    <div class="kt-subheader__main">
+    <h3 class="kt-subheader__title">
+    Dashboard
+    </h3>
+    <span class="kt-subheader__separator kt-hidden"></span>
+    <div class="kt-subheader__breadcrumbs">
+    <a href="/Home/RealEstateIndex" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+    <span class="kt-subheader__breadcrumbs-separator"></span>
+    <a class="kt-subheader__breadcrumbs-link">
+    Tenants
+    </a>
+    <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+    </div>
+    </div>
+
+    </div>
+    </div>
+
+    <!-- end:: Subheader -->
+    <!-- begin:: Content -->
+    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+    <!--Begin::Row-->
+
+    <link href="@Url.ContentVersioned("~/assets/Admin/plugins/custom/datatables/datatables.bundle.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.ContentVersioned("~/assets/Admin/plugins/custom/datatables/datatables.bundle.js")" defer type="text/javascript"></script>
+
+    <!--begin::Page Scripts(used by this page) -->
+    <script src="@Url.ContentVersioned("~/assets/scripts/ModalPopup.js")"></script>
+    <!--End::Row-->
+
+    @{ Html.RenderAction("List", "Tenant"); }
+    </div>
+
+    <!-- end:: Content -->
+    </div>*@
+
+<div id="myModal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--end::Row-->
+@section Scripts {
+
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+
+    <script src="/Admin/js/supplier/order/list.js"></script>
+    <!--end::Page Scripts-->
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <!--end::Page Scripts-->
+    <script src="/Admin/js/general/bootstrap-daterangepicker.js"></script>
+    <!--end::Page Scripts-->
+    
+
+    @*<script>
+        $("#ExcelButton").click(function () { location.href = '/Restaurant/RestaurantOrder/OrderReport' })
+        $('#kt_daterangepicker_4').daterangepicker({
+            buttonClasses: ' btn',
+            applyClass: 'btn-primary',
+            cancelClass: 'btn-secondary',
+
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY h:mm A'
+            }
+        }, function (start, end, label) {
+            $('#kt_daterangepicker_4 .form-control').val(start.format('MM/DD/YYYY h:mm A') + ' / ' + end.format('MM/DD/YYYY h:mm A'));
+        });
+    </script>*@
+
+}

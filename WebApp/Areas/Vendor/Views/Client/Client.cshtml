@@ -1,0 +1,280 @@
+﻿@using HelperClasses.Classes
+
+
+
+@using Microsoft.AspNetCore.Authorization
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Vendor/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .Selected {
+    }
+    /**/
+    .ck.ck-editor {
+        position: relative;
+        z-index: 0;
+        width: 100%;
+    }
+
+    font-size-11 {
+        font-size: 11px !important;
+    }
+
+    custom-bg-input {
+        background-color: #f6f5f5;
+    }
+    /*#tns1-mw {
+        width: 83% !important
+    }*/
+    #kt_datatable1 tbody tr td:last-child {
+        white-space: nowrap;
+    }
+
+
+
+    .Skewtext {
+        position: absolute;
+    }
+
+    .non-select-bg-color {
+        background-color: #d7d7d7;
+    }
+
+    .non-select-text-color {
+        color: #818181;
+    }
+</style>
+
+<link href="~/Admin/css/admin/restaurant/edit.css" rel="stylesheet" />
+<link href="~/Admin/css/admin/client/client.css" rel="stylesheet" />
+<link href="~/css/cropper.css" rel="stylesheet" />
+<link href="~/Admin/css/general/ImageUploader.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+<link href="~/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="~/css/intlTelInput.css" />
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <div class="d-flex flex-column">
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <a href="/Admin/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <a href="/Admin/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Clients Register</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 sm-12 col-xxl-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="pl-8 pr-8 card-custom gutter-b align-items-center d-flex" style="height: 110px;">
+
+                                <div class="Main">
+                                    <a href="javascript:LoadPage('step1','/Vendor/Client/Edit')" class="menu-link">
+                                        <div class="parallelogram1"></div>
+                                        <div class="parallelogram2"></div>
+                                        <div class="position-absolute" style="margin-top: -60px; margin-left: 25px; width: 237px; ">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center step1" style=" width: 40px; height: 40px;">
+                                                    <p class="font-size-h2 text-dark m-0">1</p>
+                                                </div>
+                                                <div class="ml-4" style="line-height: 15px;">
+                                                    <span class="text-dark font-size-h5 font-weight-bold">Information</span><br />
+                                                    <span class="font-weight-bold" style="color: #a1a1a1; font-size: 10px;">Details about the client.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="Main">
+                                    <a href="javascript:LoadPage('step2','/Vendor/Client/Package')" class="menu-link">
+
+                                        <div class="parallelogram1"></div>
+                                        <div class="parallelogram2"></div>
+                                        <div class="position-absolute" style="margin-top: -60px; margin-left: 25px; width: 237px; ">
+                                            <div class="d-flex align-items-center">
+                                                <div class="non-select-bg-color rounded-circle d-flex align-items-center justify-content-center step2" style="width: 40px; height: 40px;">
+                                                    <p class="font-size-h2 text-dark m-0">2</p>
+                                                </div>
+                                                <div class="ml-4" style="line-height: 15px;">
+                                                    <span class="text-dark font-size-h5 font-weight-bold">Package</span><br />
+                                                    <span class="font-weight-bold" style="color: #a1a1a1; font-size: 10px;">Configure a package for the client.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="Main">
+                                    <a href="javascript:LoadPage('step3','/Vendor/Client/Content')" class="menu-link">
+
+                                        <div class="parallelogram1"></div>
+                                        <div class="parallelogram2"></div>
+                                        <div class="position-absolute" style="margin-top: -60px; margin-left: 25px; width: 237px; ">
+                                            <div class="d-flex align-items-center">
+                                                <div class="non-select-bg-color rounded-circle d-flex align-items-center justify-content-center step3" style=" width: 40px; height: 40px;">
+                                                    <p class="font-size-h2 text-dark m-0">3</p>
+                                                </div>
+                                                <div class="ml-4" style="line-height: 15px;">
+                                                    <span class="text-dark font-size-h5 font-weight-bold">Content</span><br />
+                                                    <span class="font-weight-bold" style="color: #a1a1a1; font-size: 10px;">Website Content.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="Main">
+                                    <a href="javascript:LoadPage('step4','/Vendor/Client/Finalize')" class="menu-link">
+
+                                        <div class="parallelogram1"></div>
+                                        <div class="parallelogram2"></div>
+                                        <div class="position-absolute" style="margin-top: -60px; margin-left: 25px; width: 237px; ">
+                                            <div class="d-flex align-items-center">
+                                                <div class="non-select-bg-color rounded-circle d-flex align-items-center justify-content-center step4" style=" width: 40px; height: 40px;">
+                                                    <p class="font-size-h2 text-dark m-0">4</p>
+                                                </div>
+                                                <div class="ml-4" style="line-height: 15px;">
+                                                    <span class="text-dark font-size-h5 font-weight-bold">Finalize</span><br />
+                                                    <span class="font-weight-bold" style="color: #a1a1a1; font-size: 10px;">Finalize and create an invoice.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    @*@{ Html.RenderAction("List", "Ticket", new { area = "Admin" }); }*@
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    @*@{ Html.RenderAction("ApprovalsList", "Property", new { area = "Admin" }); }*@
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    @*@{ Html.RenderAction("ApprovalsList", "Car", new { area = "Admin" }); }*@
+                </div>
+            </div>
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+    <div class="contentpages">
+    </div>
+
+</div>
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <script src="~/js/intlTelInput/intlTelInput.js"></script>
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="/Admin/js/admin/garage/list.js"></script>
+    @* <script src="/Admin/js/vendor/client/package.js"></script>*@
+    @* @await RenderSectionAsync("ClientScripts", required: false)*@
+    <script>
+        var Layout = "Client"
+        $(document).ready(function() {
+            LoadPage('step1', '/Vendor/Client/Edit')
+             toastr.options = {
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": true,
+                };
+        })
+            
+        //For Next Page
+        function LoadPage(step, url) {
+            var count = 0
+            if (step == "step2") {
+                count = 0
+                        if ($('input[name="GarageBusinessSettingId"]').val() == '0' ||$('input[name="GarageContentManagementId"]').val() == '0') {
+                            count = 1
+                            toastr.error("Please Fill this Form");
+                            return false
+                        }
+                 
+                
+            }
+            if (step == "step3") {
+                count = 0
+                  if ($('input[name="GarageBusinessSettingId"]').val() == '0' ||$('input[name="GarageContentManagementId"]').val() == '0') {
+                            count = 1
+                            toastr.error("Please Fill this Form");
+                            return false
+                        }
+                if($("#Id").val() == "0"){
+                    count = 1
+                            toastr.error("Please Add Package");
+                            return false
+                }
+            }
+            if (step == "step4") {
+                count = 0
+                 if ($('input[name="GarageBusinessSettingId"]').val() == '0' ||$('input[name="GarageContentManagementId"]').val() == '0') {
+                            count = 1
+                            toastr.error("Please Fill this Form");
+                            return false
+                        }
+                if($("#Id").val() == "0"){
+                    count = 1
+                            toastr.error("Please Add Package");
+                            return false
+                }
+           
+            }
+
+
+            if (count == 0) {
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    data: { 'Id': @ViewBag.ClientId },
+                    success: function(response) {
+                        $('.contentpages').html(response)
+                        $('.rounded-circle').removeClass('bg-warning').addClass('non-select-bg-color')
+                        $('.'+step).addClass('bg-warning')
+                    },
+                    error: function(er) {
+                        toastr.error(er);
+                    }
+                });
+            }
+
+        }
+
+    </script>
+
+
+
+}
+

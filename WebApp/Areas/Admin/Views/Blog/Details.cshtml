@@ -1,0 +1,154 @@
+﻿@model WebApp.ViewModels.BlogViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Details</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+
+
+    <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+   @* <div class="form-group row justify-content-center">
+        <div class="col-lg-6 text-center">
+            <div class="image-input image-input-outline" id="kt_image_1">
+                <div class="image-input-wrapper" style="background-image: url('')"></div>
+    <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="change logo">
+            <i class="fa fa-pen icon-sm text-muted"></i>
+            <input type="file" name="image" id="image" accept=".png, .jpg, .jpeg" />
+            <input type="hidden" name="profile_avatar_remove" />
+        </label>
+    <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow cancelimage" data-action="cancel" data-toggle="tooltip" title="cancel avatar">
+                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                </span>
+            </div>
+
+        </div>
+
+    </div>*@
+<div class="row">
+    <div class="col-md-12 col-sm-12 text-center">
+        <div class="flex-shrink-0 mr-7">
+            <div class="symbol symbol-50 symbol-lg-120">
+                <img alt="Pic" src="@Model.BannerImage">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="form-group">
+            <label class="control-label">Title</label>
+            <div class="input-group mb-2">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter description here ...", @readonly = "readonly" } })@Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-paragraph"></i></span></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="form-group">
+            <label class="control-label">Author</label>
+            <div class="input-group mb-2">
+                @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter description here ...", @readonly = "readonly" } })@Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Title (Ar)</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.TitleAr, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter sport name here ...", @readonly = "readonly" } })@Html.ValidationMessageFor(model => model.TitleAr, "", new { @class = "text-danger" })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-paragraph"></i></span></div>
+                </div>
+            </div>
+        </div>*@
+    <!--<div class="col-md-12 col-sm-12">
+        <div class="form-group">
+            <label asp-for="TitleDescription" class="control-label">Title Description</label>
+            <div class="input-group mb-2">
+                <textarea asp-for="TitleDescription" class="form-control" style=" height: 100px;" readonly>@Model.TitleDescription</textarea>
+                <span asp-validation-for="TitleDescription" class="text-danger"></span>-->
+                @*<div class="input-group-append"><span class="input-group-text"><i class="fas fa-paragraph"></i></span></div>*@
+            <!--</div>
+        </div>
+    </div>-->
+    <div class="col-sm-12">
+        <div class="form-group" >
+            <label class="control-label">Description</label>
+            <div>
+                <textarea name="Description" id="Description" rows="10" placeholder="Type Here" class="form-control branch-input">@Model.TitleDescription</textarea>
+            </div>
+        </div>
+    </div>
+    <!--<div class="col-md-12 col-sm-12">
+        <div class="form-group">
+            <label asp-for="MobileDescription" class="control-label">Mobile Description</label>
+            <div class="input-group mb-2">
+                <textarea asp-for="MobileDescription" class="form-control" style=" height: 100px;" readonly>@Model.MobileDescription</textarea>
+                <span asp-validation-for="MobileDescription" class="text-danger"></span>-->
+    @*  <div class="input-group-append"><span class="input-group-text"><i class="fas fa-paragraph"></i></span></div>*@
+    <!--</div>
+        </div>
+    </div>-->
+    @*<div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Mobile Description(Ar)</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.MobileDescriptionAr, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter sport name (Ar) here ...", @readonly = "readonly" } })@Html.ValidationMessageFor(model => model.MobileDescriptionAr, "", new { @class = "text-danger" })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-paragraph"></i></span></div>
+                </div>
+            </div>
+        </div>*@
+
+    <input type="text" class="" value="-" name="CategoryNameAr" hidden="" />
+
+    @*<div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Slug</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.Slug, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Slug name here ...", required = "required", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Slug, "", new { @class = "text-danger" })
+                    <div class="input-group-append">
+                        <span class="input-group-text">
+                            <i class="fa fa-link"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+
+
+
+</div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+</div>
+<script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+<script>
+    var Description;
+    var editor;
+    $(document).ready(function () {
+        ClassicEditor
+               .create(document.querySelector('#Description'))
+               .then(editor => {
+                   Description = editor;
+                   Description.setData(`@Html.Raw(Model.TitleDescription)`);
+               })
+               .catch(error => {
+                   console.log(error);
+               });
+
+    })
+</script>

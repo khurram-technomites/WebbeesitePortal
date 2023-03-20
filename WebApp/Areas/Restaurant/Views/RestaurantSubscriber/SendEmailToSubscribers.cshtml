@@ -1,0 +1,75 @@
+﻿@model WebApp.ViewModels.RestaurantSubcriberViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<body>
+    <div class="modal-header">
+        <h5 class="modal-title"> Email</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i aria-hidden="true" class="ki ki-close"></i>
+        </button>
+    </div>
+
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <div class="col-md-12" style="margin-top:20px">
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Email</label>
+                    <div class="input-group mb-2">
+                        <select asp-for="Email" class="form-control" asp-items="@(new SelectList(ViewBag.Email,"Id","Email"))"></select>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Subject" class="control-label">Subject</label>
+                    <div class="input-group mb-2">
+                        <input asp-for="Subject" class="form-control" />
+                        <span asp-validation-for="Subject" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fas fa-user"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-12">
+                    <div class="form-group">
+                        @Html.Label("Email Body", htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Message, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter message here ...", required = "required" } })
+                    </div>
+                </div>*@
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Message" class="control-label">Message</label>
+                    <div class="input-group mb-2">
+                        <textarea asp-for="Message" class="form-control" />
+                        <span asp-validation-for="Message" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fas fa-paragraph"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button type="submit" id="send-notification" class="btn btn-info mb-10">
+                        Send Email
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</body>
+</html>
+<script>
+	$(document).ready(function () {
+        $('.kt-selectpicker').selectpicker();
+		//$("#txtstatus").change(function () {
+		//
+		//    var status = $("#txtstatus option:selected").val();
+
+		//})
+	});
+</script>

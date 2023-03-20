@@ -1,0 +1,184 @@
+﻿
+.image-upload {
+	width: 109px;
+	height: 109px;
+	background: #8E7C7C14 0% 0% no-repeat padding-box;
+	border: 1px dashed #70707033;
+	border-radius: 10px;
+	opacity: 1;
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+	user-select: none;
+	cursor: pointer;
+	overflow: hidden;
+	transition: top ease 2s;
+}
+
+	.image-upload.empty {
+		transition: top ease 2s;
+	}
+
+	.image-upload span {
+		text-align: center;
+		font: normal normal bold 13px/16px Poppins, Helvetica, "sans-serif";
+		letter-spacing: 0.94px;
+		color: #29262A;
+		text-transform: capitalize;
+		opacity: 0.4;
+	}
+
+	.image-upload i.fa-camera, .image-upload i.fa-pen, .image-upload i.fa-circle-notch {
+		z-index: 1;
+		border-radius: 50%;
+		position: absolute;
+		bottom: -5px;
+		background: #d0d0d0;
+		width: 30px;
+		height: 30px;
+		display: flex;
+		align-content: center;
+		justify-content: center;
+		align-items: center;
+		color: #7e7e7e;
+		transition: top ease 2s;
+		cursor: pointer;
+	}
+
+	.image-upload img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 10px;
+	}
+
+	.image-upload.empty img,  .image-upload.empty i.fa-pen, .image-upload.uploaded span, .image-upload.uploaded i.fa-camera {
+		display: none;
+	}
+
+	.image-upload.empty:hover > span, .image-upload.uploaded:hover > img {
+		filter: blur(2px);
+	}
+
+	.image-upload.empty:hover > i.fa-camera,  .image-upload.uploaded:hover > i.fa-pen, .image-upload.uploaded:hover > i.fa-circle-notch {
+		bottom: 5px;
+		cursor: pointer;
+	}
+
+	.image-upload.banner {
+		width: 100%;
+		height: 300px;
+	}
+
+		.image-upload.banner i {
+			/*width: 60px;
+			height: 60px;*/
+			display: none;
+		}
+
+
+		.image-upload.banner.box {
+			width: 205px;
+			height: 150px;
+		}
+
+			.image-upload.banner.box > span {
+				display: none;
+			}
+
+.theme-color {
+	width: 205px;
+	height: 150px;
+	background: #8E7C7C14 0% 0% no-repeat padding-box;
+	border-radius: 5px;
+	opacity: 1;
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	justify-content: flex-end;
+	align-items: center;
+	user-select: none;
+	cursor: pointer;
+	overflow: hidden;
+	transition: top ease 2s;
+}
+
+	.theme-color span {
+		display: none;
+	}
+
+	.theme-color.edit span {
+		display: block;
+		padding: 10px 0px;
+		background: #EFEFEF;
+		width: 100%;
+		text-align: center;
+		border: #efefef;
+		border-radius: 5px 5px 0px 0px;
+		font-weight: 900;
+		margin-bottom: -4px;
+	}
+
+	.theme-color.edit > #color {
+		background: #EFEFEF !important;
+	}
+
+#color {
+	width: 1px;
+	height: 1px;
+	border: unset;
+}
+
+.cropper-view-box {
+	background: #FFFFFF
+}
+
+#CropperModal.round .cropper-crop-box, #CropperModal.round .cropper-view-box, #CropperModal.round .cropper-face {
+	border-radius: 50%;
+}
+
+#CropperModal.round .cropper-view-box {
+	box-shadow: 0 0 0 1px #39f;
+	outline: 0;
+}
+
+#CropperModal:not(.restaurant-logo) .cropper-actions a, #CropperModal:not(.restaurant-logo) .cropper-actions h6 {
+	display: none
+}
+
+.cropper-actions, .shapes, .backgrounds, .aspectratios {
+	display: flex;
+}
+
+	.cropper-actions a {
+		color: #ffb000 !important;
+		font-weight: 900;
+		cursor: pointer;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		column-gap: 5px;
+		margin-right: 20px;
+		padding: 5px 10px;
+	}
+
+		.cropper-actions a.active {
+			border: 1px solid #ffb000;
+			border-radius: 6px;
+			background: #ffb000;
+			color: #fff !important;
+		}
+
+.cropper-shape span, .background-color span {
+	height: 25px;
+	width: 25px;
+	border: 1px solid black;
+	display: block;
+}
+
+
+.cropper-shape .round {
+	border-radius: 50%;
+}

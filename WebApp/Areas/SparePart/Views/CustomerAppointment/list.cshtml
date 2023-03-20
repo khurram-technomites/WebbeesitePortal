@@ -1,0 +1,129 @@
+﻿@model IEnumerable<WebApp.ViewModels.SparePartCustomerAppointmentViewModel>
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+
+
+<style>
+    #kt_datatable1 tbody tr td:last-child {
+        white-space: nowrap;
+    }
+</style>
+
+<!--begin::Page Vendors Styles(used by this page)-->
+<link href="~/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<!--end::Page Vendors Styles-->
+<!--begin::Content-->
+<div class="flex-column" id="kt_content">
+    <!--begin::Subheader-->
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div >
+        <!--begin::Container-->
+        <div id="CustomerAppointment">
+            <!--begin::Dashboard-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                            <div class="card-title">
+                                <h3 class="card-label">
+                                    Customer Appointment
+                                    <span class="d-block text-muted pt-2 font-size-sm">Manage Customer Appointment Here...</span>
+                                </h3>
+                            </div>
+                            <div class="card-toolbar">
+
+                                <!--end::Button-->
+                            </div>
+                        </div>
+                        <div class="card-body" id="CustomerAppointment">
+                            @Html.AntiForgeryToken()
+                            <!--begin: Datatable-->
+                            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+                                <thead>
+                                    <tr>
+                                        <th>Appointment Date</th>
+                                        <th>Appointment Time</th>
+                                        <th>Customer Name</th>
+                                        <th>Customer Email</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="display:none">
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.AppointmentDate.ToString("dd MMM yyyy")</td>
+                                            <td>@item.AppointmentTime</td>
+                                            <td>@item.CustomerName</td>
+                                            <td>@item.CustomerEmail</td>
+                                            <td>@item.Id</td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <!--end: Datatable-->
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+
+
+<div id="myModal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-md" style="max-width:860px;">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+
+    <script src="/Admin/js/sparepart/CustomerAppointment/listDashboard.js"></script>
+    <!--end::Page Scripts-->
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <!--end::Page Scripts-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="/Admin/js/general/bootstrap-daterangepicker.js"></script>
+    <!--end::Page Scripts-->
+    @*<script>
+        $('#kt_daterangepicker_4').daterangepicker({
+            buttonClasses: ' btn',
+            applyClass: 'btn-primary',
+            cancelClass: 'btn-secondary',
+
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY h:mm A'
+            }
+        }, function (start, end, label) {
+            $('#kt_daterangepicker_4 .form-control').val(start.format('MM/DD/YYYY h:mm A') + ' / ' + end.format('MM/DD/YYYY h:mm A'));
+        });
+    </script>*@
+    }
+
+
+

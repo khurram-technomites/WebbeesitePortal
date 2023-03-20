@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using WebAPI.Interfaces;
+using WebAPI.Interfaces.IRepositories.Domains;
+using WebAPI.Models;
+
+namespace WebAPI.Repositories.Domains
+{
+    public class SparePartRequestImagesRepo : Repository<SparePartRequestImage>, ISparePartRequestImagesRepo
+    {
+        public SparePartRequestImagesRepo(FougitoContext context, ILoggerManager logger): base(context, logger)
+        {
+
+        }
+    }
+}

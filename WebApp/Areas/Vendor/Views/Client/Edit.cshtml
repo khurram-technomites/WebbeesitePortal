@@ -1,0 +1,308 @@
+﻿@model WebApp.ViewModels.GarageViewModel
+@using HelperClasses.Classes
+@using WebApp.ViewModels
+@{
+    ViewBag.Title = "Edit";
+    //Layout = "~/Areas/Vendor/Views/Client/Client.cshtml";
+}
+<style>
+    .Selected {
+    }
+    /**/
+    .ck.ck-editor {
+        position: relative;
+        z-index: 0;
+        width: 100%;
+    }
+
+    font-size-11 {
+        font-size: 11px !important;
+    }
+
+    custom-bg-input {
+        background-color: #f6f5f5;
+    }
+    /*#tns1-mw {
+        width: 83% !important
+    }*/
+    .theme-link {
+        color: #ffb000 !important;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+        .theme-link i {
+            color: #ffb000 !important;
+        }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" style="overflow-x: hidden" id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body">
+
+                            <div class="card-body pr-0 pl-0 pt-4 pb-0 " id="formInputs">
+                                <div class="form-group row">
+                                    @*<input name="GarageId" value="@Model.Id" hidden />*@
+                                    <div class="col-lg-12">
+                                        <form id="ClientCompleteYourProfile" action="/Vendor/Client/Edit" method="post">
+                                            @Html.AntiForgeryToken()
+                                             <input type="hidden" value="@Model.ClientModulePurchases.Id" id="Id" />
+                                            <input name="GarageId" value="@Model.Id" hidden/>
+                                            <input name="GarageBusinessSettingId" value="@(Model.GarageBusinessSetting != null ? Model.GarageBusinessSetting.Id: 0)" hidden/>
+                                            <input name="GarageContentManagementId" value="@(Model.GarageContentManagement != null ? Model.GarageContentManagement.Id: 0)" hidden/>
+                                            <input name="UserId" value="@Model.User.UserId" hidden/>
+                                                 <input name="IsDomainRequired" value="@Model.IsDomainRequired.ToString()" hidden/>
+                                            <div class="row">
+                                                <div class="col-md-6 border-right-lg">
+                                                    <div class="card-title"><h4>Business Info</h4></div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Business Name</label>
+                                                                <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@Model.NameAsPerTradeLicense" name="Title" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Industry Type</label>
+                                                                <div class="input-group mb-2">
+                                                                    @Html.DropDownListFor(x=>x.ClientIndustryId,new SelectList((ViewBag.ClientIndustries) ,"Id","Name"),"Select Industry",new {@class="form-control"})
+                                                                    @*<select asp-for="ClientIndustryId" class="form-control" asp-items="@(new SelectList((ViewBag.ClientIndustries) ,"Id","Name"))" name="ClientIndustryId" sortOrder="Ascending">
+                                                                        <option>Select Client Industry</option>
+                                                                    </select>*@
+                                                                    <span asp-validation-for="ClientIndustryId" class="text-danger"></span>
+                                                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-server"></i></span></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Compnay Activity</label>
+                                                                <div class="input-group mb-2">
+                                                                    @*<select asp-for="ClientIndustryId" class="form-control" asp-items="@(new SelectList((ViewBag.ClientType) ,"Id","Name"))" name="ClientTypeId" sortOrder="Ascending">
+                                                                        <option>Select Client Industry</option>
+                                                                    </select>*@
+                                                                     @Html.DropDownListFor(x=>x.ClientTypeId,new SelectList((ViewBag.ClientType) ,"Id","Name"),"Select Activity",new {@class="form-control"})
+                                                                    <span asp-validation-for="ClientTypeId" class="text-danger"></span>
+                                                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-server"></i></span></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">CEO Name</label>
+                                                                <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@(Model.GarageContentManagement != null ? Model.GarageContentManagement.CEOName : "")" name="CEOName" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Business Registration</label>
+                                                                <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@(Model.GarageBusinessSetting != null ?Model.GarageBusinessSetting.BusinessRegistration:"")" name="BusinessRegistration" placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">VAT/TAX ID</label>
+                                                                <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@(Model.GarageBusinessSetting != null ?Model.GarageBusinessSetting.VatTaxID:"")" name="VatTaxID" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card-title"><h4>Contact Info</h4></div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Contact Person's Name</label>
+                                                                <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@Model.ContactPersonName" name="ContactPersonName" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Email Address</label>
+                                                                <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@Model.ContactPersonEmail" name="ContactPersonEmail" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="intr-form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Contact Number 1</label>
+                                                                <div class="input-group">
+                                                                 <input type="hidden" id="ContactNumber1Code" class="code" value="@(Model.ContactPersonNumber!= null && Model.ContactPersonNumber.Contains('-') == true ?Model.ContactPersonNumber.Split('-').First() :971)"/>
+                                                                <input name="ContactPersonNumber" value="@(Model.ContactPersonNumber!= null && Model.ContactPersonNumber.Contains('-') == true  ?Model.ContactPersonNumber.Split('-').Last() :Model.ContactPersonNumber)" placeholder="Enter your Phone number" class="form-control branch-input intr-phone bg-dark-o-15 border-0" />
+                                                                   
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 ">
+                                                            <div class="intr-form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Contact Number 2</label>
+                                                                <div class="input-group">
+                                                                 <input type="hidden" id="ContactNumber2Code" class="code" value="@(Model.ContactPersonNumber01!= null && Model.ContactPersonNumber01.Contains('-') == true ?Model.ContactPersonNumber01.Split('-').First() :971)"/>
+                                                                <input name="ContactPersonNumber01" value="@(Model.ContactPersonNumber01!= null && Model.ContactPersonNumber01.Contains('-') == true  ?Model.ContactPersonNumber01.Split('-').Last() :Model.ContactPersonNumber01)" placeholder="Enter your Phone number" class="form-control branch-input intr-phone bg-dark-o-15 border-0" />
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="intr-form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Business Whatsapp</label>
+                                                                <div class="input-group">
+                                                                     <input type="hidden" id="Whatsappcode" class="code" value="@(Model.Whatsapp!= null && Model.Whatsapp.Contains('-') == true ?Model.Whatsapp.Split('-').First() :971)"/>
+                                                                <input name="Whatsapp" value="@(Model.Whatsapp!= null && Model.Whatsapp.Contains('-') == true  ?Model.Whatsapp.Split('-').Last() :Model.Whatsapp)" placeholder="Enter your Whatsapp number" class="form-control branch-input intr-phone bg-dark-o-15 border-0" />
+                                                                   
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Business Address</label>
+                                                                <input type="text" value="@Model.Address" name="Address" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                            </div>
+                                                        </div>
+                                                          <div class="col-sm-6">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Business Country</label>
+                                                          @*     <select asp-for="CountryId" class="form-control" asp-items="@(new SelectList((ViewBag.Country) ,"Id","Name"))" sortOrder="Ascending">
+                                                                <option value="0">Select Country</option>
+                                                            </select>*@
+                                                               @Html.DropDownListFor(x=>x.CountryId,new SelectList((ViewBag.Country) ,"Id","Name"),"Select Country",new {@class="form-control"})
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Business City</label>
+                                                                <select class="form-control branch-input" name="CityId" id="CityId" required>
+                                                                <option>Select city</option>
+                                                            </select>
+                                                          <i class="spinner spinner-dark spinner-left spinner-sm" hidden style="margin-left: -30px;cursor: pointer;position: absolute;top: 59%;right: 25%;"></i>
+                                                        </div>
+                                                      
+                                                    </div>
+                                            </div>
+                                             </div>
+                                                <div class="col-md-12">
+                                                    <hr />
+                                                    <div class="card-title"><h4>Login</h4></div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6 pr-lg-1">
+                                                            <div class="intr-form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">PhoneNumber</label>
+                                                                <div class="input-group">
+                                                                    <input type="hidden" id="PhoneNumberCode" class="code" value="@(Model.User.PhoneNumber!= null && Model.User.PhoneNumber.Contains('-') == true ?Model.User.PhoneNumber.Split('-').First() :971)" />
+                                                                    <input name="PhoneNumber" value="@(Model.User.PhoneNumber != null && Model.User.PhoneNumber.Contains('-') == true  ?Model.User.PhoneNumber.Split('-').Last() :Model.User.PhoneNumber)"  placeholder="Enter your Phone number" class="form-control branch-input bg-dark-o-15 border-0"  />
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 pr-lg-1">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Password</label>
+                                                                <input type="password" name="Password" value="@Model.User.PasswordHash" class="form-control branch-input bg-dark-o-15 border-0" required placeholder="Type Here" />
+                                                                <small class="text-danger">* Leave this field unchange if you don't wish to change the password</small>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <hr />
+                                                    <div class="card-title"><h4>Social Media Links</h4></div>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Facebook</label>
+                                                                @Html.TextBoxFor(model=>model.GarageBusinessSetting.Facebook, new{@class ="form-control branch-input bg-dark-o-15 border-0"  , placeholder="Type Here"})
+                                                              @*  <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@Model.GarageBusinessSettings.Facebook" name="Facebook" required placeholder="Type Here" />*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Instagram</label>
+                                                               @Html.TextBoxFor(model=>model.GarageBusinessSetting.Instagram, new{@class ="form-control branch-input bg-dark-o-15 border-0"  ,placeholder="Type Here"})
+                                                      @*          <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@Model.GarageBusinessSettings.Instagram" name="Instagram" required placeholder="Type Here" />*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Linkdin</label>
+                                                                 @Html.TextBoxFor(model=>model.GarageBusinessSetting.LinkedIn, new{@class ="form-control branch-input bg-dark-o-15 border-0"  , placeholder="Type Here"})
+                                                               @* <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@Model.GarageBusinessSettings.LinkedIn" name="LinkedIn" required placeholder="Type Here" />*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Youtube</label>
+                                                               @Html.TextBoxFor(model=>model.GarageBusinessSetting.Youtube, new{@class ="form-control branch-input bg-dark-o-15 border-0"  , placeholder="Type Here"})
+                                             @*                   <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@Model.GarageBusinessSettings.Youtube" name="Youtube" required placeholder="Type Here" />*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Twitter</label>
+                                                                @Html.TextBoxFor(model=>model.GarageBusinessSetting.Twitter, new{@class ="form-control branch-input bg-dark-o-15 border-0"  , placeholder="Type Here"})
+                                                              @*  <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@Model.GarageBusinessSettings.Twitter" name="Twitter" required placeholder="Type Here" />*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Snapchat</label>
+                                                                  @Html.TextBoxFor(model=>model.GarageBusinessSetting.Snapchat, new{@class ="form-control branch-input bg-dark-o-15 border-0"  , placeholder="Type Here"})
+                                                              @*  <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@Model.GarageBusinessSettings.Snapchat" name="Snapchat" required placeholder="Type Here" />*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Pinterest</label>
+                                                                @Html.TextBoxFor(model=>model.GarageBusinessSetting.Pinterest, new{@class ="form-control branch-input bg-dark-o-15 border-0"  , placeholder="Type Here"})
+                                                        @*        <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@Model.GarageBusinessSettings.Pinterest" name="Pinterest" required placeholder="Type Here" />*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">Behance</label>
+                                                                 @Html.TextBoxFor(model=>model.GarageBusinessSetting.Behnace, new{@class ="form-control branch-input bg-dark-o-15 border-0"  ,placeholder="Type Here"})
+                                                            @*    <input type="text" class="form-control branch-input bg-dark-o-15 border-0" value="@Model.GarageBusinessSettings.Behnace" name="Behnace" required placeholder="Type Here" />*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group mb-3">
+                                                                <label class="control-label" style="font-size:11px;">TikTok</label>
+                                                                  @Html.TextBoxFor(model=>model.GarageBusinessSetting.Tiktok, new{@class ="form-control branch-input bg-dark-o-15 border-0"  , placeholder="Type Here"})
+                            
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                           </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="" id="headingImage">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row justify-content-end">
+                                            <div class="col-4">
+                                                <button type="submit" id="DraftButton" data-attr="Draft" form="ClientCompleteYourProfile" class="btn btn-block btn-info">PROCEED</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        var City = '@Model.CityId'
+       
+    </script>
+    <script src="/Admin/js/vendor/client/Edit.js"></script>

@@ -1,0 +1,227 @@
+﻿@model IEnumerable<WebApp.ViewModels.SupplierCardViewModel>
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Restaurant/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .swal2-styled.swal2-confirm {
+        background-color: #d24b4b !important;
+    }
+</style>
+
+<link href="~/Admin/css/restaurant/shop/index.css" rel="stylesheet" />
+
+
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Dashboard-->
+            <div class="row justify-content-center">
+                <div class="col-md-11">
+                    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+                        <div class="align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+                            <!--begin::Info-->
+
+
+                            <div class="d-flex align-items-center flex-wrap mr-1">
+                                <!--begin::Heading-->
+                                <div class="d-flex flex-column">
+
+                                    <!--begin::Breadcrumb-->
+                                    <div class="d-flex align-items-center font-weight-bold my-2">
+                                        <!--begin::Item-->
+                                        <a href="~/Restaurant/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                                        </a>
+                                        <!--end::Item-->
+                                        <!--begin::Item-->
+                                        <a href="/Restaurant/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                                        <!--end::Item-->
+                                        <!--begin::Item-->
+                                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                                        <a href="/Restaurant/Shop/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">Shops</a>
+                                        <!--end::Item-->
+                                    </div>
+                                    <!--end::Breadcrumb-->
+                                </div>
+
+                                <!--end::Heading-->
+                            </div>
+                            <!--end::Info-->
+                        </div>
+
+
+                    </div>
+
+                    <!--begin::Card-->
+                    @*<div class="card card-custom  gutter-b" id="kt_page_sticky_card">
+                        <div class="card-body">
+
+                        </div>
+                        </div>*@
+                    <div class="card card-custom  gutter-b">
+                        <div class="card-body">
+
+                            <div class="">
+                                <div class="" id="headingImage">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <div class="d-flex flex-column">
+                                                <div><h3 class="mt-2">Browse Shops</h3></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 justify-content-end">
+                                            <div class="input-icon input-icon-right">
+                                                <input type="text" class="form-control search-btn" onchange="ShopsByName(this)" placeholder="Search...">
+                                                <span>
+                                                    <i class="flaticon2-search-1 icon-md"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4 shop-list">
+                                    @foreach (var supplier in Model)
+                                    {
+                                        <div class="col-md-3 pb-4 pl-5 pr-5 shops">
+
+                                            <div class="row" onclick="window.location.href = '/Restaurant/Shop/ProductsByShop/@supplier.Id';">
+                                                <div class="option">
+                                                    <div class="col-md-4">
+                                                        <div class="shop-image">
+                                                            <img class="shop-image" onerror="imgError(this);" src="@(supplier.Logo != null ? supplier.Logo :  "~/Images/Icons/shop_default.png")" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <span class="option-control">
+
+                                                        </span>
+                                                        <span class="option-label">
+                                                            <span class="option-head">
+                                                                <span class="option-title">@supplier.NameAsPerTradeLicense</span>
+
+                                                            </span>
+                                                            <span class="option-body">@supplier.Description</span>
+
+                                                        </span>
+                                                        <a href="/Restaurant/Shop/ProductsByShop/@supplier.Id" class="btn btn-icon btn-danger btn-sm btn-circle float-right"><i class="fa fa-arrow-right fa-sm"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    }
+
+
+
+                                </div>
+                               
+                            </div>
+                        </div>
+
+                        <!--end::Card-->
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-sm  modal-dialog-centered">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--end::Row-->
+<script>
+    var SuccessMessage = '@ViewBag.SuccessMessage';
+    var ErrorMessage = '@ViewBag.ErrorMessage';
+</script>
+@section Scripts {
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="~/admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+    <script src="~/admin/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
+    @*<script src="https://code.jquery.com/jquery-3.6.0.js" defer></script>*@
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" defer></script>
+
+
+
+
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+<script>
+    $(document).ready(function () {
+        localStorage.removeItem("cart");
+    });
+
+   
+
+    function ShopsByName(e) {
+
+        $("#notFound").remove();    
+        $(".shops").show();
+        var text = $(e).val();
+        if (text && text !== "") {
+
+            $('.shops').hide();
+            $(".shops").find('.option-title:contains("' + text + '")').closest('.shops').fadeIn();
+            if ($(".shops").find('.option-title:contains("' + text + '")').length == 0) {
+                $(".shop-list").append(`  <div class="col-md-12 " id="notFound">
+                                                <div id="notAvalaible" class="text-center">
+                                                    <img style="width:10%" src="/Images/Icons/NotFound.png" />
+                                                    <h4><em>Shop <span style="color: #f55050">not</span> found</em> </h4>
+                                                </div>
+                                            </div>`);
+            }
+           
+        }
+
+        else {
+
+            $('.shops').show();
+        }
+    };
+
+    jQuery.expr[':'].contains = function (a, i, m) {
+        return jQuery(a).text().toUpperCase()
+            .indexOf(m[3].toUpperCase()) >= 0;
+    };
+
+    function imgError(image) {
+        image.onerror = "";
+        image.src = "/Images/Icons/shop_default.png";
+        return true;
+    };
+</script>
+}
+    
+
+
+

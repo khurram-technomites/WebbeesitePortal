@@ -1,0 +1,845 @@
+﻿@model WebApp.ViewModels.SupplierViewModel
+
+@{
+    ViewBag.Title = "Suppliers";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .btn-send-for-approval {
+        margin-top: -41px !important;
+    }
+
+    .btn-remarks {
+        margin-right: 180px !important;
+    }
+
+    .fa-arrow-right:before {
+        content: "\f061";
+        color: red;
+    }
+
+    .vertical {
+        width: 0.1rem;
+        height: auto;
+        border: none;
+        background: #dacdcd;
+    }
+
+    .color-circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50px;
+        display: inline-block;
+        position: relative;
+        margin-top: 0px;
+        padding-top: 5px;
+        top: 1px;
+    }
+
+    .variat {
+        border-top: 1px solid #0000001c;
+        padding-top: 1.25rem !important;
+        border-bottom: 1px solid #0000004a;
+        padding-bottom: 1.25rem !important;
+    }
+
+    .branch-input {
+        background-color: #e8e8e8;
+    }
+
+        .branch-input::placeholder {
+            color: #8e8a8a;
+            opacity: 70;
+        }
+
+    .pin-on-map {
+        right: 50px;
+        padding-right: 5px;
+        border-right: 1px solid rgb(255 63 64 / 5%);
+    }
+
+    .get-current-location {
+        top: 25px;
+        right: 30px;
+    }
+
+        .get-current-location i {
+            color: #FF3F40;
+        }
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map {
+        height: 100%;
+    }
+
+
+    div.pac-container {
+        /*for search locaton on map model popup txtaddress*/
+        z-index: 99999999999 !important;
+    }
+
+    .wo-right-icon {
+        position: absolute;
+        top: 30px;
+        font-size: 12px;
+        color: #FF3F40;
+        font-weight: 900;
+    }
+
+        .wo-right-icon:hover {
+            color: #c91e1f;
+        }
+
+    .pac-card {
+        background-color: #fff;
+        border: 0;
+        border-radius: 2px;
+        box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+        margin: 10px;
+        padding: 0 0.5em;
+        font: 400 18px Roboto, Arial, sans-serif;
+        font-family: Roboto;
+        padding: 0;
+    }
+
+    #pac-container {
+        z-index: 1051 !important;
+    }
+
+    .pac-container {
+        z-index: 1051 !important;
+    }
+
+    .pac-controls {
+        padding: 5px 11px;
+    }
+
+        .pac-controls label {
+            font-family: Roboto;
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+    #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 503px;
+        height: 40px;
+    }
+
+        #pac-input:focus {
+            border-color: #4d90fe;
+        }
+
+    @@media(max-width: 500px) {
+        .btn-send-for-approval {
+            margin-top: 10px !important;
+        }
+
+        .btn-remarks {
+            margin-top: 10px !important;
+            margin-right: 0px !important;
+        }
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a class="text-white text-hover-white opacity-75 hover-opacity-100">Supplier</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a class="text-white text-hover-white opacity-75 hover-opacity-100">Create</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+
+
+            <!--begin::Dashboard-->
+            <!--begin::Card-->
+            <div class="card card-custom" id="kt_page_sticky_card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">
+                            Supplier Profile:
+                        </h3>
+                    </div>
+                    <div class="card-toolbar" id="SaveProfileDiv">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-info font-weight-bolder" form="Userform">
+                                <i class="ki ki-check icon-sm"></i>Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" id="VendorIdle" @*value="@(Session["VendorIdle"] != null ? Session["VendorIdle"].ToString() : "false")"*@ />
+                    <form id="Userform" method="post">
+                        @*@using (Html.BeginForm("ProfileManagement", "Account", new { area = "Vendor" }, FormMethod.Post, new { enctype = "multipart/form-data", id = "Userform" }))*@
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.AntiForgeryToken()
+                        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="form-group row justify-content-center">
+                            <div class="col-lg-6 text-center">
+                                <div class="image-input image-input-outline" id="kt_image_1">
+                                    <div class="image-input-wrapper" style="background-image:url('../../../../Assets/AppFiles/Images/default.png'); background-repeat: round"></div>
+                                    <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change logo">
+                                        <i class="fa fa-pen icon-sm text-muted"></i>
+                                        <input type="file" name="logo" id="logo" asp-for="Logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" />
+                                        <input type="hidden" name="profile_avatar_remove" />
+                                        <input type="hidden" name="logoPath" class="form-control" id="ImageValue" readonly />
+                                    </label>
+                                    <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow cancelimage" id="RemoveImage" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                        <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                    </span>
+                                </div>
+                                <span class="form-text text-muted">Logo</span>
+                                <span class="form-text text-muted">Image dimensions should be 200 x 200 pixels and Image size must be less than 100 kb</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Supplier Reference No</label>
+                                    <div class="input-group mb-2">
+                                        <input asp-for="ReferenceCode" class="form-control" readonly>
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-hashtag"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Legal Name as per Trade License</label>
+                                    <div class="input-group mb-2">
+                                        <input type="text" asp-for="NameAsPerTradeLicense" class="form-control" required>
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Email</label>
+                                    <div class="input-group mb-2">
+                                        @*<input type="email" asp-for="Email" class="form-control" required>*@
+                                        <input asp-for="Email" class="form-control" required readonly>
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Phone Number</label>
+                                    <div class="input-group mb-2">
+                                        <input type="number" asp-for="PhoneNumber" class="form-control" required>
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Whatsapp</label>
+                                    <div class="input-group mb-2">
+                                        <input type="number" asp-for="WhatsappNumber" class="form-control" required>
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*<div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Bank Name</label>
+                <div class="input-group mb-2">
+                    <input type="text" asp-for="Bank" class="form-control" required>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-landmark"></i></span></div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Bank, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Bank</label>
+                                    <div class="input-group mb-3">
+                                        <select id="BankName" asp-for="Bank" name="BankName" required class="form-control">
+                                            <option value="">Select Bank ...</option>
+                                            <option value="UAE - United Emirates Bank(UEB)">UAE - United Emirates Bank(UEB)</option>
+                                            <option value="UAE - Abu Dhabi Commercial Bank(ADCB)">UAE - Abu Dhabi Commercial Bank(ADCB)</option>
+                                            <option value="UAE - Abu Dhabi Islamic Bank(ADIB)">UAE - Abu Dhabi Islamic Bank(ADIB)</option>
+                                            <option value="UAE - Arab Bank(ABU)">UAE - Arab Bank(ABU)</option>
+                                            <option value="UAE - Arab Emirates Investment Bank(AEIB)">UAE - Arab Emirates Investment Bank(AEIB)</option>
+                                            <option value="UAE - Bank of Sharjah(BOS)">UAE - Bank of Sharjah(BOS)</option>
+                                            <option value="UAE - Commercial Bank of Dubai CBD">UAE - Commercial Bank of Dubai CBD</option>
+                                            <option value="UAE - Emirates Islamic Bank(EIB)">UAE - Emirates Islamic Bank(EIB)</option>
+                                            <option value="UAE - Dubai Islamic Bank(DIB)">UAE - Dubai Islamic Bank(DIB)</option>
+                                            <option value="UAE - Finance House(FH)">UAE - Finance House(FH)</option>
+                                            <option value="UAE - First Gulf Bank(FGB)">UAE - First Gulf Bank(FGB)</option>
+                                            <option value="UAE - Invest Bank(IB)">UAE - Invest Bank(IB)</option>
+                                            <option value="UAE - ZBAVI Bank(ZB)">UAE - ZBAVI Bank(ZB)</option>
+                                            <option value="UAE - National Bank of Abu Dhabi(NBOAD)">UAE - National Bank of Abu Dhabi(NBOAD)</option>
+                                            <option value="UAE - National Bank of Fujairah(NBOF)">UAE - National Bank of Fujairah(NBOF)</option>
+                                            <option value="UAE - National Bank of Umm Al-Qaiwain(NBOUQ)">UAE - National Bank of Umm Al-Qaiwain(NBOUQ)</option>
+                                            <option value="UAE - United Arab Bank(UAB)">UAE - United Arab Bank(UAB)</option>
+                                            <option value="UAE - EMIRATES NBD BANK">UAE - EMIRATES NBD BANK</option>
+                                            <option value="UAE - Al Hilal Bank">UAE - Al Hilal Bank</option>
+                                            <option value="UAE - National Bank Of Fujairah">UAE - National Bank Of Fujairah</option>
+                                            <option value="UAE - RAKBANK National Bank Of Ras Al Khaimah">UAE - RAKBANK National Bank Of Ras Al Khaimah</option>
+                                            <option value="UAE - FIRST ABU DHABI BANK">UAE - FIRST ABU DHABI BANK</option>
+                                            <option value="UAE - Mashreq Bank (Mashreq)">UAE - Mashreq Bank (Mashreq)</option>
+                                            <option value="UAE - Noor Islamic Bank">UAE - Noor Islamic Bank</option>
+                                            <option value="UAE - HSBC BANK">UAE - HSBC BANK</option>
+                                            <option value="UAE - Al Masraf Bank">UAE - Al Masraf Bank</option>
+                                            <option value="UAE - Ajman Bank">UAE - Ajman Bank</option>
+                                            <option value="UAE - Union National Bank">UAE - Union National Bank</option>
+                                            <option value="UAE - HSBC BANK MIDDLE EAST LIMITED">UAE - HSBC BANK MIDDLE EAST LIMITED</option>
+                                            <option value="UAE - BLOM France Bank">UAE - BLOM France Bank</option>
+                                            <option value="UAE - ARAB BANK PLC">UAE - ARAB BANK PLC</option>
+                                            <option value="UAE - BNP Paribas">UAE - BNP Paribas</option>
+                                            <option value="UAE - ARAB BANK FOR INVESTMENT AND FOREIGN TRADE">UAE - ARAB BANK FOR INVESTMENT AND FOREIGN TRADE</option>
+                                            <option value="UAE -  ALBARAKA TURK PARTICIPATION BANK">UAE -  ALBARAKA TURK PARTICIPATION BANK</option>
+                                            <option value="UAE - Habib Bank AG Zurich">UAE - Habib Bank AG Zurich</option>
+                                            <option value="UAE - Standard Chartered Bank">UAE - Standard Chartered Bank</option>
+                                            <option value="UAE - ARAB AFRICAN INTERNATIONAL BANK">UAE - ARAB AFRICAN INTERNATIONAL BANK</option>
+                                            <option value="UAE - Citi Bank UAE">UAE - Citi Bank UAE</option>
+                                            <option value="UAE - Bank of Baroda">UAE - Bank of Baroda</option>
+                                            <option value="UAE - INTESA SANPAOLO">UAE - INTESA SANPAOLO</option>
+                                            <option value="UAE - National Bank Of Kuwait">UAE - National Bank Of Kuwait</option>
+                                            <option value="UAE - Janata Bank Limited">UAE - Janata Bank Limited</option>
+                                            <option value="UAE - BANQUE MISR">UAE - BANQUE MISR</option>
+                                            <option value="UAE - EMIRATES DEVELOPMENT BANK">UAE - EMIRATES DEVELOPMENT BANK</option>
+
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Bank Account Holder Name</label>
+                                    <div class="input-group mb-2">
+                                        <input type="text" asp-for="BankAccountHolderName" class="form-control" required>
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-landmark"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Bank Account Number</label>
+                                    <div class="input-group mb-2">
+                                        <input type="number" asp-for="BankAccountNumber" class="form-control" required>
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-landmark"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Bank Account Numebr</label>
+                <div class="input-group mb-2">
+                    <input asp-for="BankAccountNumber" class="form-control" required>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-landmark"></i></span></div>
+                </div>
+            </div>
+        </div>*@
+
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">IBAN</label>
+                                    <div class="input-group mb-2">
+                                        <input type="text" asp-for="IBAN" class="form-control" required>
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-hashtag"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*@{
+                                if (Model.Status == "Pending" || Model.Status == "Processing")
+                                {*@
+                                    <div class="col-md-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Package</label>
+                                            <select asp-for="SupplierPackageId" class="form-control" asp-items="@(new SelectList(ViewBag.PackageId,"Id","Name"))" required></select>
+                                        </div>
+                                    </div>
+                                @*}
+                            }*@
+
+
+
+
+                            <div class="col-md-12 col-sm-12">
+                                <h4 class="card-label">
+                                    Location
+                                </h4>
+                                <hr />
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Country</label>
+                                    <select asp-for="CountryId" id="CountryId" class="form-control" asp-items="@(new SelectList(ViewBag.CountryId,"Id","Name"))" required></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">City</label>
+                                    <select asp-for="CityId" id="CityId" class="form-control" required></select>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12">
+                                <div class="form-group">
+                                    <label class="wo-titleinput mb-0">Search Location</label>
+                                    <div class="wo-form-icon">
+                                        <input type="text" class="form-control show-map-input Address" asp-for="Address" placeholder="Choose location" required>
+                                        <a href="javascript:void(0);" class="wo-right-icon get-current-location" onclick="getLocation()">
+                                            <i class="flaticon2-map"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" class="wo-right-icon pin-on-map" @*data-toggle="modal" data-target="#map-modal"*@ onclick="openMap()">
+                                            Pin On Map
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="MapSearchResult" style="display:none">
+                                </div>
+                                <input type="hidden" name="Latitude" asp-for="Latitude"  />
+                                <input type="hidden" name="Longitude" asp-for="Longitude"  />
+                            </div>
+</form>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!--<div class="card card-custom gutter-b card-documents">
+            <div class="card-body p-10">
+                <!--begin::Accordion-->
+                <!--<div class="accordion accordion-light accordion-toggle-plus accordion-light-borderless accordion-svg-toggle" id="">
+                    <div class="card">
+
+                        <div class="card-toolbar">
+                            <a href="javascript:;" class="btn btn-info font-weight-bolder" onclick="OpenModelPopup(this,'/Admin/Supplier/DocumentModel')">-->
+                                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24" />
+                                        <circle fill="#000000" cx="9" cy="15" r="6" />
+                                        <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                    </g>
+                                </svg>-->
+                                <!--end::Svg Icon-->
+                                <!--Add Document
+                            </a>
+                        </div>
+
+
+                        <div class="card-body pl-12">
+
+                            <div class="checkbox-list vendor-documents mt-2">
+                                <div class="row mt-1">
+                                    <div class="col-sm-5">
+                                        <h5><b><strong>Document Name</strong></b></h5>
+
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <h5><b><strong>Expiry Date</strong></b></h5>
+
+                                    </div>
+                                    <div class="col-sm-1">
+
+                                    </div>
+                                    <div class="col-sm-2 pl-2">
+                                        <h5><b><strong>Actions</strong></b></h5>
+                                    </div>
+                                </div>
+                                <div class="DocWrap">-->
+                                    @*@{
+                                        foreach (var document in Model.SupplierDocuments)
+                                        {*@
+                                            @*<div class="row mt-1">
+                                                <div class="col-sm-5">
+                                                    <a href="@document.Path" class="font-weight-bolder mr-2" target="_blank">
+                                                        @document.DocumentType
+                                                    </a>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <p>@document.ExpiryDateTime.ToShortDateString()</p>
+
+                                                </div>
+                                                <div class="col-sm-1">
+
+                                                </div>
+                                                <div class="col-sm-2 pl-2">
+                                                    <button type="button" class="btn btn-bg-secondary btn-icon btn-sm mr-1" onclick="DeleteDocument(this, '@document.Id')"><i class="fa fa-trash"></i></button>
+                                                </div>
+                                            </div>*@
+                                        @*}
+                                    }*@
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>-->
+                <!--end::Accordion-->
+            <!--</div>
+        </div>-->
+
+        <div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content" style="min-height:100px">
+                    <div id='myModalContent'>
+                        <div class="row justify-content-center">
+                            <div class="col-16">
+                                <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Card-->
+        <!--end::Dashboard-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Entry-->
+</div>
+
+<!-- Map Modal Start -->
+<div class="modal fade wo-videopopup " tabindex="-1" role="dialog" id="map-modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="wo-modalcontent modal-content">
+            <div class="modal-body">
+                <a href="javascript:void(0);" class="close"><i class="ti-close" data-dismiss="modal"></i></a>
+                <div class="login-header">
+                    <h4 class="text-center mb-2">Search Location</h4>
+                    <p class="text-center" id="drag-map"><span>Drag marker on the map to select your desired location.</span></p>
+                </div>
+                <!-- Modal Body Start -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="map-div" style="display:none">
+                                <input type="text" class="form-control mb-3 Address" id="current-location" name="current-location" placeholder="Search Location" required="">
+                                <div id="googleMap" style="width:100%;height:400px;"></div>
+                                <button class="btn btn-block btn-theme border-radius-4 mt-3 p-3" type="button" data-dismiss="modal">Done</button>
+                            </div>
+                            <div class="map-div-spin p-5 m-5 text-center">
+                                <span class="fa fa-circle-notch fa-spin fa-2x"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Body End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Map Modal End -->
+<!--end::Row-->
+@*
+    <script>
+        var SuccessMessage = '@ViewBag.SuccessMessage';
+        var ErrorMessage = '@ViewBag.ErrorMessage';
+    </script>
+*@
+
+@section Scripts {
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmOcUK0pgT3lW3Cr9LoeCVGIrm1_qFq30&callback=initMap&libraries=&v=weekly&callback=myMap"></script>*@
+
+    <!--end::Page Scripts-->
+    <script src="~/Admin/js/general/ModalPopup.js"></script>
+
+    <script src="~/js/Map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8&libraries=places&callback=initAutocomplete"></script>
+
+    @*@if (ViewBag.MessagePaid != null)
+        {
+            <script>
+                swal.fire({
+                    title: 'Success',
+                    html: '@ViewBag.MessagePaid.' + ' Please complete your profile and send it for approval.',
+                    type: 'success',
+                    showCancelButton: false,
+                    confirmButtonText: 'Proceed to profile management.'
+                });
+            </script>
+        }
+        else if (ViewBag.MessagePaidErr != null)
+        {
+            <script>
+                swal.fire({
+                    title: 'Failed!',
+                    html: '@ViewBag.MessagePaidErr',
+                    type: 'error',
+                });
+
+            </script>
+        }*@
+
+<script>
+        'use strict';
+        var logoPath;
+    var VendorIdle = $('#VendorIdle').val().toLowerCase() == "true" ? true : false;
+    var CityId;
+    var countryId;
+
+        var _URL = window.URL || window.webkitURL;
+
+        $(document).ready(function () {
+            //Image Validation Begin
+            $("#Logo").change(function (e) {
+                var file, img;
+
+                if ((file = this.files[0])) {
+
+                    img = new Image();
+
+                    if (file.size > 10000000) {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Image size must be less than 100 kb!',
+
+                        }).then(function (result) {
+                            $("#Logo").attr("src", "/Assets/AppFiles/Images/default.png");
+                            $(".cancelimage").trigger('click');
+                        });
+                    }
+                    else {
+                        img.onerror = function () {
+                            alert("not a valid file: " + file.type);
+                        };
+                    }
+                };
+                img.src = _URL.createObjectURL(file);
+                logoPath = UploadImageToDraft(file).responseText;
+                $("#logopath").val(logoPath);
+            });
+            //Image Validation End
+
+            var avatar1 = new KTImageInput('kt_image_1');
+
+            $(".cancelimage").click(function () {
+                DeleteImage(logoPath);
+                logoPath = "";
+            })
+
+
+
+            if ('@*@Model.Status*@' == 'Pending' || '@*@Model.Status*@' == 'Processing') {
+                $("#kt_header_menu_wrapper").hide();
+                $(".topbar").hide();
+                $("#kt_header").children().append(`<a class="btn font-weight-bolder mr-2 align-items-center" style="height:50px;margin-top: 14px;display: flex;background: transparent;color: white" href="Logout">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="margin-right: 5px;">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect id="bound" x="0" y="0" width="24" height="24"></rect>
+                                            <path d="M7.62302337,5.30262097 C8.08508802,5.000107 8.70490146,5.12944838 9.00741543,5.59151303 C9.3099294,6.05357769 9.18058801,6.67339112 8.71852336,6.97590509 C7.03468892,8.07831239 6,9.95030239 6,12 C6,15.3137085 8.6862915,18 12,18 C15.3137085,18 18,15.3137085 18,12 C18,9.99549229 17.0108275,8.15969002 15.3875704,7.04698597 C14.9320347,6.73472706 14.8158858,6.11230651 15.1281448,5.65677076 C15.4404037,5.20123501 16.0628242,5.08508618 16.51836,5.39734508 C18.6800181,6.87911023 20,9.32886071 20,12 C20,16.418278 16.418278,20 12,20 C7.581722,20 4,16.418278 4,12 C4,9.26852332 5.38056879,6.77075716 7.62302337,5.30262097 Z" id="Oval-25" fill="#fff" fill-rule="nonzero"></path>
+                                            <rect id="Rectangle" fill="#fff" opacity="0.3" x="11" y="3" width="2" height="10" rx="1"></rect>
+                                        </g>
+                                    </svg>Logout
+                        </a>`)
+            }
+
+
+            $('.mytimepicker').timepicker({});
+
+            $('.mytimepicker').timepicker({
+                timeFormat: 'h:mm p',
+                interval: 60,
+                minTime: '10',
+                maxTime: '6:00pm',
+                defaultTime: '11',
+                startTime: '10:00',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true
+            });
+
+
+        });
+
+        KTUtil.ready(function () {
+            //KTImageInputDemo.init();
+
+            if ($('#CountryID').val() == 0) {
+                var $dropdown = $("#CityID").empty();
+                $dropdown.append($("<option />").val('').text("Please Select Country First!"));
+            }
+
+            $('#Userform').submit(function () {
+                $('#btnSave').addClass('spinner spinner-left spinner-light').prop('disabled', false);
+                //return true;
+            });
+
+            $('#CountryId').change(function () {
+                var count = 0;
+                var $dropdown = $("#CityId");
+                if ($(this).val() == 0) {
+                    $dropdown.empty();
+                    $dropdown.append($("<option />").val('').text("Please Select Country First!"));
+                }
+                else {
+                    $.ajax({
+                        type: 'Get',
+                        url: '/Admin/Restaurant/GetCityBycountryId?countryId=' + $(this).val(),
+                        success: function (response) {
+                            $dropdown.empty();
+                            $dropdown.append($("<option />").val('').text("Select city"));
+                            var cities = response.data;
+                            $.each(cities, function (k, v) {
+                                $dropdown.append($("<option />").val(v.id).text(v.name));
+                                count++;
+                            });
+
+                            if (CityId != null)
+                                $dropdown.val(CityId)
+                        }
+                    });
+                }
+            });
+
+            if ('@*@Model.CountryId*@' != '') {
+                $("#CountryId").val(@*@Model.CountryId*@)
+            }
+            $("#element-id").val('the value of the option');
+
+            if (CityId != null) {
+                $('#CountryId').trigger('change');
+            }
+
+            if ('@*@Model.SupplierPackageId*@' != '')
+                $("#SupplierPackageId").val(@*@Model.SupplierPackageId*@)
+        });
+
+
+
+        function callback(dialog, elem, isedit, response) {
+            if (response.success) {
+                toastr.success(response.message);
+
+                if (isedit) {
+                    table1.row($(elem).closest('tr')).remove().draw();
+                }
+
+                addRow(response.data);
+                jQuery('form', dialog).closest('.modal').find('button[type=submit]').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                jQuery('#myModal').modal('hide');
+            }
+            else {
+                jQuery('form', dialog).closest('.modal').find('button[type=submit]').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+
+                toastr.error(response.message);
+            }
+        }
+
+
+        //function DeleteDocument(element, record) {
+
+
+
+
+        //}
+
+        $("#IDNo").mask("999-9999-9999999-9");
+
+        function DeleteDocument(obj, Id) {
+
+                swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+                if (result.value) {
+
+                    $(obj).children().hide();
+                    $(obj).addClass('spinner spinner-dark spinner-right').attr('disabled', true);
+
+                    $.ajax({
+                        url: '/Admin/Supplier/DeleteDocument?Id=' + Id,
+                        type: 'DELETE',
+                        data: {
+                            "__RequestVerificationToken":
+								$("input[name=__RequestVerificationToken]").val()
+                        },
+                        success: function (result) {
+                            toastr.options = {
+                                "positionClass": "toast-bottom-right",
+                            };
+                            $(obj).parent().parent().remove();
+                            toastr.success('Document Deleted Successfully');
+
+                            $(obj).removeClass('spinner spinner-dark spinner-right').attr('disabled', true);
+                            $(obj).children().show();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            if (xhr.status == 403) {
+                                try {
+                                    var response = $.parseJSON(xhr.responseText);
+                                    swal.fire(response.Error, response.Message, "warning").then(function () {
+                                        $('#myModal').modal('hide');
+                                        $(obj).removeClass('spinner spinner-dark spinner-right').attr('disabled', true);
+                                        $(obj).children().show();
+                                    });
+                                } catch (ex) {
+                                    swal.fire("Access Denied", "Your are not authorize to perform this action, For further details please contact administrator !", "warning").then(function () {
+                                        $('#myModal').modal('hide');
+                                        $(obj).removeClass('spinner spinner-dark spinner-right').attr('disabled', true);
+                                        $(obj).children().show();
+                                    });
+                                }
+
+
+                                //$(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                //$(element).find('i').show();
+
+                                $(obj).removeClass('spinner spinner-dark spinner-right').attr('disabled', true);
+                                $(obj).children().show();
+
+                            }
+                        }
+                    });
+                }
+            });
+
+
+        }
+</script>
+}

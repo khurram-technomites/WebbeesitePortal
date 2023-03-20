@@ -1,0 +1,57 @@
+﻿@model WebApp.ViewModels.SupplierViewModel
+@{
+    ViewBag.Title = "View Document";
+    Layout = null;
+}
+
+<div class="card card-custom gutter-b card-documents">
+    <div class="card-body p-10">
+        <!--begin::Accordion-->
+        <div class="accordion accordion-light accordion-toggle-plus accordion-light-borderless accordion-svg-toggle" id="">
+            <div class="card">
+
+                <div class="card-toolbar">
+                    <h1><b><strong>Supplier Transaction</strong></b></h1>
+                </div>
+
+
+                <div class="card-body pl-12">
+
+                    <div class="checkbox-list vendor-documents mt-2">
+                        <div class="row mt-1">
+                            <div class="col-sm-4" style="margin-left: 9%;">
+                                <h5><b><strong>Bank Name</strong></b></h5>
+
+                            </div>
+                            <div class="col-sm-4" style="margin-left: 24%">
+                                <h5><b><strong>Transaction Date</strong></b></h5>
+
+                            </div>
+                            @*<div class="col-sm-1">
+
+                            </div>*@
+                            @*<div class="col-sm-2 pl-2">
+                                    <h5><b><strong>Actions</strong></b></h5>
+                                </div>*@
+                        </div>
+                        <div class="DocWrap">
+                            @*@{
+                                foreach (var document in Model.SupplierDocuments)
+                                {*@
+                                    <div class="row mt-1">
+                                        <div class="col-md-12" style="text-align:center ; color : red">
+                                            No Data Found!
+                                        </div>
+                                    </div>
+                                @*}
+                            }*@
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--end::Accordion-->
+    </div>
+</div>

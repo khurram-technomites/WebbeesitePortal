@@ -1,0 +1,95 @@
+﻿@model WebApp.ViewModels.TicketViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<div class="modal-header">
+    <h5 class="modal-title">Generate Ticket</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="Userform">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+                <label class="control-label">Priority</label>
+                @Html.DropDownListFor(x => x.Priority, new List<SelectListItem>
+               {
+                        new SelectListItem() {Text = "LOW", Value="LOW"},
+                        new SelectListItem() {Text = "MEDIUM", Value="MEDIUM"},
+                        new SelectListItem() {Text = "HIGH", Value="HIGH"}
+               }, "Select Priority", htmlAttributes: new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.Priority, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+                <label class="control-label">Description</label>
+                <div class="input-group mb-2" >
+                    @Html.TextAreaFor(m => m.Description, new
+               {
+                   @class = "form-control",
+                   placeholder = "Enter here ...",
+                   required = "required",
+                   rows = "5",
+                   id = "description-box"
+               })
+                </div>
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="Userform">Submit</button>
+</div>
+<script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+<script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+<script src="/Admin/js/general/ModalPopup.js"></script>
+<script>
+    var _URL = window.URL || window.webkitURL;
+    var Description = "";
+    $(document).ready(function () {
+        $("#Userform").submit(function () {
+            
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+            var data = new FormData();
+            data.append("Description", $("#description-box").val());
+            data.append("Priority", $('#Priority').val());
+
+            $.ajax({
+                url: "/Supplier/Ticket/Create/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+
+                    if (callback) {
+                        callback($('#myModalContent'), element, false, response);
+                        location.reload();
+                    }
+                    location.reload();
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+                
+            });
+            return false;
+        });
+        //$("#Name").on('change', function () {
+        //	var name = $(this);
+        //	$("#Slug").val($(name).val().replace(/ /g, "-").toLocaleLowerCase());
+        //});
+    });
+</script>
+
+

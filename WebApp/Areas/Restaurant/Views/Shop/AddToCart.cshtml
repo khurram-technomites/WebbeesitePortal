@@ -1,0 +1,144 @@
+﻿@model WebApp.ViewModels.SupplierItemViewModel
+
+@{
+    Layout = null;
+}
+
+<style>
+    .modal-header {
+        padding: 0.8rem 0.75rem;
+    }
+
+    .modal .modal-header .modal-title {
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+</style>
+
+
+<div class="modal-header">
+    <h5 class="modal-title ml-lg-25">Product Detail</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+
+
+
+<div class="product-item" id="item-@Model.Id">
+    <div class="product-thumb">
+        <div class="swiper img-swiper">
+            <div class="swiper-wrapper">
+                @if (Model.SupplierItemImages.Any())
+                {
+                    foreach (var image in Model.SupplierItemImages)
+                    {
+                        <div class="swiper-slide">
+                            <img src="@image.Path" alt="product">
+                        </div>
+
+                    }
+                    <img hidden id="Product-Image" src="@(Model.Thumbnail != null ? Model.Thumbnail : "/Images/Icons/product_default.png")" alt="product">
+                }
+                else
+                {
+                    <div class="swiper-slide">
+                        <img id="Product-Image" src="@(Model.Thumbnail != null ? Model.Thumbnail : "/Images/Icons/product_default.png")" alt="product">
+                    </div>
+                }
+            </div>
+            <div class="swiper-pagination"></div>
+
+
+        </div>
+
+
+    </div>
+    <div class="product-content">
+        <div class="d-flex justify-content-between">
+            @if (Model.SalePrice > 0)
+            {
+                <a href="#" class="label label-danger label-inline">@Model.DiscountPercentage% OFF</a>
+            }
+
+
+        </div>
+        @if (Model.StockStatus == "OutOfStock")
+        {
+            <div class="batch-stock"></div>
+        }
+        <p class="shop-name"><strong class="font-size-xs">Sold by  </strong><span id="supplierName" style="color: #f55050">@ViewBag.SupplierName</span></p>
+        <h6 class="item-title">@Model.Title</h6>
+        <div class="d-flex justify-content-between align-items-center">
+            <label class="opacity-70 mb-0 item-packaging">@Model.Packaging</label>
+            @if (Model.SalePrice > 0)
+            {
+                <div class="price item-price">AED @Model.SalePrice</div>
+            }
+            else
+            {
+                <div class="price item-price">AED @Model.RegularPrice</div>
+            }
+
+
+
+
+
+        </div>
+        <div class="cart-section">
+            <button class="form-control btn btn bg-danger modal-cart-btn" onclick="CreateBasket(this,@Model.Id,true)">Add To Cart</button>
+            <div class="row modal-cart-inc" style="display:none">
+                <div class="col-md-4 pr-0">
+                    <a href="javascript:void(0)" onclick="dcrQty(this,@Model.Id , true)" class="btn btn-block btn-dark mr-1 ">
+                        <i class="fa fa-minus "></i>
+                    </a>
+                </div>
+                <div class="col-md-4"><a href="javascript:void(0)" class="btn btn-light-dark btn-block mr-1 item-quantity cart-item-quantity">0</a></div>
+                <div class="col-md-4 pl-0">
+                    <a href="javascript:void(0)" onclick="incQty(this,@Model.Id , true)" class="btn btn-block btn-danger">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+         
+    var id = @Model.Id;
+    var swiper = new Swiper(".img-swiper", {
+        spaceBetween: 30,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+
+
+    });
+
+
+        $(document).ready(function () {
+            
+            $("#supplierName").text(supplierName);
+        var product = ShoppingCart.filter(function (obj) {
+            return obj.ProductId == id;
+        });
+
+        if (product.length > 0) {
+            $(".cart-item-quantity").text(product[0].Quantity);
+            $(".modal-cart-btn").hide();
+            $(".modal-cart-inc").show();
+        }
+
+    });
+
+
+</script>
+
+
+
+

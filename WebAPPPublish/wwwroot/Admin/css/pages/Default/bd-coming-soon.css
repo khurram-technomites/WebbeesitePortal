@@ -1,0 +1,133 @@
+﻿/* body {
+    font-family: 'Karla', sans-serif;
+    background-image: url("../Artboard.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #ffffff;
+    color: #3a3637;
+    padding-bottom: 75px;
+} */
+body {
+    background-image: url("/Assets/Admin/media/bg/bgd13.png");
+    background-color: #cccccc;
+}
+.logo {
+    width: 300px;
+}
+
+.separator {
+    width: 10%;
+    margin: 10px auto;
+}
+
+@media (max-width: 768px) {
+    .logo {
+        width: 300px;
+    }
+
+    body {
+        padding-bottom: 110px;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    /* body {
+        font-family: 'Karla', sans-serif;
+        background-image: url("../Artboard.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color: #ffffff;
+        color: #3a3637;
+        padding-bottom: 200px;
+    } */
+}
+
+.navbar-brand {
+    margin-right: 0;
+}
+
+    .navbar-brand img {
+        height: 21px;
+    }
+
+.navbar-dark {
+    padding-top: 35px;
+    padding-bottom: 35px;
+}
+
+    .navbar-dark .navbar-text {
+        color: #ffffff;
+        opacity: 1;
+        padding: 0 20px;
+        border-right: 1px solid #ffffff;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+        .navbar-dark .navbar-text:last-child {
+            border-right: 0;
+        }
+
+@media (max-width: 767px) {
+    .navbar-dark {
+        padding-bottom: 0;
+    }
+}
+
+.page-title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+@media (max-width: 767px) {
+    .page-title {
+        font-size: 15px;
+        margin-bottom: 14px;
+    }
+}
+
+.page-description {
+    font-size: 18px;
+    margin-bottom: 59px;
+}
+
+@media (max-width: 767px) {
+    .page-description {
+        font-size: 14px;
+    }
+}
+
+p {
+    font-size: 14px;
+    margin-bottom: 21px;
+}
+
+.footer-social-links .social-link {
+    display: inline-block;
+    text-align: center;
+    line-height: 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #000000;
+    margin-right: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+    .footer-social-links .social-link:last-child {
+        margin-right: 0;
+    }
+
+    .footer-social-links .social-link:hover {
+        text-decoration: none;
+        background-color: #000000;
+        color: #ffffff;
+    }
+
+/*# sourceMappingURL=bd-coming-soon.css.map */
+

@@ -1,0 +1,1074 @@
+﻿@model IEnumerable<WebApp.ViewModels.MenuViewModel>
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Restaurant/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .swal2-styled.swal2-confirm {
+        background-color: #d24b4b !important;
+    }
+</style>
+<link href="~/Admin/css/restaurant/menu/index.css" rel="stylesheet" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<link href="/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div>
+            Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+        </div>
+        <div class="dropdown mt-3">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                Dropdown button
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="kt_quick_panel" class="offcanvas offcanvas-right pt-5 pb-10">
+    <!--begin::Header-->
+    <div class="row p-4">
+        <div class="col-10">
+            <h6 class="pl-3 mt-1">Menu Management</h6>
+        </div>
+        <div class="col-2">
+            <div class="offcanvas-close pl-4">
+                <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_panel_close">
+                    <i class="ki ki-close icon-xs text-muted"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="offcanvas-header offcanvas-header-navs d-flex align-items-center justify-content-between mb-5">
+        <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-primary flex-grow-1 px-10" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#kt_quick_panel_logs">Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#kt_quick_panel_settings">Availability</a>
+            </li>
+        </ul>
+
+    </div>
+    <!--end::Header-->
+    <!--begin::Content-->
+    <div class="offcanvas-content px-10">
+        <div class="tab-content">
+            <!--begin::Tabpane-->
+            <input type="hidden" id="canvas-id" />
+            <div class="tab-pane fade show pt-3 pr-5 mr-n5 active" id="kt_quick_panel_logs" role="tabpanel">
+                <!--begin::Section-->
+                <div class="mb-15">
+                    <!--begin: Item-->
+                    <div class="form-group">
+                        <label>Restaurant Branch <span class="text-danger">*</span></label>
+                        <select class="form-control" id="canvas-branch">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input type="text" id="canvas-name" class="form-control branch-text" placeholder="Enter email .. " />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note <span class="text-danger">*</span></label>
+                        <textarea rows="6" id="canvas-description" class="form-control branch-text" placeholder="Enter note here ..."></textarea>
+                    </div>
+                    <!--end: Item-->
+                    <!--begin: Item-->
+                    <div class="d-flex">
+                        <span class="switch switch-sm switch-danger">
+                            <label>
+                                <input type="checkbox" id="canvas-status" onchange="ChangeStatus(this,'canvas-status-label')" name="select" />
+                                <span></span>
+                            </label>
+                        </span>
+                        <label class="mt-2 pl-4 text-justify canvas-status-label" style="font-size: 12px;" id="canvas-status-label"><span>Active</span></label>
+                    </div>
+                    <!--end: Item-->
+                </div>
+                <!--end::Section-->
+                <!--begin::Section-->
+                <!--end::Section-->
+            </div>
+            <!--end::Tabpane-->
+            <!--begin::Tabpane-->
+            <!--end::Tabpane-->
+            <!--begin::Tabpane-->
+            <div class="tab-pane fade pt-3 pr-5 mr-n5" id="kt_quick_panel_settings" role="tabpanel">
+
+                <!--begin::Section-->
+                <div class="row">
+                    <div class="col-1">
+                        <div class="form-group">
+                            <div class="radio-inline">
+                                <label class="radio radio-accent radio-danger mt-2">
+                                    <input type="radio" id="always-radio" value="always" name="periodic" onchange="periodic(this)" />
+                                    <span></span>
+                                </label>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column col-11">
+                        <h6 style="margin-bottom: 0px;">Always</h6>
+                        <p class="opacity-70 font-size-sm">The menu will always be shown.</p>
+                    </div>
+
+
+                </div>
+                <div class="separator separator-dashed mb-3"></div>
+                <div class="row">
+                    <div class="col-1">
+                        <div class="form-group">
+                            <div class="radio-inline">
+                                <label class="radio radio-accent radio-danger mt-2">
+                                    <input type="radio" id="periodic-radio" value="periodic" name="periodic" onchange="periodic(this)" />
+                                    <span></span>
+                                </label>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column col-11">
+                        <h6 style="margin-bottom: 0px;">Periodic</h6>
+                        <p class="opacity-70 font-size-sm">The menu will be visible between specific dates.</p>
+                    </div>
+
+
+                </div>
+                <div id="menu-schedules">
+                    <!--end::Section-->
+                    <div class="separator separator-dashed mb-3"></div>
+                    <!--begin::Section-->
+                    <div class="pt-2">
+                        <div id="menu-schedule-breakfast">
+                            <div class="row">
+                                <div class="col-9 col-form-label">
+                                    <div class="checkbox-inline">
+
+                                        <label class="checkbox checkbox-danger">
+                                            <input type="checkbox" id="breakfast-checkbox" />
+                                            <span></span>
+                                            <strong>Breakfast</strong>
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Start Time</label>
+                                        <input class="form-control branch-text" type="time" value="00:00:00" id="canvas-bf-start" />
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Closing Time</label>
+                                        <input class="form-control branch-text" type="time" value="00:00:00" id="canvas-bf-end" />
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div id="menu-schedule-breakfast">
+                            <div class="row">
+                                <div class="col-9 col-form-label">
+                                    <div class="checkbox-inline">
+
+                                        <label class="checkbox checkbox-danger">
+                                            <input type="checkbox" id="lunch-checkbox" />
+                                            <span></span>
+                                            <strong>Lunch</strong>
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Start Time</label>
+                                        <input class="form-control branch-text" type="time" value="00:00:00" id="canvas-lch-start" />
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Closing Time</label>
+                                        <input class="form-control branch-text" type="time" value="00:00:00" id="canvas-lch-end" />
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div id="menu-schedule-dinner">
+                            <div class="row">
+                                <div class="col-9 col-form-label">
+                                    <div class="checkbox-inline">
+
+                                        <label class="checkbox checkbox-danger">
+                                            <input type="checkbox" id="dinner-checkbox" />
+                                            <span></span>
+                                            <strong>Dinner</strong>
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Start Time</label>
+                                        <input class="form-control branch-text" type="time" value="00:00:00" id="canvas-dnr-start" />
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Closing Time</label>
+                                        <input class="form-control branch-text" type="time" value="00:00:00" id="canvas-dnr-end" />
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--end::Section-->
+                <div class="separator separator-dashed my-6"></div>
+                <!--begin::Section-->
+                <!--end::Section-->
+
+            </div>
+            <!--end::Tabpane-->
+        </div>
+    </div>
+
+
+    <div class="offcanvas-footer submit-button align-items-center">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <button type="button" class="btn btn-block btn-danger" onclick="EditCanvas(this)">
+                    <i class="flaticon2-check-mark icon-sm"></i> Save
+                </button>
+            </div>
+            @*<a href="#" class="btn btn-secondary mr-3">
+                    <i class="flaticon2-cross icon-sm"></i> Cancel
+                </a>*@
+
+
+        </div>
+
+    </div>
+    <!--end::Content-->
+</div>
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Dashboard-->
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+                        <div class="align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+                            <!--begin::Info-->
+
+
+                            <div class="d-flex align-items-center flex-wrap mr-1">
+                                <!--begin::Heading-->
+                                <div class="d-flex flex-column">
+
+                                    <!--begin::Breadcrumb-->
+                                    <div class="d-flex align-items-center font-weight-bold my-2">
+                                        <!--begin::Item-->
+                                        <a href="~/Restaurant/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                                        </a>
+                                        <!--end::Item-->
+                                        <!--begin::Item-->
+                                        <a href="/Restaurant/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                                        <!--end::Item-->
+                                        <!--begin::Item-->
+                                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Menus</a>
+                                        <!--end::Item-->
+                                    </div>
+                                    <!--end::Breadcrumb-->
+                                </div>
+
+                                <!--end::Heading-->
+                            </div>
+                            <!--end::Info-->
+                        </div>
+
+
+                    </div>
+                    <!--begin::Card-->
+                    @*<div class="card card-custom  gutter-b" id="kt_page_sticky_card">
+                        <div class="card-body">
+
+                        </div>
+                        </div>*@
+                    <div class="card card-custom  gutter-b">
+                        <div class="card-body">
+
+                            <div class="">
+                                <div class="" id="headingImage">
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <div class="d-flex flex-column">
+                                                <div><h4>Menus</h4></div>
+                                                <div><h6>Manage menus here ...</h6></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 justify-content-end">
+                                            <a href="javascript:;" class="btn btn-block btn-dark font-weight-bolder" onclick="OpenModelPopup(this, '/Restaurant/Menu/Create')">CREATE MENU</a>
+                                            @* <button type="button" id="CreateBtn" data-attr="Draft" class="btn btn-block btn-dark">CREATE MENU</button>*@
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator separator-solid my-7"></div>
+                                <div id="menu-list" class="sortable">
+                                    @if (Model.Any())
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                    <div class="card card-custom gutter-b sortable-default branch-input menu-item-card" data-attr="@item.Id" id="menu-@item.Id">
+                                        <div class="card-body">
+
+                                            <!--begin::Top-->
+                                            <div class="d-flex">
+
+                                                <img src="~/Images/Icons/Path 72.svg" class="tile_header mr-2" />
+                                                <!--begin::Pic-->
+                                                <div class="flex-shrink-0 mr-7">
+                                                    <div class="symbol symbol-50 symbol-lg-120">
+                                                        <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                    </div>
+                                                </div>
+                                                <!--end::Pic-->
+                                                <!--begin: Info-->
+                                                <div class="flex-grow-1">
+                                                    <!--begin::Title-->
+                                                    <div class="row align-items-center justify-content-between flex-wrap general-info">
+                                                        <!--begin::User-->
+                                                        <div class="col-8">
+                                                            <!--begin::Name-->
+                                                            <a href="#" id="menu-name" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">@item.Name</a>
+
+                                                            <!--end::Name-->
+                                                            <!--begin::Contacts-->
+                                                            <div class="d-flex flex-wrap">
+                                                                <a href="#" id="menu-item-count" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-2 opacity-70">@item.MenuItemCount : items</a>
+                                                            </div>
+                                                            <!--end::Contacts-->
+                                                        </div>
+                                                        <!--begin::User-->
+                                                        <!--begin::Actions-->
+                                                        <div class="col-4">
+                                                            <div class="status">
+                                                                <label class="menu-status-label" id="">@item.Status</label>
+                                                                <span class="switch switch-sm switch-danger">
+                                                                    <label>
+                                                                        <input type="checkbox" id="menu-status" @(item.Status == "Active" ? "checked" : "") onchange="ChangeStatusById(this , @item.Id)" name="select" />
+                                                                        <span></span>
+                                                                    </label>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Actions-->
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Content-->
+                                                    <div class="row align-items-center">
+                                                        <!--begin::Description-->
+
+                                                        <div class="col-8">
+                                                            <strong class="font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">Note : </strong>
+                                                            <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5"><em id="menu-description">@item.Description</em></div>
+                                                        </div>
+                                                        <div class="col-4 action-buttons">
+
+                                                            <a href="/Restaurant/Menu/GetMenuItem/@item.Id" class="btn btn-danger font-weight-bold btn-edit-menu">
+                                                                <i class="fa fa-pencil-alt mr-2"></i> Edit Menu
+                                                            </a>
+                                                            <a href="javascript:;" title="Duplicate" class="btn btn-danger btn-setting mr-2 ml-2" data-id="@item.Id" onclick="DuplicateMenu(this, @item.Id)">
+                                                                <i class="fas fa-copy"></i>
+                                                            </a>
+                                                            <a href="javascript:;" class="btn btn-danger btn-setting mr-2" data-id="@item.Id" onclick="DeleteMenu(this, @item.Id)">
+                                                                <i class="fa fa-trash-alt"></i>
+                                                            </a>
+
+                                                            <a href="javascript:;" class="kt_quick_panel_toggle btn btn-danger btn-setting" data-id="@item.Id" onclick="AddCanvasCategory(this)">
+                                                                <i class="flaticon2-gear"></i>
+                                                            </a>
+                                                            <div id="schedule-time" hidden>
+                                                                <input type="hidden" id="BreakFast-StartTime" data-attr="@item.BreakFastStartTime">
+                                                                <input type="hidden" id="BreakFast-EndTime" data-attr="@item.BreakFastEndTime">
+                                                                <input type="hidden" id="Lunch-StartTime" data-attr="@item.LunchStartTime">
+                                                                <input type="hidden" id="Lunch-EndTime" data-attr="@item.LunchEndTime">
+                                                                <input type="hidden" id="Dinner-StartTime" data-attr="@item.DinnerEndTime">
+                                                                <input type="hidden" id="Dinner-EndTime" data-attr="@item.DinnerEndTime">
+                                                                <input type="hidden" id="isPeriodic" data-attr="@item.IsPeriodic">
+                                                            </div>
+                                                            <input type="hidden" id="restaurantBranchId" value="@item.RestaurantBranchId" />
+
+                                                        </div>
+
+
+                                                        <!--end::Description-->
+                                                        <!--begin::Progress-->
+                                                        <!--end::Progress-->
+                                                    </div>
+                                                    <!--end::Content-->
+                                                </div>
+                                                <!--end::Info-->
+                                            </div>
+                                            <!--end::Top-->
+                                            <!--begin::Separator-->
+                                            <!--end::Separator-->
+                                            <!--begin::Bottom-->
+                                            <!--end::Bottom-->
+                                        </div>
+                                    </div>
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                    <div id="notAvalaible" class="text-center">
+                                        <img style="width:10%" src="~/Images/Icons/NotFound.png" />
+                                        <h4><em>Data is <span style="color: #f55050">not</span> available</em> </h4>
+                                    </div>
+                                    }
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--end::Card-->
+
+
+
+                </div>
+
+            </div>
+
+
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--end::Row-->
+<script>
+    var SuccessMessage = '@ViewBag.SuccessMessage';
+    var ErrorMessage = '@ViewBag.ErrorMessage';
+</script>
+@section Scripts {
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="~/admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+    <script src="~/admin/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
+    @*<script src="https://code.jquery.com/jquery-3.6.0.js" defer></script>*@
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" defer></script>
+
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    @*<script src="~/Assets/Admin/js/vendor/car/insurance.js"></script>*@
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Scripts-->
+    <!--end::Page Scripts-->
+    <script>
+
+        $(document).ready(function () {
+            $("#menu-schedules").show();
+            SortingPostion();
+        })
+        function periodic(e) {
+
+
+            if ($(e).val() == "periodic") {
+                $("#menu-schedules").show();
+            }
+            else {
+                $("#menu-schedules").hide();
+            }
+
+        };
+
+        function AddCanvasCategory(e) {
+
+            $("#menu-schedules").show();
+            var status = $(e).parents(':eq(2)').children(".general-info").find("#menu-status");
+            var branchId = $(e).next().next().val();
+            if ($(status).is(':checked')) {
+                $("#canvas-status").prop("checked", true);
+                $(".canvas-status-label").text("Active");
+            }
+            else {
+                $("#canvas-status").prop("checked", false);
+                $(".canvas-status-label").text("Inactive");
+            }
+
+            $("#canvas-name").val($(e).parents(':eq(2)').children(".general-info").find("#menu-name").text());
+            $("#canvas-id").val($(e).attr("data-id"));
+            $("#canvas-description").val($(e).parents(':eq(1)').children(".col-8").find("#menu-description").text());
+
+            var periodic = $(e).next().find("#isPeriodic").attr("data-attr");
+            var breakfastStart = new Date($(e).next().find("#BreakFast-StartTime").attr("data-attr"));
+            var formatbfstart = pad(breakfastStart.getHours()) + ":" + pad(breakfastStart.getMinutes());
+            var breakfastEnd = new Date($(e).next().find("#BreakFast-EndTime").attr("data-attr"));
+            var formatbfend = pad(breakfastEnd.getHours()) + ":" + pad(breakfastEnd.getMinutes());
+            var lunchStart = new Date($(e).next().find("#Lunch-StartTime").attr("data-attr"));
+            var formatlchstart = pad(lunchStart.getHours()) + ":" + pad(lunchStart.getMinutes());
+            var lunchEnd = new Date($(e).next().find("#Lunch-EndTime").attr("data-attr"));
+            var formatlchend = pad(lunchEnd.getHours()) + ":" + pad(lunchEnd.getMinutes());
+            var dinnerStart = new Date($(e).next().find("#Dinner-StartTime").attr("data-attr"));
+            var formatdnrstart = pad(dinnerStart.getHours()) + ":" + pad(dinnerStart.getMinutes());
+            var dinnerEnd = new Date($(e).next().find("#Dinner-StartTime").attr("data-attr"));
+            var formatdnrend = pad(dinnerEnd.getHours()) + ":" + pad(dinnerEnd.getMinutes());
+
+
+
+            if (periodic == "" || periodic == 'False' || periodic == false || periodic == 'false') {
+                $("#menu-schedules").hide();
+                $("#always-radio").prop("checked", true);
+                $("#breakfast-checkbox").prop("checked", false);
+                $("#canvas-bf-start").val("");
+                $("#canvas-bf-end").val("");
+                $("#lunch-checkbox").prop("checked", false);
+                $("#canvas-lch-start").val("");
+                $("#canvas-lch-end").val("");
+                $("#dinner-checkbox").prop("checked", false);
+                $("#canvas-dnr-start").val("");
+                $("#canvas-dnr-end").val("");
+            }
+            else {
+
+                $("#periodic-radio").prop("checked", true);
+
+                if (formatbfstart != "" && formatbfstart != 'undefined' && formatbfstart != "NaN:NaN") {
+                    $("#breakfast-checkbox").prop("checked", true);
+                    $("#canvas-bf-start").val(formatbfstart);
+                    $("#canvas-bf-end").val(formatbfend);
+                }
+
+                if (formatlchstart != "" && formatlchstart != 'undefined' && formatlchstart != "NaN:NaN") {
+                    $("#lunch-checkbox").prop("checked", true);
+                    $("#canvas-lch-start").val(formatlchstart);
+                    $("#canvas-lch-end").val(formatlchend);
+                }
+
+                if (formatdnrstart != "" && formatdnrstart != 'undefined' && formatdnrstart != "NaN:NaN") {
+                    $("#dinner-checkbox").prop("checked", true);
+                    $("#canvas-dnr-start").val(formatdnrstart);
+                    $("#canvas-dnr-end").val(formatdnrend);
+                }
+
+            }
+            var html = "";
+
+            $.ajax({
+                url: '/Restaurant/Menu/GetBranchDropDown/' + branchId,
+                type: 'Get',
+                success: function (response) {
+
+                    if (response.success) {
+                        $("#canvas-branch").empty();
+
+                        $.each(response.data, function (k, v) {
+                            if (v.selectedId != 0 && v.selectedId == v.id) {
+                                html += `<option selected value="${v.id}">${v.name}</option>`
+                            }
+                            else {
+                                html += `<option value="${v.id}">${v.name}</option>`
+                            }
+
+
+                        });
+
+                        $("#canvas-branch").append(html);
+
+                    } else {
+                        toastr.error(response.message);
+
+                    }
+                },
+
+            });
+
+
+        };
+
+        function ChangeStatus(f, source) {
+
+            if ($(f).is(':checked')) {
+
+                $(f).parents(':eq(2)').find("." + source).text("Active");
+            }
+
+            else {
+                $(f).parents(':eq(2)').find("." + source).text("Inactive");
+            }
+
+        };
+
+        function ChangeStatusById(e, id) {
+
+            $.ajax({
+                url: '/Restaurant/Menu/MenuToggleActiveStatus/' + id,
+                type: 'Get',
+                success: function (response) {
+
+                    if (response.success) {
+                        if ($(e).is(':checked')) {
+
+                            $(e).parents(':eq(2)').find(".menu-status-label").text("Active");
+                        }
+
+                        else {
+                            $(e).parents(':eq(2)').find(".menu-status-label").text("Inactive");
+                        }
+                        toastr.success(response.message);
+
+                    } else {
+
+                        if ($(e).is(':checked')) {
+                            $(e).prop("checked", false);
+                            $(e).parents(':eq(2)').find(".menu-status-label").text("Inactive");
+                        }
+
+                        else {
+                            $(e).prop("checked", true);
+                            $(e).parents(':eq(2)').find(".menu-status-label").text("Active");
+                        }
+                        toastr.error(response.message);
+
+                    }
+                },
+
+            });
+
+        };
+
+        function pad(d) {
+            return (d < 10) ? '0' + d.toString() : d.toString();
+        }
+
+        function EditCanvas(f) {
+
+            $(f).addClass('spinner spinner-light spinner-left').prop('disabled', true);
+            var periodic = false;
+            var status = "Inactive";
+            var bf_start = "";
+            var bf_end = "";
+            var lch_start = "";
+            var lch_end = "";
+            var dnr_start = "";
+            var dnr_end = "";
+
+            if ($("#periodic-radio").is(':checked')) {
+                periodic = true;
+                if ($("#breakfast-checkbox").is(':checked')) {
+                    $("menu-" + $("#canvas-id").val()).find("#BreakFast-StartTime").attr("data-attr", bf_start);
+                    $("menu-" + $("#canvas-id").val()).find("#BreakFast-EndTime").attr("data-attr", bf_end);
+                    bf_start = $("#canvas-bf-start").val();
+                    bf_end = $("#canvas-bf-end").val();
+                }
+
+                if ($("#lunch-checkbox").is(':checked')) {
+                    $("menu-" + $("#canvas-id").val()).find("#Lunch-StartTime").attr("data-attr", lch_start);
+                    $("menu-" + $("#canvas-id").val()).find("#Lunch-EndTime").attr("data-attr", lch_end);
+                    lch_start = $("#canvas-lch-start").val();
+                    lch_end = $("#canvas-lch-end").val();
+                }
+
+                if ($("#dinner-checkbox").is(':checked')) {
+                    $("menu-" + $("#canvas-id").val()).find("#Dinner-StartTime").attr("data-attr", dnr_start);
+                    $("menu-" + $("#canvas-id").val()).find("#Dinner-EndTime").attr("data-attr", dnr_end);
+                    dnr_start = ("#canvas-dnr-start").val();
+                    dnr_end = $("#canvas-dnr-end").val();
+                }
+
+
+            };
+
+
+            if ($("#canvas-status").is(':checked')) {
+                status = "Active"
+            }
+
+            var data = {
+                Id: $("#canvas-id").val(),
+                Name: $("#canvas-name").val(),
+                Description: $("#canvas-description").val(),
+                RestaurantBranchId: $("#canvas-branch").val(),
+                Status: status,
+                IsPeriodic: periodic,
+                BreakFastStartTime: bf_start,
+                BreakFastEndTime: bf_end,
+                LunchStartTime: lch_start,
+                LunchEndTime: lch_end,
+                DinnerStartTime: dnr_start,
+                DinnerEndTime: dnr_end,
+            };
+
+            $.ajax({
+
+                url: '/Restaurant/Menu/Edit/',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    if (response.success) {
+
+
+                        toastr.success(response.message);
+                        var div = $("#menu-" + response.data.id);
+                        $(div).find("#menu-name").text(response.data.name);
+                        $(div).find("#menu-description").text(response.data.description);
+                        $(div).find("#isPeriodic").attr("data-attr", response.data.isPeriodic);
+                        $(div).find("#restaurantBranchId").val(response.data.RestaurantBranchId);
+                        $(div).find("#BreakFast-EndTime").attr("data-attr", response.data.BreakFastEndTime);
+                        $(div).find("#BreakFast-StartTime").attr("data-attr", response.data.BreakFastStartTime);
+                        $(div).find("#Lunch-StartTime").attr("data-attr", response.data.LunchStartTime);
+                        $(div).find("#Lunch-EndTime").attr("data-attr", response.data.LunchEndTime);
+                        $(div).find("#Dinner-StartTime").attr("data-attr", response.data.DinnerStartTime);
+                        $(div).find("#Dinner-EndTime").attr("data-attr", response.data.DinnerEndTime);
+                        if (response.data.status == "Active") {
+                            $(div).find("#menu-status").prop("checked", true);
+                            $(div).find(".menu-status-label").text("Active");
+                            $("#canvas-status").prop("checked", true);
+                            $(".canvas-status-label").text("Active");
+
+                        }
+                        else {
+                            $(div).find("#menu-status").prop("checked", false);
+                            $(div).find(".menu-status-label").text("Inactive");
+                            $("#canvas-status").prop("checked", false);
+                            $(".canvas-status-label").text("Inactive");
+                        }
+
+
+
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+                    $(f).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+
+                },
+                error: function (e) {
+                    $(f).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                },
+                failure: function (e) {
+                    $(f).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                }
+            });
+
+        };
+
+        function BindMenuList(response) {
+            var html = `<div class="card card-custom gutter-b branch-input menu-item-card" id="menu-${response.data.id}">
+                                                                                    <div class="card-body">
+                                                                                        <!--begin::Top-->
+                                                                                        <div class="d-flex">
+                                                                                            <!--begin::Pic-->
+                                                                                            <div class="flex-shrink-0 mr-7">
+                                                                                                <div class="symbol symbol-50 symbol-lg-120">
+                                                                                                    <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <!--end::Pic-->
+                                                                                            <!--begin: Info-->
+                                                                                            <div class="flex-grow-1">
+                                                                                                <!--begin::Title-->
+                                                                                                <div class="row align-items-center justify-content-between flex-wrap general-info">
+                                                                                                    <!--begin::User-->
+                                                                                                    <div class="col-8">
+                                                                                                        <!--begin::Name-->
+                                                                                                        <a href="#" id="menu-name" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">${response.data.name}</a>
+
+                                                                                                        <!--end::Name-->
+                                                                                                        <!--begin::Contacts-->
+                                                                                                        <div class="d-flex flex-wrap">
+                                                                                                            <a href="#" id="menu-item-count" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-2 opacity-70">${response.data.menuItemCount} : items</a>
+                                                                                                        </div>
+                                                                                                        <!--end::Contacts-->
+                                                                                                    </div>
+                                                                                                    <!--begin::User-->
+                                                                                                    <!--begin::Actions-->
+                                                                                                    <div class="col-4">
+                                                                                                        <div class="status">
+                                                                                                            <label class="menu-status-label" id="">Active</label>
+                                                                                                            <span class="switch switch-sm switch-danger">
+                                                                                                                <label>
+                                                                                                                    <input type="checkbox" id="menu-status" checked onchange="ChangeStatusById(this , ${response.data.id})" name="select" />
+                                                                                                                    <span></span>
+                                                                                                                </label>
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <!--end::Actions-->
+                                                                                                </div>
+                                                                                                <!--end::Title-->
+                                                                                                <!--begin::Content-->
+                                                                                                <div class="row align-items-center">
+                                                                                                    <!--begin::Description-->
+
+                                                                                                    <div class="col-8">
+                                                                                                        <strong class="font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">Note : </strong>
+                                                                                                        <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5"><em id="menu-description">${response.data.description}</em></div>
+                                                                                                    </div>
+                                                                                                    <div class="col-4 action-buttons">
+
+                                                                                                        <a href="/Restaurant/Menu/GetMenuItem/${response.data.id}" class="btn btn-danger font-weight-bold mr-2 btn-edit-menu">
+                                                                                                            <i class="fa fa-pencil-alt mr-2"></i> Edit Menu
+                                                                                                        </a>
+
+                                                                                                        <a href="javascript:;" title="Duplicate" class="btn btn-danger btn-setting mr-2" data-id="${response.data.id}" onclick="DuplicateMenu(this, ${response.data.id})">
+
+                                                                                                            <i class="fas fa-copy"></i>
+                                                                                                            </a>
+                                                                                                            <a href="javascript:;" class="btn btn-danger btn-setting mr-2" data-id="${response.data.id}" onclick="DeleteMenu(this, ${response.data.id})">
+                                                                                                                <i class="fa fa-trash-alt"></i>
+                                                                                                            </a>
+                                                                                                            <a href="javascript:;" class="kt_quick_panel_toggle btn btn-danger btn-setting" data-id="${response.data.id}" onclick="AddCanvasCategory(this)">
+                                                                                                                <i class="flaticon2-gear"></i>
+                                                                                                            </a>
+                                                                                                            <div id="schedule-time" hidden>
+                                                                                                                <input type="hidden" id="BreakFast-StartTime" data-attr="">
+                                                                                                                <input type="hidden" id="BreakFast-EndTime" data-attr="">
+                                                                                                                <input type="hidden" id="Lunch-StartTime" data-attr="">
+                                                                                                                <input type="hidden" id="Lunch-EndTime" data-attr="">
+                                                                                                                <input type="hidden" id="Dinner-StartTime" data-attr="">
+                                                                                                                <input type="hidden" id="Dinner-EndTime" data-attr="">
+                                                                                                                <input type="hidden" id="isPeriodic" data-attr="">
+                                                                                                            </div>
+                                                                                                            <input type="hidden" id="restaurantBranchId" value="0" />
+
+                                                                                                        </div>
+
+
+                                                                                                        <!--end::Description-->
+                                                                                                        <!--begin::Progress-->
+                                                                                                        <!--end::Progress-->
+                                                                                                    </div>
+                                                                                                    <!--end::Content-->
+                                                                                                </div>
+                                                                                                <!--end::Info-->
+                                                                                            </div>
+                                                                                            <!--end::Top-->
+                                                                                            <!--begin::Separator-->
+                                                                                            <!--end::Separator-->
+                                                                                            <!--begin::Bottom-->
+                                                                                            <!--end::Bottom-->
+                                                                                        </div>
+                                                                                    </div>`;
+
+
+
+            $("#menu-list").append(html);
+
+            //KTOffcanvas("", {
+            //    overlay: true,
+            //    baseClass: 'offcanvas',
+            //    placement: 'right',
+            //    closeBy: 'kt_quick_panel_close',
+            //    toggleBy: 'kt_quick_panel_toggle'
+            //});
+            //KTOffcanvas.init();
+            if (typeof KTLayoutQuickPanel !== 'undefined') {
+
+                KTLayoutQuickPanel.init('kt_quick_panel');
+            }
+
+        }
+
+        function DeleteMenu(e, id) {
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You would not be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+                    $(e).prop("disabled", false);
+                    $(e).find('i').removeClass('fa fa-trash-alt');
+                    $(e).find('i').addClass('fa fa-circle-notch fa-spin');
+
+                    $.ajax({
+                        url: '/Restaurant/Menu/DeleteMenu/' + id,
+                        type: 'GET',
+                        success: function (response) {
+                            if (response.success) {
+                                $(e).prop("disabled", false);
+                                $(e).find('i').removeClass('fa fa-circle-notch fa-spin');
+                                $(e).find('i').addClass('fa fa-trash-alt');
+                                $("#menu-" + id).remove();
+                                toastr.success(response.message);
+                            }
+                            else {
+
+                                toastr.error(response.message);
+                            }
+
+                            $(e).removeClass('spinner spinner-light spinner-left btn-icon').prop('disabled', false);
+
+                        },
+                        error: function (e) {
+                            $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                            toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                        },
+                        failure: function (e) {
+                            $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                            toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                        }
+                    });
+
+                    Swal.fire(
+                        "Deleted!",
+                        "Menu has been deleted.",
+                        "success"
+                    )
+                    // result.dismiss can be "cancel", "overlay",
+                    // "close", and "timer"
+                }
+            });
+
+        }
+
+        function DuplicateMenu(e, id) {
+
+            $(e).prop("disabled", false);
+            $(e).find('i').removeClass('fas fa-copy');
+            $(e).find('i').addClass('fa fa-circle-notch fa-spin');
+
+            $.ajax({
+                url: '/Restaurant/Menu/Duplicate/' + id,
+                type: 'GET',
+                success: function (response) {
+                    if (response.success) {
+                        $(e).prop("disabled", false);
+                        $(e).find('i').removeClass('fa fa-circle-notch fa-spin');
+                        $(e).find('i').addClass('fas fa-copy');
+
+                        BindMenuList(response);
+                        toastr.success(response.message);
+                    }
+                    else {
+
+                        toastr.error(response.message);
+                    }
+
+                    $(e).removeClass('spinner spinner-light spinner-left btn-icon').prop('disabled', false);
+
+                },
+                error: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                },
+                failure: function (e) {
+                    $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+                }
+            });
+        }
+
+
+        function SortingPostion() {
+            
+            $('.sortable').sortable({
+                handle: ".tile_header",
+
+                update: function (event, ui) {
+                    
+
+                    var ImagePositions = [];
+                    $('.sortable-default').each(function (k, v) {
+                        ImagePositions.push({ Id: Number($(v).attr('data-attr')), Position: (k + 1) });
+                    });
+                    if (ImagePositions.length > 0) {
+                        $.ajax({
+                            type: 'Post',
+                            url: "/Restaurant/Menu/SaveImagePositions/",
+                            data: { positions: ImagePositions },
+                            success: function (response) {
+                                if (response.success) {
+                                    
+                                    toastr.success(response.message);
+                                }
+                                else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+    </script>
+}

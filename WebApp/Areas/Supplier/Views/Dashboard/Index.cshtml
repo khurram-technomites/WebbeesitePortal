@@ -1,0 +1,255 @@
+﻿@model WebApp.ViewModels.SupplierDashboardViewModel
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Html;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
+}
+<!--begin::Page Vendors Styles(used by this page)-->
+<link href="~/assets/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<!--end::Page Vendors Styles-->
+<link href="~/Assets/Admin/css/admin/dashboard/index.css" rel="stylesheet" />
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid dashboard">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+                    <!--begin::Title-->
+                    <h2 class="text-white font-weight-bold my-2 mr-5">Dashboard</h2>
+                    <!--end::Title-->
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Welcome to @User.Identity.Name.Split("@")[0]</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 sm-12 col-xxl-12">
+                    <div class="row">
+                        @*<div class="col">
+                                <div class="card card-custom gutter-b" style="height: 150px">
+                                    <div class="card-body">
+                                        <span class="menu-icon">
+                                            <i class="fas fa-users fa-2x stats-color"></i>
+                                        </span>
+                                        <div class="text-dark font-weight-bolder font-size-h4 mt-3 nou">@Model.UserCount</div>
+                                        <a href="#" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Suppliers</a>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="col">
+                            <div class="card card-custom gutter-b" style="height: 150px">
+                                <div class="card-body">
+                                    <span class="menu-icon">
+                                        <i class="fas fa-gifts fa-2x stats-color"></i>
+                                    </span>
+                                    <div class="text-dark font-weight-bolder font-size-h4 mt-3 av">@Model.CouponsCount</div>
+                                    <a href="/Supplier/SupplierCoupon/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Coupons</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card card-custom gutter-b" style="height: 150px">
+                                <div class="card-body">
+                                    <span class="menu-icon">
+                                        <i class="fas fa-list-alt fa-2x stats-color"></i>
+                                    </span>
+                                    <div id="PropertyApprovals" class="text-dark font-weight-bolder font-size-h4 mt-3 crap">@Model.CategoriesCount</div>
+                                    <a href="#" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Categories</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card card-custom gutter-b" style="height: 150px">
+                                <div class="card-body">
+                                    <span class="menu-icon">
+                                        <i class="fas fa-list ac fa-2x stats-color"></i>
+                                    </span>
+                                    <div id="PropertyApprovals" class="text-dark font-weight-bolder font-size-h4 mt-3 crap">@Model.ItemsCount</div>
+                                    <a href="/Supplier/Item/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Items</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card card-custom gutter-b" style="height: 150px">
+                                <div class="card-body">
+                                    <span class="menu-icon">
+                                        <i class="fab fa-first-order-alt fa-2x stats-color"></i>
+                                    </span>
+                                    <div id="PropertyApprovals" class="text-dark font-weight-bolder font-size-h4 mt-3 crap">@Model.OrdersCount</div>
+                                    <a href="/Supplier/SupplierOrder/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Total Orders</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @*<div class="col-md-12">
+                                <div class="card card-custom gutter-b">
+                                    <div class="card-body">
+                                        <div style=" margin-left: 46%;">
+                            <span class="menu-icon">
+                                    <i class="fab fa-first-order-alt fa-2x stats-color" style="margin-left: 5%;"></i>
+                                </span>
+                            <div class="text-dark font-weight-bolder font-size-h4 mt-3 av" style=" margin-left: 6%;">@Model.OrdersCount</div>
+                            <a href="javascript:void(0);" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1 text-center" style="margin-left: 1%;">Total Order</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="col-md-3">
+                            <div class="card card-custom gutter-b" style="height: 150px">
+                                <div class="card-body">
+                                    <span class="menu-icon">
+                                        <i class="fa fa-check fa-2x stats-color"></i>
+                                    </span>
+                                    <div class="text-dark font-weight-bolder font-size-h4 mt-3 ac">@Model.ConfirmedCount</div>
+                                    <a href="javascript:void(0);" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Confirmed</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card card-custom gutter-b" style="height: 150px">
+                                <div class="card-body">
+                                    <span class="menu-icon">
+                                        <i class="fas fa-fire fa-2x stats-color"></i>
+                                    </span>
+                                    <div class="text-dark font-weight-bolder font-size-h4 mt-3 ac">@Model.PendingCount</div>
+                                    <a href="javascript:void(0);" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Pending</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card card-custom gutter-b" style="height: 150px">
+                                <div class="card-body">
+                                    <span class="menu-icon">
+                                        <i class="fas fa-dice-one fa-2x stats-color"></i>
+                                    </span>
+                                    <div class="text-dark font-weight-bolder font-size-h4 mt-3 ac">@Model.FoodReadyCount</div>
+                                    <a href="javascript:void(0);" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Order Ready</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card card-custom gutter-b" style="height: 150px">
+                                <div class="card-body">
+                                    <span class="menu-icon">
+                                        <i class="fas fa-shipping-fast fa-2x stats-color"></i>
+                                    </span>
+                                    <div class="text-dark font-weight-bolder font-size-h4 mt-3 ac">@Model.OnTheWayCount</div>
+                                    <a href="javascript:void(0);" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">On The Way</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card card-custom gutter-b" style="height: 150px">
+                                <div class="card-body">
+                                    <span class="menu-icon">
+                                        <i class="fas fa-thumbs-up fa-2x stats-color"></i>
+                                    </span>
+                                    <div class="text-dark font-weight-bolder font-size-h4 mt-3 ac">@Model.DeliveredCount</div>
+                                    <a href="javascript:void(0);" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Delivered</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    @*@{ Html.RenderAction("List", "SupplierOrder", new { area = "Supplier" }); }*@
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    @*@{ Html.RenderAction("ApprovalsList", "Property", new { area = "Admin" }); }*@
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    @*@{ Html.RenderAction("ApprovalsList", "Car", new { area = "Admin" }); }*@
+                </div>
+            </div>
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+    <!--start : Listing-->
+    <div>
+        <div class="col-xl-12" id="sparePartsDealerPartialView">
+            @await Html.PartialAsync("~/Areas/Supplier/Views/SupplierOrder/List.cshtml", Model.Orders.ToList())
+        </div>
+
+    </div>
+    <!--end : Listing-->
+    <div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content" style="min-height:100px">
+                <div id='myModalContent'>
+                    <div class="row justify-content-center">
+                        <div class="col-16">
+                            <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Content-->
+
+    @section Scripts {
+        <script src="~/Admin/js/general/ModalPopup.js"></script>
+        <script src="/Admin/js/supplier/order/listDashboard.js"></script>
+        <!--end::Page Scripts-->
+        <script src="/Admin/js/general/bootstrap-daterangepicker.js"></script>
+        <!--end::Page Scripts-->
+        <!--begin::Page Vendors(used by this page)-->
+        <script src="~/assets/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+        <!--end::Page Vendors-->
+        <!--begin::Page Scripts(used by this page)-->
+        @*<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>*@
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+        @*<script src="@Url.ContentVersioned("~/Assets/Admin/js/admin/dashboard/index.js")"></script>*@
+        @*<script src="@Url.ContentVersioned("~/Assets/Admin/js/admin/dashboard/PropApprovals.js")"></script>
+            <script src="@Url.ContentVersioned("~/Assets/Admin/js/admin/dashboard/approvals.js")"></script>
+            <script src="@Url.ContentVersioned("~/Assets/Admin/js/admin/dashboard/Ticket.js")"></script>*@
+
+        @*<script src="~/Assets/Admin/js/general/ModalPopup.js"></script>*@
+        @*<script src="~/Assets/Admin/js/admin/dashboard/list.js"></script>*@
+        <!--end::Page Scripts-->
+        <script>
+
+            $(document).ready(function () {
+                /*$(".dropdown-inline").hide();*/
+            });
+
+            var Dates = [];
+            var Sales = [];
+            var category = [];
+            var itemsold = [];
+            $(document).ready(function () {
+                $("#btnSearch").trigger('click');
+
+            });
+
+        </script>
+    }
+

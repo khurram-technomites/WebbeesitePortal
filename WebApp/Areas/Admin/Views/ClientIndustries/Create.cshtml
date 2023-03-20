@@ -1,0 +1,84 @@
+﻿@model WebApp.ViewModels.ClientIndustriesViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Create</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="Userform">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+
+        @*<div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="NameAr" class="control-label"></label>
+                <div class="input-group mb-2">
+                    <input asp-for="NameAr" class="form-control" />
+                    <span asp-validation-for="NameAr" class="text-danger"></span>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                </div>
+            </div>
+        </div>*@
+        <div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Industry Name</label>
+                <div class="input-group mb-2">
+                    <input asp-for="Name" class="form-control" placeholder="Enter client industries name" required/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-flag"></i></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="Userform">Submit</button>
+</div>
+
+<script>
+    var _URL = window.URL || window.webkitURL;
+
+    $(document).ready(function () {
+        $("#Userform").submit(function () {
+            
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+            var data = new FormData();
+            data.append("Name", $('#Name').val());
+            data.append("CountryId", $('#CountryId').val());
+            data.append("NameAr", $('#NameAr').val());
+            data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+
+            $.ajax({
+                url: "/Admin/ClientIndustries/Create/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    location.reload();
+                    if (callback) {
+                        callback($('#myModalContent'), element, false, response);
+                    }
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+            return false;
+        });
+    });
+
+</script>

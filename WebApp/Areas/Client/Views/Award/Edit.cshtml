@@ -1,0 +1,193 @@
+﻿@model WebApp.ViewModels.GarageAwardViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Update</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="frm-edit">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.CreationDate)
+
+        
+        <div class="form-group row justify-content-center">
+            <div class="col-12 form-group row justify-content-center">
+                <div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+                    <div class="image-upload uploaded">
+                        <i class="fa fa-camera"></i>
+                        <span>Upload Image</span>
+                        <input type="file" name="Restaurantlogo" id="Restaurantlogo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+                               aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+                        <img id="PreviewImage" src='@Model.ImagePath' />
+
+                        <i class="fa fa-pen" onclick="DeleteFile(this,'@Model.ImagePath')"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Title</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter title here ...", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Description</label>
+                    <div class="input-group mb-2">
+                        @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required", id = "Description" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="frm-edit">Save Changes</button>
+</div>
+<script>
+    var _URL = window.URL || window.webkitURL;
+    var logoPath = "@Model.ImagePath";
+
+    $(document).ready(function () {
+
+
+        $('.cropper-shape').click(function () {
+
+            $('#CropperModal').removeClass($('.cropper-shape.active').attr('data'));
+
+            $('.cropper-shape').removeClass('active');
+            $(this).addClass('active');
+
+            $('#CropperModal').addClass($(this).attr('data'));
+        })
+
+
+        $('.background-color').click(function () {
+            $('.background-color').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('.cropper-view-box').css('background', $('.background-color.active').attr('data'))
+        })
+
+
+        $('.cropper-aspectratio').click(function () {
+            $('.cropper-aspectratio').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('#image').attr('aspectratio', $(this).attr('data'));
+
+            cropper.setAspectRatio($(this).attr('data'))
+
+        })
+
+        $('i.fa-camera').click(function () {
+            $("#logo").trigger('click');
+        });
+
+
+        $('i.fa-camera').click(function () {
+            $("#Restaurantlogo").trigger('click');
+        });
+        BindImageUploader("#Restaurantlogo", "#image", "#CropperModal", "#PreviewImage");
+        
+        $("#frm-edit").submit(function () {
+
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+            var data = new FormData();
+
+            data.append("Id", $('#Id').val());
+            data.append("CreationDate", $('#CreationDate').val());
+            data.append("Name", $('#Name').val());
+            data.append("Description", $('#Description').val());
+            data.append("ImagePath", logoPath);
+            $.ajax({
+                url: "/Client/Award/Edit/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    if (callback) {
+                        callback($('#myModalContent'), element, true, response);
+                    }
+                    //location.reload();
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+            return false;
+        });
+    });
+
+    ClassicEditor.defaultConfig = {
+        toolbar: {
+            items: [
+                'heading',
+                '|',
+                'bold',
+                'italic',
+                '|',
+                'bulletedList',
+                'numberedList',
+                '|',
+                'insertTable',
+                '|',
+                'undo',
+                'redo'
+            ]
+        },
+        image: {
+            toolbar: [
+                'imageStyle:full',
+                'imageStyle:side',
+                '|',
+                'imageTextAlternative'
+            ]
+        },
+        table: {
+            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+        },
+        language: 'en'
+    };
+
+    ClassicEditor
+        .create(document.querySelector('#Description'))
+        .then(editor => {
+
+
+            let toolbarElement = editor.ui.view.toolbar.element;
+
+        })
+        .catch(error => {
+            console.log(error);
+        });
+</script>

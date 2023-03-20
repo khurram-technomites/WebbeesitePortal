@@ -1,0 +1,117 @@
+﻿@model WebApp.ViewModels.TicketViewModel
+
+@{
+    ViewBag.Title = "StatusChange";
+    Layout = null;
+}
+
+<style>
+    #txtstatus option:disabled {
+        background-color: #80808078;
+    }
+</style>
+
+<div class="modal-header">
+    <h5 class="modal-title">Ticket Status</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+    @*<form id="kt_login_signin_form">
+            @Html.AntiForgeryToken()
+            <div class="row mt-2">
+                <div class="col-md-12">
+
+                    <h6>Verify with your admin credentials to unlock the previously locked statuses</h6>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input class="form-control rounded-pill" required type="email" placeholder="Email" name="EmailAddress" autocomplete="off" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input class="form-control rounded-pill" required type="password" placeholder="Password" name="Password" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <button id="kt_login_signin_submit" class="btn btn-info font-weight-bold px-15 py-3">Verify</button>
+            </div>
+        </form>*@
+
+    @*@using (Html.BeginForm("StatusChange", "Ticket", new { area = "Admin" }, FormMethod.Post, new { id = "Userform", @class = "form" }))
+        {*@
+    <form id="Userform">
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label">Status</label>
+                @Html.HiddenFor(Model => Model.Id)
+                @*@Html.HiddenFor(Model => Model.Status)*@
+                <select class="col-sm-12 form-control" name="Status" id="txtstatus">
+                    <option value="OPEN">Open</option>
+                    <option value="CLOSED">Close</option>
+                </select>
+            </div>
+        </div>
+    </form>
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="Userform">Submit</button>
+</div>
+<script>
+	$(document).ready(function () {
+		@*$("#txtstatus").val("@Model.Status");*@
+
+
+
+        $("#Userform").submit(function () {
+
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+            var data = new FormData();
+            data.append("Id", $("#Id").val());
+            data.append("Status", $("#txtstatus").val());
+            data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+
+            $.ajax({
+                url: "/Restaurant/Ticket/StatusChange/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    if (callback) {
+                        callback($('#myModalContent'), element, false, response);
+                    }
+                    location.reload();
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+            return false;
+        });
+	});
+
+	var showErrorMsg = function (form, type, msg) {
+		var alert = $('<div class="kt-alert kt-alert--outline alert alert-' + type + ' alert-dismissible" role="alert">\
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>\
+			<span></span>\
+		</div>');
+
+		form.find('.alert').remove();
+		alert.prependTo(form);
+		//alert.animateClass('fadeIn animated');
+		KTUtil.animateClass(alert[0], 'fadeIn animated');
+		alert.find('span').html(msg);
+	}
+</script>
+
+
+

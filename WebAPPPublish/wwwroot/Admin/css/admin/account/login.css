@@ -1,0 +1,231 @@
+﻿<style >
+/* Change the autofill text to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #f0f0f0 inset !important;
+}
+
+input:-webkit-autofill {
+    -webkit-text-fill-color: #424542 !important;
+}
+
+input {
+    color: #424542;
+}
+
+.card-body {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 0rem !important;
+}
+
+.max-width-alert {
+    max-width: 301px;
+}
+
+.group {
+    position: relative;
+}
+
+input {
+    font-size: 14px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid #ECAA5A;
+}
+
+
+
+.form-group {
+    margin-bottom: 0.75rem !important;
+}
+
+input:focus {
+    outline: none;
+}
+
+    /* LABEL ======================================= */
+    /* label {
+            color: #ECAA5A;
+            font-size: 12px;
+            font-weight: normal;
+            position: absolute;
+            pointer-events: none;
+            left: 10px;
+            top: 12px;
+            transition: 0.2s ease all;
+            -moz-transition: 0.2s ease all;
+            -webkit-transition: 0.2s ease all;
+        }*/
+
+    /* active state */
+    input:focus ~ label, input:valid ~ label {
+        top: -20px;
+        font-size: 12px;
+        color: #ECAA5A;
+    }
+
+/* BOTTOM BARS ================================= */
+.bar {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+    .bar:before, .bar:after {
+        content: '';
+        height: 2px;
+        width: 0;
+        bottom: 1px;
+        position: absolute;
+        background: #ECAA5A;
+        transition: 0.2s ease all;
+        -moz-transition: 0.2s ease all;
+        -webkit-transition: 0.2s ease all;
+    }
+
+    .bar:before {
+        left: 50%;
+    }
+
+    .bar:after {
+        right: 50%;
+    }
+
+/* active state */
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+    width: 50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* active state */
+input:focus ~ .highlight {
+    -webkit-animation: inputHighlighter 0.3s ease;
+    -moz-animation: inputHighlighter 0.3s ease;
+    animation: inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@@-webkit-keyframes inputHighlighter {
+    from {
+        background: #ECAA5A;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@@-moz-keyframes inputHighlighter {
+    from {
+        background: #ECAA5A;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@@keyframes inputHighlighter {
+    from {
+        background: #ECAA5A;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+.pl-8, .px-8 {
+    padding-left: 1rem !important;
+}
+
+
+
+.inputField {
+    border-radius: 8px !important;
+    width : 28rem;
+}
+
+
+.login-form {
+    background: #F0F0F0;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.bg-grey-o-70 {
+    background: #F0F0F0;
+}
+
+.label-light {
+    color: #939393 !important;
+    font-weight: 500 !important;
+}
+
+#kt_login_forgot {
+    color: #6f6363;
+    margin-right: -26px;
+}
+
+.check-remember {
+    color: #939393 !important;
+    font-weight: 500 !important;
+}
+
+.checkbox > input:checked ~ span {
+    background-color: #B10071;
+}
+
+.btn-custom {
+    background-color: #ffb000;
+    color: white;
+    /*padding: 10px 32px;*/
+    border-radius: 5px;
+    border: none;
+    transition: all 0.3s ease;
+    outline: none;
+    text-align: center;
+    letter-spacing: 0.7px;
+}
+
+    .btn-custom:hover {
+        background-color: #ffb000;
+        color: white;
+    }
+
+    .btn-custom.disabled, .btn-custom:disabled {
+        opacity: 0.8;
+    }
+
+    .btn-custom:not(:disabled):not(.disabled):active, .btn-custom:not(:disabled):not(.disabled).active,
+    .show > .btn-custom.dropdown-toggle {
+        background-color: #cf9249;
+        color: white;
+    }
+
+        .btn-custom:not(:disabled):not(.disabled):active:focus, .btn-custom:not(:disabled):not(.disabled).active:focus,
+        .show > .btn-custom.dropdown-toggle:focus {
+            background-color: #cf9249;
+            color: white;
+        }
+
+</style >

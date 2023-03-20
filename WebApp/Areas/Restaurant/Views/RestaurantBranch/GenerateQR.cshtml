@@ -1,0 +1,47 @@
+﻿@model long
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">QR Code</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="spinner spinner-sm spinner-center" style="width:460px; height:460px" id="QRspinner"></div>
+            <img id="QRImg" width="460" height="460" style="display:none">
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-info" onclick="printData()" id="QR-btn" disabled>Print</button>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            url: "/Restaurant/RestaurantBranch/GenerateQRImage?Id=@Model",
+        type: 'GET',
+        dataType: 'json', // added data type
+        success: function(res) {
+            $("#QRspinner").css("display", "none");
+
+            $("#QRImg").css("display", "block");
+            $("#QRImg").attr("src", `data:image/jpeg;base64,${res.data}`)
+            $("#QR-btn").removeAttr("disabled");
+        }
+        });
+
+    });
+    function printData() {
+        $.print("#QRImg");
+    }
+
+</script>

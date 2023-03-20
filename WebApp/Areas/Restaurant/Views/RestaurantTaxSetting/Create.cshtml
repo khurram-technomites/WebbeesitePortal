@@ -1,0 +1,112 @@
+﻿@model WebApp.ViewModels.RestaurantTaxSettingViewModel
+
+@{
+	Layout = null;
+}
+
+<div class="modal-header">
+	<h5 class="modal-title">Create</h5>
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<i aria-hidden="true" class="ki ki-close"></i>
+	</button>
+</div>
+<div class="modal-body">
+
+	<form asp-action="Create" asp-controller="RestaurantTaxSetting" id="Userform">
+		@Html.AntiForgeryToken()
+		<div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Branch</label>
+					<div class="input-group mb-2">
+						<select name="BranchId" id="BranchId" class="form-control" asp-items="@(new SelectList(ViewBag.printerSetting,"Id","NameAsPerTradeLicense"))" required></select>
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-building"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Name</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter  name here ...", required = "required" } })@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-pen"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Tax Percent</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.TAXPercent, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter percentage here ...", required = "required",type="number" } })@Html.ValidationMessageFor(model => model.TAXPercent, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-percent" aria-hidden="true"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Description</label>
+					<div class="input-group mb-2">
+						<textarea class="form-control" name="Description" id="Description" rows="3 " placeholder="Enter Description name here ..." required="required"></textarea>
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-pen" aria-hidden="true"></i></span></div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	<button type="submit" class="btn btn-info" form="Userform">Submit</button>
+</div>
+
+<script>
+	var _URL = window.URL || window.webkitURL;
+	var logoPath;
+	$(document).ready(function () {
+		//
+		//$('i.fa-camera').click(function () {
+		//	$("#logo").trigger('click');
+		//});
+
+		//aspectratio = 1;
+		//minCroppedWidth = 50;
+		//minCroppedHeight = 50;
+
+		//BindImageUploader("#logo", "#image", "#CropperModal", "#PreviewImage");
+
+		$("#Userform").submit(function () {
+
+			$(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+			var data = new FormData();
+			data.append("Name", $('#Name').val());
+			data.append("TAXPercent", $('#TAXPercent').val());
+			data.append("Description", $('#Description').val());
+			data.append("RestaurantBranchId", $('#BranchId').val());
+
+			$.ajax({
+				url: "/Restaurant/RestaurantTaxSetting/Create/",
+				type: "POST",
+				processData: false,
+				contentType: false,
+				data: data,
+				success: function (response) {
+
+					if (callback) {
+						callback($('#myModalContent'), element, false, response);
+					}
+					//location.reload();
+				},
+				error: function (er) {
+					toastr.error(er);
+				}
+			});
+			return false;
+		});
+	});
+
+</script>

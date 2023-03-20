@@ -1,0 +1,541 @@
+﻿@model WebApp.ViewModels.NotificationViewModel
+@{
+    ViewBag.Title = "Notifications";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!--begin::Page Vendors Styles(used by this page)-->
+<link href="~/assets/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<!--end::Page Vendors Styles-->
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="/Admin/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a href="/Admin/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Announcement</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <div class="col-md-12">
+            <!--begin::Container-->
+            <div class="container">
+                <!--begin::Dashboard-->
+                <!--begin::Row-->
+                <div class="row">
+                    <div class="col-xl-12">
+                        <!--begin::Card-->
+                        <div class="card card-custom gutter-b">
+                            <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                                <div class="card-title">
+                                    <h3 class="card-label">
+                                        Custom Notifications
+                                        <span class="d-block text-muted pt-2 font-size-sm">Manage Custom Notifications Here...</span>
+                                    </h3>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                 <form id="frm-edit">
+                                
+
+                                <div class="row">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="control-label">Model</label>
+                                                    <input asp-for="Id" hidden />
+                                                    <div class="input-group mb-2">
+                                                        <select asp-for="Module" class="form-control" asp-items="@(new SelectList(ViewBag.CustomerID,"Id","Email"))"></select>
+                                                        <span asp-validation-for="Module" class="text-danger"></span>
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tools"></i></span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>Notification Title</label>
+                                                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter notification title here ...", required = "required" } })
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Notification Body</label>
+                                                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter notification body here ...", required = "required" } })
+                                                        @*@Html.DropDownList("DocumentTypeID", null, "Select Document Type", htmlAttributes: new { @class = "form-control" })*@
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 text-center">
+                                                        <button type="submit" class="btn btn-info" form="frm-edit">
+                                                            Send Notification
+                                                        </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </form>
+                                <!--end::Card-->
+                            </div>
+
+                        </div>
+                        <!--end::Row-->
+                        <!--end::Dashboard-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Entry-->
+            </div>
+            <!--end::Content-->
+            <!--begin::Container-->
+            <!--<div class="container">
+                <!--begin::Dashboard-->
+                <!--begin::Row-->
+                <!--<div class="row">
+                    <div class="col-xl-12">-->
+                        <!--begin::Card-->
+                        <!--<div class="card card-custom gutter-b">
+                            <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                                <div class="card-title">
+                                    <h3 class="card-label">
+                                        Restaurant Notifications
+                                        <span class="d-block text-muted pt-2 font-size-sm">Manage Restaurant Notifications Here...</span>
+                                    </h3>
+                                </div>
+
+                            </div>
+                            <div class="card-body">-->
+                               @* <form class="frm-edit">*@
+                                    <!--@Html.AntiForgeryToken()
+                                    @Html.HiddenFor(model => model.Id)
+
+
+                                    <div class="row">
+                                        <div class="card-body">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label class="control-label">Model</label>
+                                                        <div class="input-group mb-2">
+                                                            <select asp-for="Id" class="form-control" asp-items="@(new SelectList(ViewBag.RestaurantID,"Id","Restaurant.Email"))"></select>
+                                                            <span asp-validation-for="Id" class="text-danger"></span>
+                                                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tools"></i></span></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label>Notification Title</label>
+                                                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter notification title here ...", required = "required" } })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label>Notification Body</label>
+                                                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter notification body here ...", required = "required" } })-->
+                                                            @*@Html.DropDownList("DocumentTypeID", null, "Select Document Type", htmlAttributes: new { @class = "form-control" })*@
+                                                        <!--</div>
+                                                    </div>
+                                                    <div class="col-12 text-center">
+                                                        <button type="submit" class="btn btn-info" form="frm-edit">
+                                                            Send Notification
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>-->
+                               @* </form>*@-->
+                                <!--end::Card-->
+                            <!--</div>
+
+                        </div>-->
+                        <!--end::Row-->
+                        <!--end::Dashboard-->
+                    <!--</div>-->
+                    <!--end::Container-->
+                <!--</div>-->
+                <!--end::Entry-->
+            <!--</div>-->
+            <!--end::Content-->
+            <!--begin::Container-->
+            <div class="container">
+                <!--begin::Dashboard-->
+                <!--begin::Row-->
+                <div class="row">
+                    <div class="col-xl-12">
+                        <!--begin::Card-->
+                        <div class="card card-custom gutter-b">
+                            <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                                <div class="card-title">
+                                    <h3 class="card-label">
+                                        Client Notifications
+                                        <span class="d-block text-muted pt-2 font-size-sm">Manage Client Notifications Here...</span>
+                                    </h3>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+
+                                @Html.AntiForgeryToken()
+
+                                <div class="row">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="control-label">Model</label>
+                                                    <div class="input-group mb-2">
+                                                        <select asp-for="Id" class="form-control" asp-items="@(new SelectList(ViewBag.GarageID,"Id","ContactPersonEmail"))"></select>
+                                                        <span asp-validation-for="Id" class="text-danger"></span>
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tools"></i></span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>Notification Title</label>
+                                                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter notification title here ...", required = "required" } })
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Notification Body</label>
+                                                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter notification body here ...", required = "required" } })
+                                                        @*@Html.DropDownList("DocumentTypeID", null, "Select Document Type", htmlAttributes: new { @class = "form-control" })*@
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 text-center">
+                                                    <button type="submit" id="send-notification" class="btn btn-info">
+                                                        Send Notification
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Card-->
+                            </div>
+
+                        </div>
+                        <!--end::Row-->
+                        <!--end::Dashboard-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Entry-->
+            </div>
+            <!--end::Content-->
+            <!--begin::Container-->
+            <div class="container">
+                <!--begin::Dashboard-->
+                <!--begin::Row-->
+                <div class="row">
+                    <div class="col-xl-12">
+                        <!--begin::Card-->
+                        <div class="card card-custom gutter-b">
+                            <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                                <div class="card-title">
+                                    <h3 class="card-label">
+                                        SparePartDealer Notifications
+                                        <span class="d-block text-muted pt-2 font-size-sm">Manage SparePartDealer Notifications Here...</span>
+                                    </h3>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+
+                                @Html.AntiForgeryToken()
+
+                                <div class="row">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="control-label">Model</label>
+                                                    <div class="input-group mb-2">
+                                                        <select asp-for="Id" class="form-control" asp-items="@(new SelectList(ViewBag.SparePartDealerID,"Id","ContactPersonEmail"))"></select>
+                                                        <span asp-validation-for="Id" class="text-danger"></span>
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tools"></i></span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>Notification Title</label>
+                                                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter notification title here ...", required = "required" } })
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Notification Body</label>
+                                                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter notification body here ...", required = "required" } })
+                                                        @*@Html.DropDownList("DocumentTypeID", null, "Select Document Type", htmlAttributes: new { @class = "form-control" })*@
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 text-center">
+                                                    <button type="submit" id="send-notification" class="btn btn-info">
+                                                        Send Notification
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Card-->
+                            </div>
+
+                        </div>
+                        <!--end::Row-->
+                        <!--end::Dashboard-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Entry-->
+            </div>
+            <!--end::Content-->
+        </div>
+    </div>
+    <div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content" style="min-height:100px">
+                <div id='myModalContent'>
+                    <div class="row justify-content-center">
+                        <div class="col-16">
+                            <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::Row-->
+@section Scripts {
+
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="~/assets/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <!--end::Page Scripts-->
+    <script src="~/Assets/Admin/js/general/ModalPopup.js"></script>
+    @*<script src="@Url.ContentVersioned("~/Assets/Admin/js/admin/vendor/approvals.js")"></script>*@
+    <!--end::Page Scripts-->
+    <script>
+        var SuccessMessage = '@ViewBag.SuccessMessage';
+        var ErrorMessage = '@ViewBag.ErrorMessage';
+
+        if (SuccessMessage) {
+            toastr.success('@ViewBag.SuccessMessage');
+        }
+        else if (ErrorMessage) {
+            toastr.error('@ViewBag.ErrorMessage');
+        }
+    </script>
+    <script>
+
+        $(document).ready(function () {
+
+        })
+
+        $('#CustomerID').attr("data-live-search", "true");
+
+        var model = {
+            Module: null,
+            Title: null,
+            Description: null,
+            Customers: []
+        };
+
+        $("#frm-edit").submit(function () {
+          $("#send-notification").html('<i class="fa fa-spinner fa-spin"></i>');
+            $("#send-notification").prop('disabled', true);
+         
+
+            model.Customers = $("#Module").val();
+            model.Title = $("#Title").val();
+            model.Description = $("#Description").val();
+            $.each($("#CustomerID").val(), function (k, v) {
+                model.Customers.push(v);
+            });
+
+            console.log(model);
+            
+            $.ajax({
+                url: '/Admin/Annoucement/SendNotification/',
+                type: 'POST',
+                data: { notificationModel: model },
+                success: function (result) {
+
+                    if (result.success) {
+                        toastr.success(result.message);
+                    } else {
+                        toastr.error(result.message);
+                    }
+                    setTimeout(function () { location.reload(); }, 2000);
+                }
+
+            });
+            //}
+            return false;
+        });
+
+        //$("#send-notification").on('click', function () {
+        //
+        //    if ($("#CustomerID").val() == []) {
+        //        Swal.fire({
+        //            icon: 'error',
+        //            title: 'Something is missing...',
+        //            text: 'Check all fields!',
+        //            //footer: '<a href>Image size should be less than or equal to  100KB and dimension should be 1713x540</a>'
+        //        })
+        //    }
+        //    else {
+        //        $(this).html('<i class="fa fa-spinner fa-spin"></i>');
+        //        $(this).prop('disabled', true);
+
+        //        model.Title = $("#Title").val();
+        //        model.Body = $("#Body").val();
+        //        $.each($("#CustomerID").val(), function (k, v) {
+
+        //            model.Customers.push(v);
+
+
+        //        });
+
+
+        //        $.ajax({
+        //            url: '/Admin/Notification/SendNotification/',
+        //            type: 'POST',
+        //            data: { notificationModel: model },
+        //            success: function (result) {
+
+        //                if (result.success) {
+        //                    toastr.success(result.message);
+        //                } else {
+        //                    toastr.error(result.message);
+        //                }
+        //                setTimeout(function () { location.reload(); }, 2000);
+        //            }
+
+        //        });
+        //    }
+        //});
+
+
+        $("#frm-Coachnotification").submit(function () {
+            $("#send-Coachnotification").html('<i class="fa fa-spinner fa-spin"></i>');
+            $("#send-Coachnotification").prop('disabled', true);
+
+            /*model.Module = $("#Module").val();*/
+            Coachmodel.CarID = $("#CarID").val();
+            Coachmodel.Title = $("#CoachNotificationTitle").val();
+            Coachmodel.Body = $("#CoachNotificationBody").val();
+            $.each($("#CoachID").val(), function (k, v) {
+                Coachmodel.Coaches.push(v);
+            });
+
+            console.log(model);
+
+            $.ajax({
+                url: '/Admin/Notification/SendCoachNotification/',
+                type: 'POST',
+                data: { notificationModel: Coachmodel },
+                success: function (result) {
+
+                    if (result.success) {
+                        toastr.success(result.message);
+                    } else {
+                        toastr.error(result.message);
+                    }
+                    setTimeout(function () { location.reload(); }, 2000);
+                }
+
+            });
+            //}
+            return false;
+        });
+
+        var Vendormodel = {
+            Module: null,
+            CarID: null,
+            Title: null,
+            Body: null,
+            Vendors: []
+        };
+
+        $("#frm-Vendornotification").submit(function () {
+            $("#send-Vendornotification").html('<i class="fa fa-spinner fa-spin"></i>');
+            $("#send-Vendornotification").prop('disabled', true);
+            /*model.Module = $("#Module").val();*/
+            Vendormodel.Module = $("#VendorModule").val();
+            Vendormodel.CarID = $("#CarID").val();
+            Vendormodel.Title = $("#VendorNotificationTitle").val();
+            Vendormodel.Body = $("#VendorNotificationBody").val();
+            $.each($("#VendorID").val(), function (k, v) {
+                Vendormodel.Vendors.push(v);
+            });
+            console.log(Vendormodel);
+            $.ajax({
+                url: '/Admin/Notification/SendVendorNotification/',
+                type: 'POST',
+                data: { notificationModel: Vendormodel },
+                success: function (result) {
+
+                    if (result.success) {
+                        toastr.success(result.message);
+                    } else {
+                        toastr.error(result.message);
+                    }
+                    setTimeout(function () { location.reload(); }, 2000);
+                }
+
+            });
+            //}
+            return false;
+        });
+
+
+        var KTBootstrapSelect = function () {
+
+            // Private functions
+            var demos = function () {
+                // minimum setup
+                $('.kt-selectpicker').selectpicker();
+            }
+
+            return {
+                // public functions
+                init: function () {
+                    demos();
+                }
+            };
+        }();
+
+        jQuery(document).ready(function () {
+            KTBootstrapSelect.init();
+        });
+    </script>
+}

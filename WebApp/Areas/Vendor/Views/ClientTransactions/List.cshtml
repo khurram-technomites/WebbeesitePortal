@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+<style>
+    #kt_datatable1 tbody tr td:last-child {
+        white-space: nowrap;
+    }
+</style>
+
+<link href="~/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<div id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                            <div class="card-title">
+                                <h3 class="card-label">
+                                    Clients Transaction History
+                       @*             <span class="d-block text-muted pt-2 font-size-sm">Manage Clients Here...</span>*@
+                                </h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <!--begin::Dropdown-->
+                                @*<div class="dropdown dropdown-inline mr-2">
+
+                                        <button type="button" id="ExcelButton" class="btn btn-dark btn-sm" @(Model.Count() > 0 ? "" : "disabled")>
+                                            <i class="far fa-file-excel"></i>
+                                            Export Excel
+                                        </button>
+                                    </div>*@
+                                <!--end::Dropdown-->
+                                <!--begin::Button-->
+                             
+                                <!--end::Button-->
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+                                <thead>
+                                    <tr>
+                                         <th>Creation Date</th>
+                                        <th>Name On Card</th>
+                                        <th>Client Name</th>
+                                       
+                                        <th>Amount</th>
+                                        <th>Mask Card No</th>
+                                        <th>Payment Status</th>
+
+                                        <th>Invoice</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @(item.CreationDate.ToString("dd MMM yyyy, hh:mm tt"))
+                                            </td>
+                                            <td>
+                                                @item.NameOnCard
+                                            </td>
+                                            <td>@item.ClientModulePurchases.Garage.NameAsPerTradeLicense</td>
+                                            
+                                            <td>@item.Amount</td>
+                                            <td> @item.MaskCardNo</td>
+                                            <td> @item.PaymentStatus</td>
+                                            <td >@item.ClientModulePurchases.PaymentUrl</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

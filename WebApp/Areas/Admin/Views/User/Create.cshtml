@@ -1,0 +1,125 @@
+﻿@model WebApp.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Create</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="Userform">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, "Name", htmlAttributes: new { @class = "control-label" })
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter name here ...", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })<div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, "Email", htmlAttributes: new { @class = "control-label" })
+                <div class="input-group mb-3">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter email here ...", required = "required", type = "email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, "Password", htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter password here ...", required = "required", type = "password", pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                    </div>
+                </div>
+                <span class="form-text text-danger" style="font-size: 9px;">Min. 8 characters, at least one uppercase letter, one lowercase letter, and one number</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.PhoneNumber, "Mobile No", htmlAttributes: new { @class = "control-label" })
+                <div class="input-group mb-3">
+                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter mobile no here ...", required = "required", type = "number", min = "0", onkeyup = "if(this.value<0){this.value= this.value * -1}" } })
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Role</label>
+                <div class="input-group mb-2">
+                    <select asp-for="Role" class="form-control" placeholder="hint" asp-items="@(new SelectList(ViewBag.Roles,"Id","Name"))">
+                            <option>Select User Role</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user-secret"></i></span></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" id="submit">Submit</button>
+</div>
+
+<script>
+    var _URL = window.URL || window.webkitURL;
+
+    $(document).ready(function () {
+        $("#submit").click(function () {
+            $(this).addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+            var data = new FormData();
+            data.append("Email", $('#Email').val());
+            data.append("FirstName", $('#FirstName').val());
+            data.append("LastName", $('#LastName').val());
+            data.append("PhoneNumber", $('#PhoneNumber').val());
+            data.append("Password", $('#Password').val());
+            data.append("Role", $('#Role option:selected').text());
+            data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+            $(element).find('i').hide();
+            $(element).addClass('spinner spinner-left spinner-sm').attr('disabled', true);
+            $.ajax({
+                url: "/Admin/User/Create/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    if (callback) {
+                        location.reload();
+                    }
+                    
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+            return false;
+        });
+    });
+
+</script>

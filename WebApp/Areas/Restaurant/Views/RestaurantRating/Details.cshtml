@@ -1,0 +1,96 @@
+﻿
+@model WebApp.ViewModels.RestaurantRatingViewModel
+@{
+    ViewBag.Title = "Details";
+    Layout = null;
+}
+
+
+<div class="modal-header">
+    <h5 class="modal-title">Details</h5>
+
+    @{
+        if (Model.OrderId.HasValue)
+        {
+            <a class="btn btn-secondary" style="margin-right: 78%;" href="/Restaurant/RestaurantOrder/Details?id=@Model.OrderId.Value" target="_blank">View Order Details</a>
+        }
+    }
+
+
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 text-center">
+            <div class="flex-shrink-0 mr-7">
+                <div class="symbol symbol-50 symbol-lg-120">
+                    <img alt="Pic" src="@Model.User.Logo">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Customer Name</label>
+                <div class="input-group mb-3">
+                    <label class="form-control float-right" readonly="readonly">@Model.User.FirstName</label>
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Phone Number</label>
+                <div class="input-group mb-3">
+                    <label class="form-control float-right" readonly="readonly">@Model.User.PhoneNumber</label>
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Restaurant</label>
+                <div class="input-group mb-3">
+                    <label class="form-control float-right" readonly="readonly">@Model.Restaurant.NameAsPerTradeLicense</label>
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-cube"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Remarks</label>
+                <div class="input-group mb-2">
+                    @Html.TextAreaFor(model => model.Review, 0, 100, new { @class = "form-control", placeholder = "Enter reviews  here ...", @readonly = "readonly" })
+                    @*@Html.EditorFor(model => model.TitleDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter descriptipn here ...", required = "required" } })*@
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @*<h3>Images</h3>
+        <hr class="m-1 mb-3" />
+        <div class="row">
+            @foreach (var item in Model.CarRatingImages)
+            {
+                <div class="col-md-2 text-center">
+                    <div class="flex-shrink-0 mr-7">
+                        <div class="symbol symbol-50 symbol-lg-120">
+                            <img alt="Pic" src="@item.Image">
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>*@
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>

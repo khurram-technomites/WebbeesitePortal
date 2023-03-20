@@ -1,0 +1,334 @@
+﻿@model IEnumerable<WebApp.ViewModels.NotificationReceiverViewModel>
+@{
+    ViewBag.Title = "All Notifications";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+    <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Heading-->
+            <div class="d-flex flex-column">
+                <!--begin::Breadcrumb-->
+                <div class="d-flex align-items-center font-weight-bold my-2">
+                    <!--begin::Item-->
+                    <a href="/Admin/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                        <i class="flaticon2-shelter text-white icon-1x"></i>
+                    </a>
+                    <!--end::Item-->
+                    <!--begin::Item-->
+                    <a href="/Admin/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                    <!--end::Item-->
+                    <!--begin::Item-->
+                    <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                    <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Notification</a>
+                    <!--end::Item-->
+                </div>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Heading-->
+        </div>
+        <!--end::Info-->
+    </div>
+</div>
+
+<div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container">
+        <!--begin::Dashboard-->
+        <div class="row">
+            <div class="col-xl-12">
+                <!--begin::Card-->
+                <div class="">
+                   
+                    <div class="card-body">
+                        
+                        <div class="symbol symbol-40 symbol-light-success mr-5" style="width: 100%;" id="NotifyDiv"></div>
+                    </div>
+                </div>
+                <!--end::Card-->
+            </div>
+        </div>
+
+        <!--end::Dashboard-->
+    </div>
+    <!--end::Container-->
+</div>
+
+@*<div class="modal-body" style="z-index:1;">
+    <div class="d-flex align-items-center" style="justify-content: center;">
+        <div class="symbol symbol-40 symbol-light-success mr-5" style="width: 100%;" id="NotifyDiv">
+            @foreach (var item in Model)
+            {
+
+                <div class="list-group" >
+                    <div class="row list-group-item list-group-item-action flex-column align-items-start active text-secondary" style="background-color: white; border-color: transparent;">
+                        <div class="col">
+                            <span class="symbol-label">
+                                <span class="svg-icon svg-icon-lg svg-icon-success">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <path d="M16,15.6315789 L16,12 C16,10.3431458 14.6568542,9 13,9 L6.16183229,9 L6.16183229,5.52631579 C6.16183229,4.13107011 7.29290239,3 8.68814808,3 L20.4776218,3 C21.8728674,3 23.0039375,4.13107011 23.0039375,5.52631579 L23.0039375,13.1052632 L23.0206157,17.786793 C23.0215995,18.0629336 22.7985408,18.2875874 22.5224001,18.2885711 C22.3891754,18.2890457 22.2612702,18.2363324 22.1670655,18.1421277 L19.6565168,15.6315789 L16,15.6315789 Z" fill="#000000" />
+                                            <path d="M1.98505595,18 L1.98505595,13 C1.98505595,11.8954305 2.88048645,11 3.98505595,11 L11.9850559,11 C13.0896254,11 13.9850559,11.8954305 13.9850559,13 L13.9850559,18 C13.9850559,19.1045695 13.0896254,20 11.9850559,20 L4.10078614,20 L2.85693427,21.1905292 C2.65744295,21.3814685 2.34093638,21.3745358 2.14999706,21.1750444 C2.06092565,21.0819836 2.01120804,20.958136 2.01120804,20.8293182 L2.01120804,18.32426 C1.99400175,18.2187196 1.98505595,18.1104045 1.98505595,18 Z M6.5,14 C6.22385763,14 6,14.2238576 6,14.5 C6,14.7761424 6.22385763,15 6.5,15 L11.5,15 C11.7761424,15 12,14.7761424 12,14.5 C12,14.2238576 11.7761424,14 11.5,14 L6.5,14 Z M9.5,16 C9.22385763,16 9,16.2238576 9,16.5 C9,16.7761424 9.22385763,17 9.5,17 L11.5,17 C11.7761424,17 12,16.7761424 12,16.5 C12,16.2238576 11.7761424,16 11.5,16 L9.5,16 Z" fill="#000000" opacity="0.3" />
+                                        </g>
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="col">
+                            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                            <small>@item.Notification.Description</small>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@item.Notification.Title</h5>
+                                <small>3 days ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>*@
+
+@section Scripts {
+<script>
+    var PageNo = 1;
+    var MoreRecordExist = true;
+    var IsUnseenRecoredExist = false;
+    var IsUnReadRecoredExist = false;
+    var UnSeenMessages = 0;
+    var UndeliveredMessages = 0;
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            jQuery(document).ready(function () {
+                
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/Notification/LoadNotification/' + PageNo,
+                    success: function (data) {
+                        if (data.success) {
+
+                            BindNotification(data);
+                        }
+                        PageNo++;
+                    }
+
+                });
+                if (MoreRecordExist) {
+                    if ($('#liNotificationSpinner').length == 0) {
+                        $("#NotifyDiv").append('<li id="liNotificationSpinner">\
+                                        <div class="text-center">\
+                                            <i class="fa fa-spinner fa-spin"></i>\
+                                        </div>\
+                                    </li>');
+                        $.ajax({
+                            type: 'Get',
+                            url: '/Admin/Notification/LoadNotification/' + PageNo,
+                            success: function (response) {
+                                LoadMoreNotification(response);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    function LoadMoreNotification(response) {
+
+        if (response.data.length < 100) {
+            MoreRecordExist = false;
+        }
+        UnSeenMessages = response.data.filter(function (obj) {
+            return obj.IsSeen == false;
+        }).length;
+
+        if (UnSeenMessages > 0) {
+            UnSeenMessages += Number($('#NotificationCount').html().replace(' new', ''));
+
+            $('#NotificationCount').html(UnSeenMessages + ' new');
+            $('#NotificationCount').fadeIn();
+
+            $('.notification-alert').removeClass('kt-hidden');
+
+            playSound();
+            IsUnseenRecoredExist = true;
+        }
+
+        IsUnReadRecoredExist = response.data.filter(function (obj) {
+            return obj.IsRead == false;
+        }).length > 0 ? true : false;
+
+        var DivNotify = '';
+        $.each(response.data, function (k, v) {
+            DivNotify += getHtmlizeNotification(v);
+        });
+        $('[data-toggle="popover"]').popover();
+
+        $('#liNotificationSpinner').hide();
+        $('#liNotificationSpinner').remove();
+        $('#NotifyDiv').append(DivNotify);
+        $('[data-toggle="popover"]').popover();
+    }
+    function getHtmlizeNotification(v) {
+        var HTMLNotification = '';
+        if (!v.IsRead) {
+            //UnRead Messages
+            //HTMLNotification += '<div class="modal-body" style="z-index:1;">';
+            //HTMLNotification += '   <div class="d-flex align-items-center" style="justify-content: center;">';
+            //HTMLNotification += '    <div class="symbol symbol-40 symbol-light-success mr-5" style="width: 100%;" id="NotifyDiv">';
+            //HTMLNotification += '           <div class="list-group" style="padding-bottom: 0.5%;">';
+            //HTMLNotification += '             <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active text-secondary" style="background-color: white; border-color: transparent;">';
+            //HTMLNotification += '          <span class="symbol-label">';
+            //HTMLNotification += '              <span class="svg-icon svg-icon-lg svg-icon-success">';
+            //HTMLNotification += '               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">';
+            //HTMLNotification += '                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">';
+            //HTMLNotification += '                         <rect x="0" y="0" width="24" height="24" />';
+            //HTMLNotification += '                          <path d="M16,15.6315789 L16,12 C16,10.3431458 14.6568542,9 13,9 L6.16183229,9 L6.16183229,5.52631579 C6.16183229,4.13107011 7.29290239,3 8.68814808,3 L20.4776218,3 C21.8728674,3 23.0039375,4.13107011 23.0039375,5.52631579 L23.0039375,13.1052632 L23.0206157,17.786793 C23.0215995,18.0629336 22.7985408,18.2875874 22.5224001,18.2885711 C22.3891754,18.2890457 22.2612702,18.2363324 22.1670655,18.1421277 L19.6565168,15.6315789 L16,15.6315789 Z" fill="#000000" />';
+            //HTMLNotification += '                           <path d="M1.98505595,18 L1.98505595,13 C1.98505595,11.8954305 2.88048645,11 3.98505595,11 L11.9850559,11 C13.0896254,11 13.9850559,11.8954305 13.9850559,13 L13.9850559,18 C13.9850559,19.1045695 13.0896254,20 11.9850559,20 L4.10078614,20 L2.85693427,21.1905292 C2.65744295,21.3814685 2.34093638,21.3745358 2.14999706,21.1750444 C2.06092565,21.0819836 2.01120804,20.958136 2.01120804,20.8293182 L2.01120804,18.32426 C1.99400175,18.2187196 1.98505595,18.1104045 1.98505595,18 Z M6.5,14 C6.22385763,14 6,14.2238576 6,14.5 C6,14.7761424 6.22385763,15 6.5,15 L11.5,15 C11.7761424,15 12,14.7761424 12,14.5 C12,14.2238576 11.7761424,14 11.5,14 L6.5,14 Z M9.5,16 C9.22385763,16 9,16.2238576 9,16.5 C9,16.7761424 9.22385763,17 9.5,17 L11.5,17 C11.7761424,17 12,16.7761424 12,16.5 C12,16.2238576 11.7761424,16 11.5,16 L9.5,16 Z" fill="#000000" opacity="0.3" />';
+            //HTMLNotification += '                        </g>';
+            //HTMLNotification += '                     </svg>';
+            //HTMLNotification += '                  </span>';
+            //HTMLNotification += '              </span>';
+            //HTMLNotification += '              <div class="d-flex w-100 justify-content-between">';
+            //HTMLNotification += '                  <h5 class="mb-1">"' + v.notification.title + '"</h5>';
+            //HTMLNotification += '                  <small>3 days ago</small>';
+            //HTMLNotification += '               </div>';
+            //HTMLNotification += '               <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>';
+            //HTMLNotification += '                <small> ' + v.notification.description + '</small>';
+            //HTMLNotification += '            </a>';
+            //HTMLNotification += '       </div>';
+            //HTMLNotification += '  </div>';
+            //HTMLNotification += '</div>';
+            //HTMLNotification += '</div>';
+
+             HTMLNotification += `
+            <div class="shadow rounded mb-2 list-group-item list-group-item-action flex-column align-items-start active text-secondary" style="background-color: white; border-color: transparent;">
+            <div class="row">
+                <div class="col-1">
+                    <span class="symbol-label">
+                        <span class="svg-icon svg-icon-lg svg-icon-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" @*width="24px" height="24px"*@ viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path d="M16,15.6315789 L16,12 C16,10.3431458 14.6568542,9 13,9 L6.16183229,9 L6.16183229,5.52631579 C6.16183229,4.13107011 7.29290239,3 8.68814808,3 L20.4776218,3 C21.8728674,3 23.0039375,4.13107011 23.0039375,5.52631579 L23.0039375,13.1052632 L23.0206157,17.786793 C23.0215995,18.0629336 22.7985408,18.2875874 22.5224001,18.2885711 C22.3891754,18.2890457 22.2612702,18.2363324 22.1670655,18.1421277 L19.6565168,15.6315789 L16,15.6315789 Z" fill="#000000" />
+                                    <path d="M1.98505595,18 L1.98505595,13 C1.98505595,11.8954305 2.88048645,11 3.98505595,11 L11.9850559,11 C13.0896254,11 13.9850559,11.8954305 13.9850559,13 L13.9850559,18 C13.9850559,19.1045695 13.0896254,20 11.9850559,20 L4.10078614,20 L2.85693427,21.1905292 C2.65744295,21.3814685 2.34093638,21.3745358 2.14999706,21.1750444 C2.06092565,21.0819836 2.01120804,20.958136 2.01120804,20.8293182 L2.01120804,18.32426 C1.99400175,18.2187196 1.98505595,18.1104045 1.98505595,18 Z M6.5,14 C6.22385763,14 6,14.2238576 6,14.5 C6,14.7761424 6.22385763,15 6.5,15 L11.5,15 C11.7761424,15 12,14.7761424 12,14.5 C12,14.2238576 11.7761424,14 11.5,14 L6.5,14 Z M9.5,16 C9.22385763,16 9,16.2238576 9,16.5 C9,16.7761424 9.22385763,17 9.5,17 L11.5,17 C11.7761424,17 12,16.7761424 12,16.5 C12,16.2238576 11.7761424,16 11.5,16 L9.5,16 Z" fill="#000000" opacity="0.3" />
+                                </g>
+                            </svg>
+                        </span>
+                    </span>
+                </div>
+                <div class="col-10">
+                     <h5 class="mb-1">${v.notification.title}</h5>
+                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                    <small>${v.notification.description}</small>
+                </div>
+                <div class="col">
+                    <div class="d-flex w-100 justify-content-end">
+                        <small>3 days ago</small>
+                    </div>
+                </div>
+               </div>
+              </div>`;
+
+        } else {
+            HTMLNotification += '<div class="modal-body" style="z-index:1;">';
+            HTMLNotification += '   <div class="d-flex align-items-center" style="justify-content: center;">';
+            HTMLNotification += '    <div class="symbol symbol-40 symbol-light-success mr-5" style="width: 70%;" id="NotifyDiv">';
+            HTMLNotification += '           <div class="list-group" style="padding-bottom: 0.5%;">';
+            HTMLNotification += '             <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active text-secondary" style="background-color: white; border-color: transparent;">';
+            HTMLNotification += '          <span class="symbol-label">';
+            HTMLNotification += '              <span class="svg-icon svg-icon-lg svg-icon-success">';
+            HTMLNotification += '               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">';
+            HTMLNotification += '                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">';
+            HTMLNotification += '                         <rect x="0" y="0" width="24" height="24" />';
+            HTMLNotification += '                          <path d="M16,15.6315789 L16,12 C16,10.3431458 14.6568542,9 13,9 L6.16183229,9 L6.16183229,5.52631579 C6.16183229,4.13107011 7.29290239,3 8.68814808,3 L20.4776218,3 C21.8728674,3 23.0039375,4.13107011 23.0039375,5.52631579 L23.0039375,13.1052632 L23.0206157,17.786793 C23.0215995,18.0629336 22.7985408,18.2875874 22.5224001,18.2885711 C22.3891754,18.2890457 22.2612702,18.2363324 22.1670655,18.1421277 L19.6565168,15.6315789 L16,15.6315789 Z" fill="#000000" />';
+            HTMLNotification += '                           <path d="M1.98505595,18 L1.98505595,13 C1.98505595,11.8954305 2.88048645,11 3.98505595,11 L11.9850559,11 C13.0896254,11 13.9850559,11.8954305 13.9850559,13 L13.9850559,18 C13.9850559,19.1045695 13.0896254,20 11.9850559,20 L4.10078614,20 L2.85693427,21.1905292 C2.65744295,21.3814685 2.34093638,21.3745358 2.14999706,21.1750444 C2.06092565,21.0819836 2.01120804,20.958136 2.01120804,20.8293182 L2.01120804,18.32426 C1.99400175,18.2187196 1.98505595,18.1104045 1.98505595,18 Z M6.5,14 C6.22385763,14 6,14.2238576 6,14.5 C6,14.7761424 6.22385763,15 6.5,15 L11.5,15 C11.7761424,15 12,14.7761424 12,14.5 C12,14.2238576 11.7761424,14 11.5,14 L6.5,14 Z M9.5,16 C9.22385763,16 9,16.2238576 9,16.5 C9,16.7761424 9.22385763,17 9.5,17 L11.5,17 C11.7761424,17 12,16.7761424 12,16.5 C12,16.2238576 11.7761424,16 11.5,16 L9.5,16 Z" fill="#000000" opacity="0.3" />';
+            HTMLNotification += '                        </g>';
+            HTMLNotification += '                     </svg>';
+            HTMLNotification += '                  </span>';
+            HTMLNotification += '              </span>';
+            HTMLNotification += '              <div class="d-flex w-100 justify-content-between">';
+            HTMLNotification += '                  <h5 class="mb-1">' + v.notification.title + ' </h5>';
+            HTMLNotification += '                  <small>3 days ago</small>';
+            HTMLNotification += '               </div>';
+            HTMLNotification += '               <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>';
+            HTMLNotification += '                <small>' + v.notification.description + '</small>';
+            HTMLNotification += '            </a>';
+            HTMLNotification += '       </div>';
+            HTMLNotification += '  </div>';
+            HTMLNotification += '</div>';
+            HTMLNotification += '</div>';
+        }
+        return HTMLNotification;
+    }
+    function BindNotification(response) {
+
+        var DivNotify = '';
+
+        if (response.data.length > 0) {
+            if (response.data.length < 10) {
+                MoreRecordExist = false;
+            }
+
+            UnSeenMessages = response.data.filter(function (obj) {
+                return obj.IsSeen == false;
+            }).length;
+
+            if (UnSeenMessages > 0) {
+                $('#NotificationCount').html(UnSeenMessages + ' new');
+                $('#NotificationCount').fadeIn();
+
+                $('.notification-alert').show();
+                IsUnseenRecoredExist = true;
+            }
+
+            UndeliveredMessages = response.data.filter(function (obj) {
+                return obj.IsDelivered == false;
+            }).length;
+
+            if (UndeliveredMessages > 0) {
+
+                playSound();
+            }
+
+            IsUnReadRecoredExist = response.data.filter(function (obj) {
+                return obj.IsRead == false;
+            }).length > 0 ? true : false;
+
+            $.each(response.data, function (k, v) {
+                DivNotify += getHtmlizeNotification(v);
+            });
+
+            $('[data-toggle="popover"]').popover();
+
+        }
+        else {
+            DivNotify += '<i class="notify-empty-template" style="display: block;text-align: center;">No new Notification</i>'
+        }
+        $('#NotifyDiv').empty();
+        $('#NotifyDiv').append(DivNotify);
+        $('[data-toggle="popover"]').popover();
+    }
+    function IsRead(notificationId, element) {
+        $.ajax({
+            type: 'Post',
+            url: '/Admin/Notification/MarkNotificationAsRead/?notificationId=' + notificationId,
+            success: function (response) {
+                if (response.success) {
+                    $(element).addClass('fa-circle-notch').remove('fa-circle').attr('data-content', 'Read').attr('onclick', '');
+                }
+                else {
+
+                }
+            }
+        });
+    }
+</script>
+}
+

@@ -1,0 +1,166 @@
+﻿@model IEnumerable<WebApp.ViewModels.RestaurantOrderViewModel>
+
+
+<style>
+    #kt_datatable2 tbody tr td:last-child {
+        white-space: nowrap;
+    }
+</style>
+
+<!--begin::Page Vendors Styles(used by this page)-->
+<link href="~/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<!--end::Page Vendors Styles-->
+<!--begin::Content-->
+<div class=" flex-column" id="kt_content">
+    <!--begin::Subheader-->
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column">
+        <!--begin::Container-->
+        <div class="container" id="Order">
+            <!--begin::Dashboard-->
+            <div class="row">
+                <div class="col-xl-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                            <div class="card-title">
+                                <h3 class="card-label">
+                                    Orders Management
+                                    <span class="d-block text-muted pt-2 font-size-sm">Manage Orders Here...</span>
+                                </h3>
+                            </div>
+                            <div class="card-toolbar">
+
+
+                                <div class="dropdown mr-2 " style="display:block !important">
+
+                                    <div class="input-group">
+                                            @Html.DropDownList("RestaurantBranch", null, "Select Branch", htmlAttributes: new { @class = "form-control", id = "RestaurantBranch", onchange = "ChangeBranch(this)" })
+
+                                        </div>
+                                </div>
+
+                                <div class="dropdown mr-2" style="display:block !important">
+
+                                    <div class="input-group">
+                                        <select class="form-control" id="Status" onchange="ChangeBranch(this)">
+                                            <option value="All">All</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Processing">Processing</option>
+                                            <option value="Confirmed">Confirmed</option>
+                                            <option value="Preparing">Preparing</option>
+                                            <option value="Ready">Ready</option>
+                                            <option value="OntheWay">OntheWay</option>
+                                            <option value="Delivered">Delivered</option>
+                                            <option value="Canceled">Canceled</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+                                <!--end::Button-->
+                            </div>
+                        </div>
+                        <div class="card-body" id="Orders">
+                            
+                            <!--begin: Datatable-->
+                            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Order No</th>
+                                        <th>Customer</th>
+                                        <th>Branch</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.CreationDate.Value.ToString("dd MMM yyyy,h:mm:ss")</td>
+                                            <td>@item.OrderNo</td>
+                                            <td>@(item.CustomerName != null ? item.CustomerName : "-")|@(item.CustomerContact != null ? item.CustomerContact : "-")</td>
+                                            <td>@item.RestaurantBranch.NameAsPerTradeLicense</td>
+                                            <td class="price">@item.Currency @item.TotalAmount</td>
+                                            <td>@item.Status</td>
+                                            <td nowrap="nowrap">@item.Id</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <!--end: Datatable-->
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+@*<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+    <!-- begin:: Subheader -->
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+    <div class="kt-subheader__main">
+    <h3 class="kt-subheader__title">
+    Dashboard
+    </h3>
+    <span class="kt-subheader__separator kt-hidden"></span>
+    <div class="kt-subheader__breadcrumbs">
+    <a href="/Home/RealEstateIndex" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+    <span class="kt-subheader__breadcrumbs-separator"></span>
+    <a class="kt-subheader__breadcrumbs-link">
+    Tenants
+    </a>
+    <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+    </div>
+    </div>
+
+    </div>
+    </div>
+
+    <!-- end:: Subheader -->
+    <!-- begin:: Content -->
+    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+    <!--Begin::Row-->
+
+    <link href="@Url.ContentVersioned("~/assets/Admin/plugins/custom/datatables/datatables.bundle.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.ContentVersioned("~/assets/Admin/plugins/custom/datatables/datatables.bundle.js")" defer type="text/javascript"></script>
+
+    <!--begin::Page Scripts(used by this page) -->
+    <script src="@Url.ContentVersioned("~/assets/scripts/ModalPopup.js")"></script>
+    <!--End::Row-->
+
+    @{ Html.RenderAction("List", "Tenant"); }
+    </div>
+
+    <!-- end:: Content -->
+    </div>*@
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

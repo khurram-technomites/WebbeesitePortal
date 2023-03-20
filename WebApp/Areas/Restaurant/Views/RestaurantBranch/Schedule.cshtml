@@ -1,0 +1,273 @@
+﻿@model WebApp.ViewModels.RestaurantBranchScheduleViewModel
+
+@{
+    Layout = null;
+}
+
+<style>
+    .label.label-xl {
+        height: 53px;
+        width: 55px;
+        font-size: 1.2rem;
+    }
+
+    .branch-input {
+        background-color: #e8e8e8;
+    }
+
+        .branch-input::placeholder {
+            color: #8e8a8a;
+            opacity: 70;
+        }
+</style>
+<div class="modal-header">
+    <h5 class="modal-title">Create a Schedule</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form asp-action="Create" asp-controller="RestaurantBranch" id="Userform">
+
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row">
+            <h6 class="ml-3 mb-3 opacity-70">Select Days</h6>
+            <div class="col-md-12 col-sm-12">
+                <div class="Weekday">
+                    <span class="label label-xl mr-2" onclick="Edit(this)" id="Monday">M</span>
+                    <span class="label label-xl mr-2" onclick="Edit(this)" id="Tuesday">T</span>
+                    <span class="label label-xl mr-2" id="Wednesday" onclick="Edit(this)">W</span>
+                    <span class="label label-xl mr-2" onclick="Edit(this)" id="Thursday">T</span>
+                    <span class="label label-xl mr-2" onclick="Edit(this)" id="Friday">F</span>
+                    <span class="label label-xl mr-2" onclick="Edit(this)" id="Saturday">S</span>
+                    <span class="label label-xl mr-2" onclick="Edit(this)" id="Sunday">S</span>
+                </div>
+            </div>
+
+
+        </div>
+        <div id="schedule-time" class="pt-6">
+            <div class="row">
+                <div class="col-md-12 schedule-time">
+                </div>
+
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-block btn-info" id="SaveSchedule">Save</button>
+</div>
+
+
+<script>
+
+        var branchId = @ViewBag.BranchId;
+           var id;
+           var day;
+           var openingTime;
+           var closingTime;
+           var branchId;
+
+        var branchSchedule = [];
+        var _URL = window.URL || window.webkitURL;
+
+        $(document).ready(function () {
+                 GetSchedule();
+            });
+
+
+        function GetSchedule(){
+            
+            var weekdays;
+            var days;
+            var html;
+
+             $.ajax({
+                url: '/Restaurant/RestaurantBranch/GetSchedule/' + branchId,
+                type: 'Get',
+                success: function (response) {
+                    
+                    if (response.success) {
+                        $.each(response.data, function (k, v) {
+                            
+                          days = v.day.slice(0,1);
+                          weekdays =  $(".Weekday").find('#' + v.day);
+                          if(weekdays)
+                           {
+                            weekdays.addClass("label-danger");
+                           }
+
+                        html='';
+                        html = `
+                        <div class="${v.day}" id="${v.id}">
+                        <div class="row">
+                            <h4 class="ml-3 day-Name">${v.day}</h4>
+                        </div>
+                         <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Start Time</label>
+                                    <input class="form-control branch-input" type="time" value="${v.openingTime}" onchange="rowUpdate(this)" data-attr="${v.day}" id="opening-time-input" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Closing Time</label>
+                                    <input class="form-control branch-input" type="time" value="${v.closingTime}" onchange="rowUpdate(this)" data-attr="${v.day}" id="closing-time-input" />
+
+                                </div>
+                            </div>
+
+                        </div>
+                        </div>`
+
+                        $("#schedule-time").append(html);
+
+                        });
+                    }
+                    else {
+                        toastr.error(response.message);
+                    }
+                    }
+                 });
+        };
+
+        function Edit(f){
+            
+            var check = $(f).hasClass('label-danger');
+            if(check)
+            {
+                $(f).removeClass('label-danger');
+                var day = $(f).attr("id");
+                var elementId = $("." + day).attr("id");
+                if(elementId != '')
+                {
+                    $.ajax({
+                url: '/Restaurant/RestaurantBranch/DeleteSchedule/' + elementId,
+                type: 'Get',
+                success: function (response) {
+                    
+                    if (response.success) {
+                        $("." + day).remove();
+                        toastr.error("Schedule Deleted Successfully");
+                    }
+                }
+                 });
+            }
+      else    {
+       $("." + day).remove();
+      }
+
+
+            }
+            else{
+                $(f).addClass('label-danger');
+                var day = $(f).attr("id");
+                var elementId = $("." + day).attr("id");
+                 html = `
+                        <div class="${day} updated" id="">
+                        <div class="row">
+                            <h4 class="ml-3 day-Name">${day}</h4>
+                        </div>
+                         <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Start Time</label>
+                                    <input class="form-control branch-input" type="time" value="10:00" onchange="rowUpdate(this)"  data-attr="${day}" id="opening-time-input" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Closing Time</label>
+                                    <input class="form-control branch-input" type="time" value="18:00" onchange="rowUpdate(this)" data-attr="${day}" id="closing-time-input" />
+
+                                </div>
+                            </div>
+
+                        </div>
+                        </div>`
+
+                        $("#schedule-time").append(html);
+            }
+        };
+
+
+       $("#SaveSchedule").click( function (){
+           
+           var e = this;
+            $(".updated").each(function() {
+                
+                 id = $(this).attr("id");
+                 day =  $(this).find(".day-Name").text();
+                 openingTime = $(this).find("#opening-time-input").val();
+                 closingTime = $(this).find("#closing-time-input").val();
+                 branchId = branchId;
+
+                   branchSchedule.push({
+                    Id: id,
+                    Day: day,
+                    OpeningTime : openingTime,
+                    ClosingTime: closingTime,
+                    RestaurantBranchId : branchId,
+
+                });
+
+
+          });
+
+        $.ajax({
+            url: '/Restaurant/RestaurantBranch/SetSchedule',
+            type: 'POST',
+            data: {
+                    model : branchSchedule
+            },
+            success: function (response) {
+                if (response.success) {
+                    toastr.success(response.message);
+                    GetBranchSchedule();
+                }
+                else {
+                    toastr.success(response.message);
+                }
+              
+                $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+
+            },
+            error: function (e) {
+                $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+            },
+            failure: function (e) {
+                $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+            }
+        });
+        
+          console.log(branchSchedule);
+
+        });
+
+         function rowUpdate(f){
+             
+               var day = $(f).attr("data-attr");
+              var result = $(f).closest("." + day);
+              if(!result.hasClass("updated"))
+              {
+                 result.addClass("updated");
+              }
+        }
+
+</script>

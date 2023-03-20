@@ -1,0 +1,201 @@
+﻿@model WebApp.Areas.Admin.Models.CarModelViewModel
+
+@{
+    Layout = null;
+}
+
+
+<div class="modal-header">
+    <h5 class="modal-title">Create</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+   
+      <form asp-action="Create" asp-controller="CarModel" enctype="multipart/form-data" id="Userform">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+      <div class="form-group row justify-content-center">
+          <div class="col-lg-6 text-center">
+              <div class="image-input image-input-outline" id="kt_image_1">
+                  <div class="image-input-wrapper" style="background-image: url('../../../../Assets/AppFiles/Images/default.png'); background-repeat: round"></div>
+                  <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change logo">
+                      <i class="fa fa-pen icon-sm text-muted"></i>
+                      <input type="file" name="logo" id="logo" accept=".png, .jpg, .jpeg" required style="width:1px !important;height:1px !important" />
+                      <input type="hidden" name="profile_avatar_remove" />
+                  </label>
+                  <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow cancelimage" id="RemoveImage" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                      <i class="ki ki-bold-close icon-xs text-muted"></i>
+                  </span>
+              </div>
+              <span class="form-text text-muted">Logo</span>
+              <span class="form-text text-muted">Image dimensions should be 200 x 200 pixels and Image size must be less than 100 kb</span>
+          </div>
+      </div>
+        <div class="row">
+            @*<div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Parent Category</label>
+                <div class="input-group mb-2">
+                    @Html.DropDownList("ParentCategoryID", null, "Select Parent Category", htmlAttributes: new { @class = "form-control" })@Html.ValidationMessageFor(model => model.ParentCategoryID, "", new { @class = "text-danger" })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-server"></i></span></div>
+                </div>
+            </div>
+        </div>*@
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Model</label>
+                    <div class="input-group mb-2">
+                        <select asp-for="CarMakeId" class="form-control" asp-items="@(new SelectList(ViewBag.CarMake,"Id","Name"))"></select>
+                        <span asp-validation-for="CarMakeId" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tools"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label">Make</label>
+                    <div class="input-group mb-2">
+                        <input asp-for="Name" class="form-control" placeholder="Enter make name here ..." required/>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tools"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            @*        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="NameAR" class="control-label"></label>
+                <div class="input-group mb-2">
+                    <input asp-for="NameAR" dir="rtl" class="form-control" placeholder="Enter sport name here ..."/>
+                    <span asp-validation-for="NameAR" class="text-danger"></span>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                </div>
+            </div>
+        </div>
+            <input type="text" class="" value="-" name="CategoryNameAr" hidden="" />*@
+
+
+
+
+
+
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="Userform">Submit</button>
+</div>
+
+
+<script>
+    var _URL = window.URL || window.webkitURL;
+    var logoPath;
+    $(document).ready(function () {
+
+        //Image Validation Begin
+        $("#logo").change(function (e) {
+            var file, img;
+
+            if ((file = this.files[0])) {
+
+                img = new Image();
+                img.onload = function () {
+
+
+                    //if (this.width < 200 || this.width > 200) {
+                    //    Swal.fire({
+                    //        icon: 'error',
+                    //        title: 'Oops...',
+                    //        text: 'Image dimension should be 200 x 200 ! ',
+
+                    //    }).then(function (result) {
+                    //        $("#logo").attr("src", "/Assets/AppFiles/Images/default.png");
+                    //        $(".cancelimage").trigger('click');
+                    //    });
+                    //}
+                    //else if (this.height < 200 || this.height > 200) {
+                    //    Swal.fire({
+                    //        icon: 'error',
+                    //        title: 'Oops...',
+                    //        text: 'Image dimension should be 200 x 200 !',
+
+                    //    }).then(function (result) {
+                    //        $("#logo").attr("src", "/Assets/AppFiles/Images/default.png");
+                    //        $(".cancelimage").trigger('click');
+                    //    });
+                }
+                if (file.size > 10000000) {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Image size must be less than 100 kb!',
+
+                    }).then(function (result) {
+                        $("#logo").attr("src", "/Assets/AppFiles/Images/default.png");
+                        $(".cancelimage").trigger('click');
+                    });
+                }
+                else {
+                    img.onerror = function () {
+                        alert("not a valid file: " + file.type);
+                    };
+                }
+            };
+            img.src = _URL.createObjectURL(file);
+            logoPath = UploadImageToDraft(file).responseText;
+        });
+
+
+        //Image Validation End
+
+        var avatar1 = new KTImageInput('kt_image_1');
+        var avatar2 = new KTImageInput('kt_image_2');
+
+        $(".cancelimage").click(function () {
+            DeleteImage(logoPath);
+        })
+
+        $("#Userform").submit(function () {
+           
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+             
+            var data = new FormData();
+            data.append("Name", $('#Name').val());
+            data.append("NameAR", $('#NameAR').val());
+            data.append("Logo", logoPath);
+            data.append("CarMakeId", $('#CarMakeId').val());
+            data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+
+            $.ajax({
+                url: "/Admin/CarModel/Create/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    if (callback) {
+                        callback($('#myModalContent'), element, false, response);
+                    }
+                    location.reload();
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+            return false;
+        });
+
+        //$("#CategoryName").on('change', function () {
+        //    var name = $(this);
+        //    $("#Slug").val($(name).val().replace(/ /g, "-").replace(/'/g, "").toLocaleLowerCase());
+        //});
+    });
+
+
+</script>

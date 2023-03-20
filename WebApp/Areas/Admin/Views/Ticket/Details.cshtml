@@ -1,0 +1,510 @@
+﻿@model WebApp.ViewModels.TicketViewModel
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+
+@{
+ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .fa {
+        padding-right: 24px;
+        font-size: 14px;
+    }
+
+    .fa-paperclip:before {
+        content: "\f0c6";
+    }
+
+    .fa-send:before, .fa-paper-plane:before {
+        content: "\f1d8";
+    }
+
+    .radius {
+        border-radius: 50%;
+        width: 38px;
+    }
+</style>
+<link href="~/Admin/css/TicketDetails.css" rel="stylesheet" />
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="/Vendor/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a href="/Admin/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="/Admin/Ticket/Index" class="text-white text-hover-white opacity-75 hover-opacity-100"> Tickets</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Details</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Dashboard-->
+            <!--begin::Row-->
+            <div class="row justify-content-center">
+                <div class="col-xl-10">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        @*<div class="card-header text-center">
+                                <h5 class="card-title">Card title</h5>
+                            </div>*@
+                        <div class="card-body">
+                            @Html.HiddenFor(mod => mod.Id, new { @id = "TicketID" })
+                            <input asp-for="UserId" hidden />
+                            <!-- begin: Invoice-->
+                            <!-- begin: Invoice header-->
+                            <div class="justify-content-xxl-end px-8 px-md-0 row text-center ">
+                                <div class="col-md-6">
+                                    <div class="head">
+                                        <h3 class="text-left mb-6">Ticket Details</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 d-flex">
+                                    <div class="d-flex flex-column flex-root">
+                                        <span class="font-weight-bolder mb-2">ISSUE DATE</span>
+                                        <span class="opacity-70">@(Model.CreationDate != null ? Model.CreationDate.ToString("MMM dd, yyyy, h:mm tt") : "")</span>
+
+                                    </div>
+
+                                    <div class="d-flex flex-column flex-root">
+                                        <span class="font-weight-bolder mb-2">TICKET NO.</span>
+                                        <span class="opacity-70">@Model.TicketNo</span>
+                                    </div>
+
+
+                                    <div class="d-flex flex-column flex-root">
+                                        <span class="font-weight-bolder mb-2">STATUS</span>
+                                        <span class="text-center align-middle">
+
+
+                                            @if (@Model.Status.ToUpper() == "OPEN")
+                                            {
+                                                <a href="javascript:" class="label label-lg label-light-dark label-inline">OPEN</a>
+                                            }
+                                            else if (@Model.Status.ToUpper() == "CLOSED")
+                                            {
+                                                <a href="javascript:" class="label label-lg label-light-primary label-inline">CLOSED</a>
+                                            }
+
+
+
+                                        </span>
+
+                                    </div>
+
+                                    <div class="d-flex flex-column flex-root">
+                                        <span class="font-weight-bolder mb-2">PRIORITY</span>
+                                        <span class="text-center align-middle">
+
+
+                                            @if (@Model.Priority.ToUpper() == "HIGH")
+                                            {
+                                                <a href="javascript:" class="label label-lg label-light-dark label-inline">HIGH</a>
+                                            }
+                                            else if (@Model.Priority.ToUpper() == "MEDIUM")
+                                            {
+                                                <a href="javascript:" class="label label-lg label-light-primary label-inline">MEDIUM</a>
+                                            }
+                                            else if (@Model.Priority.ToUpper() == "LOW")
+                                            {
+                                                <a href="javascript:" class="label label-lg label-light-primary label-inline">LOW</a>
+                                            }
+
+
+
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion accordion-dark  accordion-toggle-arrow mt-4" id="accordionExample5">
+                                <div class="card ">
+                                    <div class="card-header" id="headingOne5">
+                                        <div class="card-title" style="color: #d30606 !important; " data-toggle="collapse" data-target="#collapseOne5">
+                                            Description
+                                        </div>
+                                    </div>
+                                    <div id="collapseOne5" class="collapse show" data-parent="#accordionExample5">
+                                        <div class="card-body">
+                                            @Model.Description
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-bottom w-100 mt-3"></div>
+                            <div class="justify-content-center px-8 px-md-0 py-4 row text-center">
+                                <div class="container-fluid chat-container  cc-scroll  a-disabled-hover">
+                                    <div class="row h-100">
+                                        <div class="col d-flex p-0">
+                                            <div class="d-flex flex-column p-0" style="flex:9 1">
+                                                <div class="container-fluid " style="flex: 1 1">
+
+                                                    @foreach (var item in Model.ticketConversation)
+                                                    {
+                                                        if (item.SenderType == "Admin")
+                                                        {
+                                                            <div class="row justify-content-end">
+                                                                <div class="clearfix">
+                                                                    <div class="date-time text-right">
+                                                                        <p class="direct-chat-timestamp pull-left">
+                                                                            @item.CreationDate.ToString("dd MMM yyyy, hh:mm tt")
+                                                                            <span id="senderName"><strong>@item.SenderType</strong></span>
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="card message-card bg-lightgreytext m-1 float-right">
+                                                                        <div class="card-body p-2 ">
+                                                                            <span class="">@item.Message</span>
+                                                                            @if (item.TicketDocumentId != null)
+                                                                            {
+                                                                                <div class="text-center mt-4">
+                                                                                    <a href="@item.TicketDocument.URL" target="_blank" class="file btn-bg-lights"><i  style="color: #d30606 !important" class="fas fa-paperclip "></i>View Attachment</a>
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        }
+
+                                                        else
+                                                        {
+                                                            <div class="row">
+                                                                <div class="clearfix">
+                                                                    <div class="date-time text-left">
+                                                                        <p class="direct-chat-timestamp pull-right">
+                                                                            <span><strong>@item.SenderType</strong></span> @item.CreationDate.ToString("dd MMM yyyy, hh:mm tt")
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="card message-card bg-lg-pink  m-1">
+                                                                        <div class="card-body p-2 text-left">
+                                                                            <span class="mx-2">@item.Message</span>
+                                                                            @if (item.TicketDocumentId != null)
+                                                                            {
+                                                                                <div class="text-center mt-4">
+                                                                                    <a href="@item.TicketDocument.URL" target="_blank" class="file btn-bg-light text-center"><i style="color: #d30606 !important" class="fas fa-paperclip"></i>View Attachment</a>
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+
+                                                    }
+                                                    <div id="conversation">
+
+                                                    </div>
+
+
+
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- row -->
+                                </div>
+                                <div class="border-bottom w-100 mt-3"></div>
+
+                                <div class="input-group mt-5">
+                                    <input type="text" id="Message" class="form-control input-message fas fa-paperclip" placeholder="Input message...">
+                                    <button class="clip btn border-0 bg-white text-primary hover-color-darkblue" onclick="openFileOption()" type="button" style="z-index: 3;">
+                                        <i class="fas fa-paperclip nc fa-2x">
+
+                                        </i>
+                                    </button>
+
+                                    <input type="file" hidden name="Logo" multiple id="Logo" accept="image/png, image/gif, image/jpeg" />
+
+                                </div>
+                                <div class="send">
+                                    <span class="input-group-addon">
+                                        <button class="btn border-0 bg-white text-primary hover-color-darkblue" style="background: #d30606 !important" onclick="Send(this)" type="button">
+                                            <i id="iconSpin" class="fab fa-telegram-plane fa-2x"></i>
+                                        </button>
+                                    </span>
+                                </div>
+
+                                <!-- container -->
+                            </div>
+                            <div class="row p-2 " id="fileAttachment">
+                                <div class="file-atacth float-left">
+                                    <span class="fas fa-paperclip attachment-file">
+                                        <label id="AttachmentName" style="font-family: 'Poppins';"><span>file</span></label>
+                                        <i class="fal fa-times" onclick="Erase()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Row-->
+
+                    </div>
+                    <!--end::Container-->
+                </div>
+
+
+                <!--end::Entry-->
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        var fileAttachments;
+
+        jQuery(document).ready(function () {
+            $("#fileAttachment").hide();
+
+
+
+            //
+
+            //Chat Scroll
+            var rowPos = $("#conversation").position();
+            $(".cc-scroll").scrollTop(rowPos.top);
+
+        });
+
+        function openFileOption() {
+            document.getElementById("Logo").click();
+        }
+
+        function Send(f) {
+            $("#iconSpin").removeClass('fab fa-telegram-plane');
+            $("#iconSpin").addClass('spinner spinner-light spinner-border-sm').prop('disabled', true);
+            
+            var rowPos = $("#conversation").position();
+            var senderName = $("#senderName").text();
+            var data = new FormData();
+            var conversation = $("#conversation");
+            var attachment = $("#Logo").get(0).files;
+            if (attachment.length > 0) {
+                data.append("Image", attachment[0]);
+            }
+            data.append("Message", $('#Message').val());
+            data.append("TicketID", $('#TicketID').val());
+            data.append("SenderID", $('#UserId').val());
+            data.append("File", fileAttachments);
+            data.append("TicketDocument", $("#TicketDocument").val());
+            data.append("TicketDocumentId", $("#TicketDocumentId").val());
+            data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+            var html;
+            $.ajax({
+
+                url: '/Admin/Ticket/Message',
+                type: 'POST',
+                data: data,
+                processData: false,
+                contentType: false,
+
+                success: function (data) {
+                    console.log("Data", data);
+                    if (data.success) {
+                        html = '<div class="row justify-content-end">';
+                        html += '<div class="clearfix">';
+                        html += '<div class="date-time text-right">';
+                        html += '<p class="direct-chat-timestamp pull-left">' + data.creationDate;
+                        html += '<span id = "senderName" > <strong>' + data.data.senderType + '</strong></span></p></div>';
+                        html += '<div class="card message-card bg-lightgreytext m-1 float-right">';
+                        html += '<div class="card-body p-2">';
+                        html += '<span class="">' + data.data.message + '</span>';
+                        if (data.data.ticketDocument != null) {
+                            html += ' <div class="text-center mt-4"><a href=' + data.data.ticketDocument.url + '  target="_blank" class="file btn-bg-lights"><i class="fas fa-paperclip "></i>View Attachment</a></div>';
+                        }
+                        html += '</div></div></div></div>';
+
+                        conversation.append(html);
+                        toastr.success(data.message);
+                        $("#Message").val("");
+                        $("#Logo").val('');
+                        $("#fileAttachment").hide();
+                        $("#iconSpin").removeClass('spinner spinner-light spinner-border-sm').prop('disabled', false);
+                        $("#iconSpin").addClass('fab fa-telegram-plane fa-2x');
+                        $(".cc-scroll").scrollTop(rowPos.top);
+                        fileAttachments = '';
+
+
+                    } else {
+                        $("#iconSpin").removeClass('spinner spinner-light spinner-border-sm').prop('disabled', false);
+                        $("#iconSpin").addClass('fab fa-telegram-plane fa-2x');
+                        toastr.error(data.message);
+
+                    }
+                },
+
+            });
+
+
+        }
+
+        function Erase() {
+            $("#fileAttachment").fadeOut(1000);
+            var check0 = $("#Logo").val();
+            $("#Logo").val('');
+            var check = $("#Logo").val();
+
+        }
+        
+        var _URL = window.URL || window.webkitURL;
+        $("#Logo").change(function (e) {
+
+
+
+            var file, img;
+            if ((file = this.files[0])) {
+
+                img = new Image();
+                img.onload = function () {
+
+
+                    if (this.size > 50000) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Image size must be less than 50 kb!',
+
+                        });
+                    }
+                    else {
+                        img.onerror = function () {
+                            alert("not a valid file: " + file.type);
+                        };
+                    }
+                };
+
+                $("#AttachmentName").text(this.files[0].name);
+                $("#fileAttachment").fadeIn(1000);
+                img.src = _URL.createObjectURL(file);
+                fileAttachments = UploadImageToDraft(file).responseText;
+
+
+            }
+        });
+
+
+        function callback(dialog, elem, isedit, response) {
+
+
+            if (response.success) {
+
+                toastr.success(response.message);
+            }
+            else {
+                jQuery('form', dialog).closest('.modal').find('button[type=submit]').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+
+                toastr.error(response.message);
+            }
+        }
+
+
+
+
+
+
+                                //function addRow(row) {
+
+                                //	table1.row.add([
+                                //		row.Date,
+                                //		row.OrderNo,
+                                //		row.Customer ? row.Customer.Name + '|' + row.Customer.Contact : '',
+                                //		row.TotalAmount + ' ' + row.Currency,
+                                //		row.ShipmentStatus,
+                                //		row.Status,
+                                //		row.ID,
+                                //	]).draw(true);
+
+                                //}
+    </script>
+
+
+    <!--begin::Page Vendors(used by this page)-->
+    @*<script src="~/assets/Admin/plugins/custom/datatables/datatables.bundle.js"></script>*@
+
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    @*<script src="@Url.ContentVersioned("~/Assets/Admin/js/vendor/order/list.js")"></script>*@
+    <!--end::Page Scripts-->
+    <script src="~/Assets/Admin/js/general/ModalPopup.js"></script>
+    <!--end::Page Scripts-->
+    @*<script>
+            document.addEventListener('DOMContentLoaded', function () {
+                $('.card-header').on('click', '[data-fa-i2svg]', function () {
+                    $("#sidebar-content")
+                        .removeClass("w-100")
+                        .width($("#sidebar").width());
+                    $("#sidebar").css({ "flex": "none" });
+                    $("#sidebar").animate({
+                        width: "toggle"
+                    }, 600, function () {
+                        $("#sidebar").css({ "flex": '', "width": '' });
+                        $("#sidebar-content")
+                            .css("width", "")
+                            .addClass("w-100");
+                    });
+                });
+
+                $("#search").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#friend-list li .username").filter(function () {
+                        $(this).parent().toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                    });
+                });
+
+            });
+        </script>*@
+}
+
+
+
+

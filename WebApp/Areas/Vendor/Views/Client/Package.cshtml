@@ -1,0 +1,246 @@
+﻿@model WebApp.ViewModels.ClientPackageViewModel
+
+@{
+    ViewBag.Title = "Package";
+    //Layout = "~/Areas/Vendor/Views/Client/Client.cshtml";
+}
+<style>
+    .Selected {
+    }
+    /**/
+    .ck.ck-editor {
+        position: relative;
+        z-index: 0;
+        width: 100%;
+    }
+
+    font-size-11 {
+        font-size: 11px !important;
+    }
+
+    custom-bg-input {
+        background-color: #f6f5f5;
+    }
+    /*#tns1-mw {
+                width: 83% !important
+            }*/
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body">
+
+                            <div class="card-body pr-0 pl-0 pt-4 pb-0" id="formInputs">
+                                <div class="form-group row">
+                                    @*<input name="GarageId" value="@Model.Id" hidden />*@
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card-title row"><h4>Package Configuration</h4>  
+                                                    <button onclick="OpenModelPopup(this, '/Vendor/Client/ClientPackageDetails/@ViewBag.ClientId')" class="btn btn-warning ml-auto">Current Package</button>
+                                                    </div>
+                                                <div class="overflow-auto my-scroll" style="height: 400px;">
+                                                    <input type="hidden" value="@Model.ClientModulePurchases.Id" id="Id" />
+                                                    <input id="ClientId" value="@ViewBag.ClientId" hidden />
+                                                    <div class="w-100 modulesection">
+                                                        @foreach (var module in Model.Modules)
+                                                        {
+                                                            <!--Start-->
+                                                            <div class="col-sm-12 mb-5" @(module.IsDefault == true ? "disbaled" : "")>
+                                                                <div class="w-100 p-5 rounded" style="background-color: #efefef;">
+                                                                    <div class="align-items-center d-md-flex">
+                                                                        <div class="align-items-center d-flex justify-content-between w-100">
+                                                                            <div class="" style=" line-height: 18px;">
+                                                                                <span class="font-weight-bold font-size-h6 text-dark servicename">@module.ServiceName</span><br>
+                                                                                <span class="m-0 font-weight-bold" style="color: #a1a1a1;">@module.Description</span>
+                                                                            </div>
+                                                                            <div class="ml-sm-5">
+                                                                                <h6 class="mr-4 m-0 font-weight-bold text-dark">AED <span id="price">@module.Price</span></h6>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="align-items-center d-flex justify-content-center">
+                                                                            @if (module.ManageQunatity == false && module.IsDefault == false)
+                                                                            {
+                                                                                if (!Model.ModulePurchaseDetails.Select(x => x.ModuleID).Contains(module.Id))
+                                                                                {
+                                                                                    <div class="d-flex justify-content-center align-items-center rounded bg-warning font-weight-bold font-size-h3" style="width:40px; height:40px;cursor: pointer" onclick="AddPackage(this,@module.Id,1,1,false)">+</div>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <div class="d-flex justify-content-center align-items-center rounded bg-danger font-weight-bold font-size-h3" style="width:40px; height:40px;cursor: pointer" onclick="RemovePackage(this,@module.Id,1,false)"><i class="fa fa-trash"></i></div>
+                                                                                }
+
+                                                                            }
+                                                                            else if(module.IsDefault == true && module.ManageQunatity == true)
+                                                                            {
+                                                                                 <div class="d-flex justify-content-center align-items-center rounded bg-warning font-weight-bold font-size-h3" style="width:40px; height:40px;cursor: pointer" onclick="RemovePackage(this,@module.Id,@module.Min,true,true)">-</div>
+                                                                                <div class="d-flex justify-content-center align-items-center rounded bg-white font-weight-bold font-size-h3 mr-2 ml-2 quantity @module.Id" style="width:40px; height:40px;">@module.Min</div>
+                                                                                <div class="d-flex justify-content-center align-items-center rounded bg-warning font-weight-bold font-size-h1" onclick="AddPackage(this,@module.Id,@module.Max,@module.Min)" style="width:40px; height:40px;cursor: pointer">+</div>
+                                                                            }
+                                                                            else if (module.IsDefault == false)
+                                                                            {
+                                                                                <div class="d-flex justify-content-center align-items-center rounded bg-warning font-weight-bold font-size-h3" style="width:40px; height:40px;cursor: pointer" onclick="RemovePackage(this,@module.Id,@module.Min)">-</div>
+                                                                                <div class="d-flex justify-content-center align-items-center rounded bg-white font-weight-bold font-size-h3 mr-2 ml-2 quantity @module.Id" style="width:40px; height:40px;">0</div>
+                                                                                <div class="d-flex justify-content-center align-items-center rounded bg-warning font-weight-bold font-size-h1" onclick="AddPackage(this,@module.Id,@module.Max,@module.Min)" style="width:40px; height:40px;cursor: pointer">+</div>
+                                                                            }
+                                                                            else
+                                                                            {
+
+                                                                                <div class="d-flex justify-content-center align-items-center rounded bg-white font-weight-bold font-size-h3 mr-2 ml-2 quantity" style="width:40px; height:40px;">@(module.ManageQunatity == true ? module.Min : 1)</div>
+
+                                                                            }
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--End-->
+                                                        }
+
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body">
+
+                            <div class="card-body pr-0 pl-0 pt-5 pb-0" id="formInputs">
+                                <div class="form-group row">
+
+                                    <div class="col-lg-12">
+                                        <div class="card-title justify-content-center d-flex mb-5"><h6>Summary</h6></div>
+                                        <div class="row">
+                                            <div class="col-md-12 mb-2 overflow-auto my-scroll" id="detailsection" style="height:260px">
+                                                @{
+                                                    decimal? subtotal = 0;
+                                                }
+@*                                                If package not exists*@
+                                                @if (Model.ClientModulePurchases.Id == 0)
+                                                {
+                                                    foreach (var module in Model.Modules.Where(x => x.IsDefault == true))
+                                                    {
+
+
+                                                        decimal? total = module.ManageQunatity == true ? module.Price * module.Min : module.Price;
+                                                        subtotal = subtotal + total;
+
+                                                        <div class="bg-white w-100 purchases">
+                                                            <div class="w-100 justify-content-between d-flex @module.Id">
+                                                               
+                                                                  <input type="hidden" id="PurchaseDetailId" value="0"/>
+                                                                  <input type="hidden" id="Quantity" value="@module.Min"/>
+                                                                 <span hidden id="moduleid">@module.Id</span>
+                                                                <div class="text-dark servicename">@(module.ManageQunatity == true ? module.Min : 1) x @module.ServiceName</div>
+                                                                <div class="text-dark font-weight-bold ">AED <span class="purchaseprice">@total</span></div>
+                                                            </div>
+
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    @foreach (var module in Model.ModulePurchaseDetails)
+                                                    {
+
+
+                                                        decimal? total = module.TotalPrice;
+                                                        subtotal = subtotal + total;
+
+                                                        <div class="bg-white w-100 purchases">
+                                                            <div class="w-100 justify-content-between d-flex @module.ModuleID">
+                                                              
+                                                                 <input type="hidden" id="PurchaseDetailId" value="@module.Id"/>
+                                                                 <input type="hidden" id="Quantity" value="@module.Quantity"/>
+                                                                 <span hidden id="moduleid">@module.ModuleID</span>
+                                                                <div class="text-dark servicename">@(module.Module.ManageQunatity == true ? module.Quantity : 1) x @module.Module.ServiceName</div>
+                                                                <div class="text-dark font-weight-bold ">AED <span class="purchaseprice">@total</span></div>
+                                                            </div>
+
+                                                        </div>
+                                                    }
+                                                    foreach (var module in Model.Modules.Where(x => x.IsDefault == true))
+                                                    {
+                                                        if (!Model.ModulePurchaseDetails.Select(x => x.ModuleID).Contains(module.Id))
+                                                        {
+                                                            decimal? total = module.ManageQunatity == true ? module.Price * module.Min : module.Price;
+                                                            subtotal = subtotal + total;
+                                                            
+                                                        <div class="bg-white w-100 purchases">
+                                                            <div class="w-100 justify-content-between d-flex @module.Id">
+                                                                
+                                                                  <input type="hidden" id="PurchaseDetailId" value="0"/>
+                                                                  <input type="hidden" id="Quantity" value="@module.Min"/>
+                                                                 <span hidden id="moduleid">@module.Id</span>
+                                                                <div class="text-dark servicename">@(module.ManageQunatity == true ? module.Min : 1) x @module.ServiceName</div>
+                                                                <div class="text-dark font-weight-bold ">AED <span class="purchaseprice">@total</span></div>
+                                                            </div>
+
+                                                            </div>
+                                                        }
+                                                    }
+                                                }
+
+
+                                            </div>
+                                            <hr />
+                                            <div class="col-md-12 mt-5">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <span class="font-weight-bold text-dark text-center" style="font-size:15px; line-height:21px">
+                                                        Total Price<br />
+                                                        <span class="text-dark font-size-h1 font-weight-bolder subtotal" style="line-height: 21px">
+                                                            <br />
+                                                            <span class="font-weight-bold text-dark float-right m-0" style="font-size:10px">/Year</span>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-5">
+                                                <div class="row justify-content-end">
+                                                    <div class="col-12">
+                                                        <button type="submit" id="DraftButton" data-attr="Draft" onclick="savePackage(this)" class="btn btn-block btn-info">PROCEED</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/Admin/js/vendor/client/package.js"></script>
+<script>
+    var DefaultTotal = @subtotal
+</script>

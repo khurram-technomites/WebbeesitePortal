@@ -1,0 +1,292 @@
+﻿@*@model WebApp.ViewModels.UserViewModel*@
+@model WebApp.ViewModels.DashboardViewModel
+@using Microsoft.AspNetCore.Html;
+@using Microsoft.AspNetCore.Authorization
+
+@inject IAuthorizationService AuthorizationService
+
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<!--begin::Page Vendors Styles(used by this page)-->
+<link href="~/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<!--end::Page Vendors Styles-->
+<link href="~/Admin/css/admin/dashboard/index.css" rel="stylesheet" />
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid dashboard">
+	<!--begin::Subheader-->
+	<div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+		<div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+			<!--begin::Info-->
+			<div class="d-flex align-items-center flex-wrap mr-1">
+				<!--begin::Heading-->
+				<div class="d-flex flex-column">
+					<!--begin::Title-->
+					<h2 class="text-white font-weight-bold my-2 mr-5">Dashboard</h2>
+					<!--end::Title-->
+					<!--begin::Breadcrumb-->
+					<div class="d-flex align-items-center font-weight-bold my-2">
+						<!--begin::Item-->
+						<a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Welcome to WebBeeSite Administrator</a>
+						<!--end::Item-->
+					</div>
+					<!--end::Breadcrumb-->
+				</div>
+				<!--end::Heading-->
+			</div>
+			<!--end::Info-->
+		</div>
+	</div>
+	<!--end::Subheader-->
+	<!--begin::Entry-->
+	<div class="d-flex ">
+		<!--begin::Container-->
+		@{
+			if ((await AuthorizationService.AuthorizeAsync(User, "Admin")).Succeeded)
+			{
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 sm-12 col-xxl-12">
+							<div class="row">
+								<div class="col">
+									<div class="card card-custom gutter-b" style="height: 150px">
+										<div class="card-body">
+											<span class="menu-icon">
+												<i class="fas fa-users fa-2x stats-color"></i>
+											</span>
+											<div class="text-dark font-weight-bolder font-size-h4 mt-3 nou">@Model.UserCount</div>
+											<a href="/Admin/User/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Users</a>
+										</div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card card-custom gutter-b" style="height: 150px">
+										<div class="card-body">
+											<span class="menu-icon">
+												<i class="fas fa-users fa-2x stats-color"></i>
+											</span>
+											<div class="text-dark font-weight-bolder font-size-h4 mt-3 nou">@Model.CustomerCount</div>
+											<a href="/Admin/Customer/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Customers</a>
+										</div>
+									</div>
+								</div>
+								@*<div class="col">
+									<div class="card card-custom gutter-b" style="height: 150px">
+										<div class="card-body">
+											<span class="menu-icon">
+												<i class="fas fa-building fa-2x stats-color"></i>
+											</span>
+											<div id="PropertyApprovals" class="text-dark font-weight-bolder font-size-h4 mt-3 crap">@Model.RestaurantCount</div>
+											<a href="/Admin/Restaurant/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Restaurants</a>
+										</div>
+									</div>
+								</div>*@
+								<div class="col">
+									<div class="card card-custom gutter-b" style="height: 150px">
+										<div class="card-body">
+											<span class="menu-icon">
+												<i class="fas fa-users fa-2x stats-color"></i>
+											</span>
+											<div id="PropertyApprovals" class="text-dark font-weight-bolder font-size-h4 mt-3 crap">@Model.GarageCount</div>
+											<a href="/Admin/Client/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Clients</a>
+										</div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card card-custom gutter-b" style="height: 150px">
+										<div class="card-body">
+											<span class="menu-icon">
+												<i class="fas fa-ticket-alt fa-2x stats-color"></i>
+											</span>
+											<div id="PropertyApprovals" class="text-dark font-weight-bolder font-size-h4 mt-3 crap">@Model.SparePartCount</div>
+											<a href="/Admin/SparePartsDealer/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Tickets</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							@*<div class="row">
+								<div class="col-md-6">
+									<div class="card card-custom gutter-b">
+										<div class="card-body">
+											<span class="menu-icon">
+												<i class="fas fa-users fa-2x stats-color"></i>
+											</span>
+											<div id="PropertyApprovals" class="text-dark font-weight-bolder font-size-h4 mt-3 crap">@Model.ServiceStaffCount</div>
+											<a href="/Admin/ServiceStaff/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Service Staff</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card card-custom gutter-b">
+										<div class="card-body">
+											<span class="menu-icon">
+												<i class="fas fa-users fa-2x stats-color"></i>
+											</span>
+											<div id="PropertyApprovals" class="text-dark font-weight-bolder font-size-h4 mt-3 crap">@Model.DeliveryStaffCount</div>
+                                            <a href="/Admin/DeliveryStaff/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Delivery Staff</a>
+										</div>
+									</div>
+								</div>
+
+							</div>*@
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-12">
+							@*@{ Html.RenderAction("List", "Ticket", new { area = "Admin" }); }*@
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-12">
+							@*@{ Html.RenderAction("ApprovalsList", "Property", new { area = "Admin" }); }*@
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-12">
+							@*@{ Html.RenderAction("ApprovalsList", "Car", new { area = "Admin" }); }*@
+						</div>
+					</div>
+				</div>
+
+			}
+			else if ((await AuthorizationService.AuthorizeAsync(User, "Automobile Manager")).Succeeded)
+			{
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 sm-12 col-xxl-12">
+							<div class="row">
+								<div class="col">
+									<div class="card card-custom gutter-b" style="height: 150px">
+										<div class="card-body">
+											<span class="menu-icon">
+												<i class="fas fa-car fa-2x stats-color"></i>
+											</span>
+											<div id="PropertyApprovals" class="text-dark font-weight-bolder font-size-h4 mt-3 crap">@Model.GarageCount</div>
+											<a href="/Admin/Client/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Clients</a>
+										</div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card card-custom gutter-b" style="height: 150px">
+										<div class="card-body">
+											<span class="menu-icon">
+												<i class="fas fa-tools fa-2x stats-color"></i>
+											</span>
+											<div id="PropertyApprovals" class="text-dark font-weight-bolder font-size-h4 mt-3 crap">@Model.SparePartCount</div>
+											<a href="/Admin/SparePartsDealer/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Spare Part Dealers</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			}
+
+			else if ((await AuthorizationService.AuthorizeAsync(User, "Restaurant Manager")).Succeeded)
+			{
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 sm-12 col-xxl-12">
+							<div class="row">
+								<div class="col">
+									<div class="card card-custom gutter-b" style="height: 150px">
+										<div class="card-body">
+											<span class="menu-icon">
+												<i class="fas fa-building fa-2x stats-color"></i>
+											</span>
+											<div id="PropertyApprovals" class="text-dark font-weight-bolder font-size-h4 mt-3 crap">@Model.RestaurantCount</div>
+											<a href="/Admin/Restaurant/Index" class="text-muted text-hover-dark font-weight-bold font-size-lg mt-1">Restaurants</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			}
+		}
+		<!--end::Container-->
+
+	</div>
+	<!--end::Entry-->
+	<!--start : Listing-->
+	@{ if ((await AuthorizationService.AuthorizeAsync(User, "Automobile Manager")).Succeeded || (await AuthorizationService.AuthorizeAsync(User, "Admin")).Succeeded)
+		{
+			<div>
+				<div class="col-xl-12" id="garagePartialView">
+					@await Html.PartialAsync("~/Areas/Admin/Views/Garage/List.cshtml", Model.Garages.Where(x => x.Status.ToLower() == "processing").ToList())
+				</div>
+
+				<div class="col-xl-12" id="sparePartsDealerPartialView">
+					@try
+					{
+						await Html.PartialAsync("~/Areas/Admin/Views/SparePartsDealer/List.cshtml", Model.SparePartsDealers.Where(x => x.Status.ToLower() == "processing").ToList());
+					}
+					catch (Exception)
+					{
+
+					}
+				</div>
+			</div>
+		} }
+
+	<!--end : Listing-->
+</div>
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content" style="min-height:100px">
+			<div id='myModalContent'>
+				<div class="row justify-content-center">
+					<div class="col-16">
+						<div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--end::Content-->
+@section Scripts {
+	<!--begin::Page Vendors(used by this page)-->
+	@*<script src="~/Admin/plugins/custom/datatables/datatables.bundle.js"></script>*@
+	<script src="~/Admin/js/general/ModalPopup.js"></script>
+	<script src="~/Admin/js/admin/sparePartsDealer/partialView.js"></script>
+	<script src="~/Admin/js/admin/client/partialView.js"></script>
+
+	<!--end::Page Vendors-->
+	<!--begin::Page Scripts(used by this page)-->
+	@*<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>*@
+
+	@*<script src="@Url.ContentVersioned("~/Assets/Admin/js/admin/dashboard/index.js")"></script>*@
+	@*<script src="@Url.ContentVersioned("~/Assets/Admin/js/admin/dashboard/PropApprovals.js")"></script>
+		<script src="@Url.ContentVersioned("~/Assets/Admin/js/admin/dashboard/approvals.js")"></script>
+		<script src="@Url.ContentVersioned("~/Assets/Admin/js/admin/dashboard/Ticket.js")"></script>*@
+	@*<script src="~/Assets/Admin/js/general/ModalPopup.js"></script>*@
+	@*<script src="~/Assets/Admin/js/admin/dashboard/list.js"></script>*@
+	<!--end::Page Scripts-->
+	<script>
+
+		$(document).ready(function () {
+			$(".dropdown-inline").hide();
+			/*     $('#garagePartialView').load('/Admin/Garage/List');*/
+			//$('#sparePartsDealerPartialView').load('/Admin/SparePartsDealer/List');
+			//$('#garagePartialView').load('/Admin/Garage/List');
+		});
+
+		var Dates = [];
+		var Sales = [];
+		var category = [];
+		var itemsold = [];
+		$(document).ready(function () {
+			$("#btnSearch").trigger('click');
+
+		});
+
+
+	</script>
+}

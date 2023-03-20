@@ -1,0 +1,236 @@
+﻿@model WebApp.ViewModels.CarMakeViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Update</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="frm-edit" >
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        @Html.HiddenFor(model => model.Status , new {  id="Status" })
+
+        <div class="form-group row justify-content-center">
+            <div class="col-12 form-group row justify-content-center">
+                <div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+                    <div class="image-upload uploaded">
+                        <i class="fa fa-camera"></i>
+                        <span>Upload Image</span>
+                        <input type="file" name="Restaurantlogo" id="Restaurantlogo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+                               aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+                        <img id="PreviewImage" src='@Model.Logo' />
+
+                        <i class="fa fa-pen" onclick="DeleteFile(this,'@Model.Logo')"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @*<div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">Parent Category</label>
+                        <div class="input-group mb-2">
+                            @Html.DropDownList("ParentCategoryID", null, "Select Parent Category", htmlAttributes: new { @class = "form-control" })@Html.ValidationMessageFor(model => model.ParentCategoryID, "", new { @class = "text-danger" })
+                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-server"></i></span></div>
+                        </div>
+                    </div>
+                </div>*@
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Make</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter make name here ...", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tools"></i></span></div>
+                    </div>
+                </div>
+            </div>
+          @*  <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Name (Ar)</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.NameAr, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter sport name (Ar) here ...", dir = "rtl", required = "required" } })@Html.ValidationMessageFor(model => model.NameAr, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                    </div>
+                </div>
+            </div>*@
+            <input type="text" class="" value="-" name="CategoryNameAr" hidden="" />
+            
+            @*<div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">Slug</label>
+                        <div class="input-group mb-2">
+                            @Html.EditorFor(model => model.Slug, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Slug name here ...", required = "required", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.Slug, "", new { @class = "text-danger" })
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fa fa-link"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+
+           
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="frm-edit">Save Changes</button>
+</div>
+<script>
+    var _URL = window.URL || window.webkitURL;
+    var logoPath = "@Model.Logo";
+
+    $(document).ready(function () {
+
+
+        $('.cropper-shape').click(function () {
+
+            $('#CropperModal').removeClass($('.cropper-shape.active').attr('data'));
+
+            $('.cropper-shape').removeClass('active');
+            $(this).addClass('active');
+
+            $('#CropperModal').addClass($(this).attr('data'));
+        })
+
+
+        $('.background-color').click(function () {
+            $('.background-color').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('.cropper-view-box').css('background', $('.background-color.active').attr('data'))
+        })
+
+
+        $('.cropper-aspectratio').click(function () {
+            $('.cropper-aspectratio').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('#image').attr('aspectratio', $(this).attr('data'));
+
+            cropper.setAspectRatio($(this).attr('data'))
+
+        })
+
+        $('i.fa-camera').click(function () {
+            $("#logo").trigger('click');
+        });
+
+        //aspectratio = 0.76;
+        //minCroppedWidth = 250;
+        //minCroppedHeight = 330;
+
+        $('i.fa-camera').click(function () {
+            $("#Restaurantlogo").trigger('click');
+        });
+        BindImageUploader("#Restaurantlogo", "#image", "#CropperModal", "#PreviewImage");
+        //Image Validation Begin
+        //$("#logo").change(function (e) {
+
+        //    var file, img;
+
+        //    if ((file = this.files[0])) {
+
+        //        img = new Image();
+        //        img.onload = function () {
+
+        //            if (this.width < 200 || this.width > 200) {
+        //                Swal.fire({
+        //                    icon: 'error',
+        //                    title: 'Oops...',
+        //                    text: 'Image dimension should be 200 x 200 ! ',
+
+        //                }).then(function (result) {
+        //                    $("#logo").attr("src", "/Assets/AppFiles/Images/default.png");
+        //                    $(".cancelimage").trigger('click');
+        //                });
+        //            }
+        //            else if (this.height < 200 || this.height > 200) {
+        //                Swal.fire({
+        //                    icon: 'error',
+        //                    title: 'Oops...',
+        //                    text: 'Image dimension should be 200 x 200 !',
+
+        //                }).then(function (result) {
+        //                    $("#logo").attr("src", "/Assets/AppFiles/Images/default.png");
+        //                    $(".cancelimage").trigger('click');
+        //                });
+        //            }
+        //            else if (file.size > 500000) {
+
+        //                Swal.fire({
+        //                    icon: 'error',
+        //                    title: 'Oops...',
+        //                    text: 'Image size must be less than 100 kb!',
+
+        //                }).then(function (result) {
+        //                    $("#logo").attr("src", "/Assets/AppFiles/Images/default.png");
+        //                    $(".cancelimage").trigger('click');
+        //                });
+        //            }
+        //            else {
+        //                img.onerror = function () {
+        //                    alert("not a valid file: " + file.type);
+        //                };
+        //            }
+        //        };
+        //        img.src = _URL.createObjectURL(file);
+        //        let logoPath = UploadImageToDraft(file).responseText;
+        //        $("#logo-hidden").val(logoPath);
+        //    }
+        //});
+
+
+        ////Image Validation End
+
+        //var avatar1 = new KTImageInput('kt_image_1');
+        //var avatar2 = new KTImageInput('kt_image_2');
+
+        $("#frm-edit").submit(function () {
+
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+            var data = new FormData();
+
+            data.append("Id", $('#Id').val());
+            data.append("Name", $('#Name').val());
+            data.append("NameAr", $('#NameAr').val());
+            data.append("Logo", logoPath);
+            $.ajax({
+                url: "/Admin/CarMake/Edit/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    if (callback) {
+                        callback($('#myModalContent'), element, false, response);
+                    }
+                    //location.reload();
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+            return false;
+        });
+    });
+</script>

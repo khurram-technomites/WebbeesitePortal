@@ -1,0 +1,1319 @@
+﻿@model WebApp.ViewModels.RestaurantViewModel
+@using HelperClasses.Classes 
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .theme-link {
+        color: #c90606 !important;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+        .theme-link i {
+            color: #c90606 !important;
+        }
+</style>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<link href="/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<link href="~/css/cropper.css" rel="stylesheet" />
+<link href="~/Admin/css/general/ImageUploader.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+
+<link href="~/Admin/css/admin/restaurant/edit.css" rel="stylesheet" />
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <div class="d-flex flex-column">
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <a href="/Admin/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <a href="/Admin/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript: window.history.go(-1);" class="text-white text-hover-white opacity-75 hover-opacity-100">Restaurants</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body">
+                            <div class="" id="headingImage">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="d-flex flex-column">
+                                            <div><h4>Edit Restaurant</h4></div>
+                                            <div><h6>Reference Code : <span style="color:red">@Model.ReferenceCode</span></h6></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row justify-content-end">
+                                            <div class="col-5">
+                                                <button type="button" id="DraftButton" data-attr="Draft" onclick="saveRestaurant(this)" class="btn btn-block btn-info">Update</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body pl-12">
+                                <div class="form-group row">
+                                    <input name="RestaurantId" value="@Model.Id" hidden />
+
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card-title"><h4>Restaurant Info</h4></div>
+
+                                                <div class="form-group row justify-content-center">
+                                                    <div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+                                                        <div class="image-upload uploaded">
+                                                            <i class="fa fa-camera"></i>
+                                                            <span>Upload Image</span>
+                                                            <input type="file" name="Restaurantlogo" id="Restaurantlogo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+                                                                   aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+                                                            <img id="PreviewImage" src='@Model.Logo' />
+
+                                                            <i class="fa fa-pen" onclick="DeleteFile(this,'@Model.Logo', 'restaurant')"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Name As Per Trade License</label>
+                                                            <input type="text" class="form-control custom-input branch-input" asp-for="NameAsPerTradeLicense" required placeholder="Enter your restaurant name" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Website</label>
+                                                            <input type="text" class="form-control custom-input branch-input" asp-for="Website" placeholder="Enter your restaurant website" required />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">About Us</label>
+                                                            <div class="input-group mb-2">
+                                                                <textarea name="Description" id="Description" rows="10" placeholder="Type Here" class="form-control custom-input branch-input">@Model.Description</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="card-title"><h4>Login Credentials</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Email</label>
+                                                            <input name="UEmail" value="@Model.User.Email" required placeholder="Enter your email address" class="form-control custom-input branch-input" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Password</label>
+                                                            <input type="password" name="Password" value="@Model.User.PasswordHash" required placeholder="Enter your password" class="form-control custom-input branch-input" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="card-title"><h4>Bank Details</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Bank Name</label>
+                                                            <input name="Bank" value="@Model.Bank" required placeholder="Enter bank name" class="form-control custom-input branch-input" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Bank Account Number</label>
+                                                            <input type="number" value="@Model.BankAccountNumber" name="AccountNumber" required placeholder="Entery bank account number" class="form-control custom-input branch-input" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Account Holder Name</label>
+                                                            <input type="text" value="@Model.BankAccountHolderName" name="AccountHolder" required placeholder="Entery bank account holder name" class="form-control custom-input branch-input" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">IBAN</label>
+                                                            <input type="text" name="IBAN" value="@Model.BankAccountNumber" required placeholder="Entery IBAN" class="form-control custom-input branch-input" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <hr />
+                                                <div class="card-title"><h4>Look And Feel</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="colorpicker">Theme Color</label>
+                                                            <input type="color" name="ThemeColor" class="form-control custom-input branch-input" value="@Model.ThemeColor">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr class="vertical" />
+                                            <div class="col-md-5">
+                                                <div class="card-title"><h4>Branch Details</h4></div>
+                                                <div class="row">
+
+                                                    <input hidden name="BranchId" id="BranchId" value="@Model.RestaurantBranches.FirstOrDefault().Id" />
+                                                    <input hidden name="BranchSlug" id="BranchId" value="@Model.RestaurantBranches.FirstOrDefault().Slug" />
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Name</label>
+                                                                <input type="text" name="BNameAsPerTradeLicense" id="" value="@Model.RestaurantBranches.FirstOrDefault().NameAsPerTradeLicense" required placeholder="Enter branch name" class="form-control custom-input branch-input" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Email Address</label>
+                                                                <input type="email" name="BEmail" id="" value="@Model.RestaurantBranches.FirstOrDefault().Email" required class="form-control custom-input branch-input" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Phone Number</label>
+                                                                <input type="number" name="OrderingPhoneNumber" id="" value="@Model.RestaurantBranches.FirstOrDefault().OrderingPhoneNumber" required placeholder="Enter phone number" class="form-control custom-input branch-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-12">
+
+
+                                                        <div class="card-title"><h4>Restaurant Schedule</h4></div>
+                                                        @*<div class="container text-center owl-carousel owl-theme">*@
+
+                                                        <div class="module-container">
+                                                            <div class="schedule" style="display: none !important">
+                                                                <div class="d-flex mb-4 slider my-slider" id="schedule-tags" style="width:100%;">
+                                                                    @{
+                                                                        foreach (var items in Model.RestaurantBranches.FirstOrDefault().BranchSchedules)
+                                                                        {
+                                                                            <div class="item" id="@string.Format("MainDiv{0}",items.Day)">
+
+                                                                                <span>@items.Day</span>
+                                                                                <span>@items.FormattedOpeningTime - @items.FormattedClosingTime</span>
+
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                </div>
+
+                                                                <button type="button" class="btn btn-block btn-default btn-manage" onclick="OpenModelPopup(this, '/Admin/Restaurant/Schedule/@Model.RestaurantBranches.FirstOrDefault().Id')">
+                                                                    Manage
+                                                                    <i class="fa fa-arrow-right float-right" style="color:#f55050"></i>
+                                                                </button>
+                                                            </div>
+                                                            <div class="spinner spinner-center"></div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="card-title"><h4>Restaurant Documents</h4></div>
+                                                    @*<div class="container">*@
+                                                    <div class="d-flex mb-4 slider my-slider" id="schedule-Document" style="width:100%">
+
+                                                        @{
+                                                            foreach (var items in Model.RestaurantDocuments)
+                                                            {
+
+                                                                <div class="item" id="@items.Id">
+                                                                    <span class="mr-2 label label-inline lbl-style pt-4" id="dispatch" style="display:inline-table;width:12rem">
+                                                                        <a href="@items.Path" class="text-danger" target="_blank">
+                                                                            @items.Type
+                                                                        </a>
+                                                                        <p class="opacity-70 font-size-sm">Expiry: @items.FormattedDate</p>
+
+                                                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow float-right DeleteDocument"
+                                                                              data-action="cancel" data-toggle="tooltip" data-original-title="Delete Document">
+                                                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
+
+                                                                        </span>
+                                                                    </span>
+
+
+                                                                    @*<label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow">
+                                <i class="fa fa-pen icon-sm text-muted"></i>
+                            </label>*@
+                                                                </div>
+
+                                                            }
+                                                        }
+
+
+
+                                                    </div>
+                                                    @*</div>*@
+                                                    <div class="col-12">
+                                                        <button type="button" class="btn btn-block btn-info" onclick="OpenModelPopup(this, '/Admin/Restaurant/DocumentModel?RestaurantId=@Model.Id')">Upload  <i class="fa fa-arrow-right float-right" style="color:#f55050"></i></button>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="card-title"><h4>Delivery Settings</h4></div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Type</label>
+                                                                @*<div class="radio-list">
+                            <label class="radio radio-accent radio-danger">
+                                <input type="checkbox" name="type" @(Model.RestaurantBranches.FirstOrDefault().DeliveryType != null && Model.RestaurantBranches.FirstOrDefault().DeliveryType == "Fixed" ? "checked" : "") value="Fixed" />
+                                <span></span><strong>Fixed</strong>
+                            </label>
+                            <label class="radio radio-accent radio-danger">
+                                <input type="checkbox" name="type" @(Model.RestaurantBranches.FirstOrDefault().DeliveryType != null && Model.RestaurantBranches.FirstOrDefault().DeliveryType == "PerKilometer" ? "checked" : "") value="PerKilometer" />
+                                <span></span><strong>Per Kilometer</strong>
+                            </label>
+                        </div>*@
+                                                                <div class="col-md-12">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="radio" name="DeliveryType" id="flexRadioDefault1" value="Fixed" @(Model.RestaurantBranches.FirstOrDefault().DeliveryType != null && Model.RestaurantBranches.FirstOrDefault().DeliveryType == "Fixed" ? "checked" : "")>
+                                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                                            Fixed
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="radio" name="DeliveryType" id="flexRadioDefault2" value="PerKilometer" @(Model.RestaurantBranches.FirstOrDefault().DeliveryType != null && Model.RestaurantBranches.FirstOrDefault().DeliveryType == "PerKilometer" ? "checked" : "")>
+                                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                                            Per Kilometer
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Delivery Charges</label>
+                                                                <input type="number" id="DeliveryCharges" name="DeliveryCharges" value="@Model.RestaurantBranches.FirstOrDefault().DeliveryCharges" required placeholder="Enter delivery charges" class="form-control custom-input branch-input" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Average Time of Delivery(minutes)</label>
+                                                                <input type="number" name="DeliveryMinutes" id="" value="@Model.RestaurantBranches.FirstOrDefault().DeliveryMinutes" placeholder="Enter delivery minutes" required class="form-control custom-input branch-input" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Area of Service (kilometers)</label>
+                                                                <input name="Distance" id="" value="@Model.RestaurantBranches.FirstOrDefault().ServiceDistance" type="number" placeholder="Enter service kilometers" required class="form-control custom-input branch-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <hr />
+                                                <div class="card-title"><h4>Social Media Accounts</h4></div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Whatsapp Number</label>
+                                                            <input name="Whatsapp" value="@Model.WhatsappNumber" type="number" required placeholder="Enter whatsapp number" class="form-control custom-input branch-input" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Twitter URL</label>
+                                                            <input type="text" value="@Model.Twitter" name="Twitter" required placeholder="Enter twitter URL" class="form-control custom-input branch-input" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Facebook URL</label>
+                                                            <input type="text" value="@Model.Facebook" name="Facebook" required placeholder="Enter facebook URL" class="form-control custom-input branch-input" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Instagram URL</label>
+                                                            <input type="text" name="Instagram" value="@Model.Instagram" required placeholder="Enter instagram URL" class="form-control custom-input branch-input" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Linkedin URL</label>
+                                                            <input type="text" name="Linkedin" value="@Model.Linkedin" required placeholder="Enter linkedin URL" class="form-control custom-input branch-input" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <hr />
+                                                <div class="card-title"><h4>Payment Method</h4></div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Credit/Debit Card</label>
+                                                            <span class="d-flex justify-content-start switch switch-danger">
+                                                                <label style="opacity:1">
+                                                                    @if (Model.OrderPaymentType == Enum.GetName(typeof(OrderPaymentType), OrderPaymentType.Card) ||
+                                                                     Model.OrderPaymentType == Enum.GetName(typeof(OrderPaymentType), OrderPaymentType.Both))
+                                                                    {
+                                                                        <input class="PaymentMethodSwitch" type="checkbox" id="IsCardAllowed" name="IsCardAllowed" checked>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input class="PaymentMethodSwitch" type="checkbox" id="IsCardAllowed" name="IsCardAllowed">
+                                                                    }
+
+                                                                    <span></span>
+                                                                </label>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Cash On Delivery</label>
+                                                            <span class="d-flex justify-content-start switch switch-danger">
+                                                                <label style="opacity:1">
+                                                                    @if (Model.OrderPaymentType == Enum.GetName(typeof(OrderPaymentType), OrderPaymentType.COD) ||
+                                                                     Model.OrderPaymentType == Enum.GetName(typeof(OrderPaymentType), OrderPaymentType.Both))
+                                                                    {
+                                                                        <input class="PaymentMethodSwitch" type="checkbox" id="IsCODAllowed" name="IsCODAllowed" checked>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input class="PaymentMethodSwitch" type="checkbox" id="IsCODAllowed" name="IsCODAllowed">
+                                                                    }
+
+                                                                    <span></span>
+                                                                </label>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="card-title mt-6"><h4>Allowed Modules</h4></div>
+                                        <div class="col-md-12 col-sm-12 mx-23" style="display:flex;">
+                                            <div class="col-md-3 col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Cashier</label>
+                                                    <span class="d-flex justify-content-start switch switch-danger">
+                                                        <label style="opacity:1">
+                                                            @if (Model.IsCashierAllowed == true)
+                                                            {
+                                                                <input type="checkbox" id="IsCashierAllowed" name="IsCashierAllowed" checked>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="checkbox" id="IsCashierAllowed" name="IsCashierAllowed">
+                                                            }
+
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Partner</label>
+                                                    <span class="d-flex justify-content-start switch switch-danger">
+                                                        <label style="opacity:1">
+                                                            @if (Model.IsPartnerAllowed == true)
+                                                            {
+                                                                <input type="checkbox" id="IsPartnerAllowed" name="IsPartnerAllowed" checked>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="checkbox" id="IsPartnerAllowed" name="IsPartnerAllowed">
+                                                            }
+
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Kitchen Manager</label>
+                                                    <span class="d-flex justify-content-start switch switch-danger">
+                                                        <label style="opacity:1">
+                                                            @if (Model.IsKitchenManagerAllowed == true)
+                                                            {
+                                                                <input type="checkbox" id="IsKitchenManagerAllowed" name="IsKitchenManagerAllowed" checked>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="checkbox" id="IsKitchenManagerAllowed" name="IsKitchenManagerAllowed">
+                                                            }
+
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Waiter</label>
+                                                    <span class="d-flex justify-content-start switch switch-danger">
+                                                        <label style="opacity:1">
+                                                            @if (Model.IsWaiterAllowed == true)
+                                                            {
+                                                                <input type="checkbox" id="IsWaiterAllowed" name="IsWaiterAllowed" checked>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="checkbox" id="IsWaiterAllowed" name="IsWaiterAllowed">
+                                                            }
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*</div>*@
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="card-title mt-6"><h4>Secondary Logo</h4></div>
+                                                <div class="col-md-12">
+                                                    <div class="card card-custom gutter-b">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-12" style="display:flex">
+                                                                    <div class="image-upload banner box @(@Model.SecondaryLogo!=null? "uploaded" : "empty")uploaded" action="/Admin/Restaurant/UpdateSecondaryLogo">
+                                                                        <i class="fa fa-camera"></i>
+                                                                        <span>Upload Image</span>
+                                                                        <input type="file" name="RestaurantSecondarylogo" id="RestaurantSecondarylogo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" aspectratio="16/9" minCroppedWidth="0" minCroppedHeight="0" />
+                                                                        <img id="PreviewSecondarylogo" class="image-preview" src='@(@Model.SecondaryLogo!=null?@Model.SecondaryLogo:"/Assets/images/no-data.png")' />
+                                                                        <i class="fa fa-trash" onclick="DeleteFile(this,'@Model.SecondaryLogo')"></i>
+                                                                        <input name="RestaurantID" id="RestaurantID" value="@Model.Id" hidden />
+                                                                    </div>
+
+                                                                    <div class="card card-custom card-stretch card-stretch shadow-none justify-content-center" style="width: -webkit-fill-available;">
+                                                                        <div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+                                                                            <h3 class="card-title align-items-start flex-column">
+                                                                                <span class="card-label font-weight-bolder text-dark">Secondary Logo</span>
+                                                                                <small class="text-muted mt-3">Restaurant secondary logo for mobile view</small>
+                                                                            </h3>
+                                                                            <div class="text-md-right">
+                                                                                <div class="card-toolbar">
+                                                                                    <a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link media">
+                                                                                        <i class="fa fa-edit"></i> Change
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card-title mt-6"><h4>Thumbnail</h4></div>
+                                                <div class="col-md-12">
+                                                    <div class="card card-custom gutter-b">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-12" style="display:flex">
+                                                                    <div class="image-upload banner box @(@Model.ThumbnailImage!=null? "uploaded" : "empty")uploaded" action="/Admin/Restaurant/UpdateThumbnailImage">
+                                                                        <i class="fa fa-camera"></i>
+                                                                        <span>Upload Image</span>
+                                                                        <input type="file" name="ThumbnailImage" id="ThumbnailImage" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" aspectratio="16/9" minCroppedWidth="0" minCroppedHeight="0" />
+                                                                        <img id="PreviewThumbnailImage" class="image-preview" src='@(@Model.ThumbnailImage!=null?@Model.ThumbnailImage:"/Assets/images/no-data.png")' />
+                                                                        <i class="fa fa-trash" onclick="DeleteFile(this,'@Model.ThumbnailImage')"></i>
+                                                                        <input name="RestaurantID" id="RestaurantID" value="@Model.Id" hidden />
+                                                                    </div>
+
+                                                                    <div class="card card-custom card-stretch card-stretch shadow-none justify-content-center" style="width: -webkit-fill-available;">
+                                                                        <div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+                                                                            <h3 class="card-title align-items-start flex-column">
+                                                                                <span class="card-label font-weight-bolder text-dark">Thumbnail Image</span>
+                                                                                <small class="text-muted mt-3">Restaurant thumbnail image for website</small>
+                                                                            </h3>
+                                                                            <div class="text-md-right">
+                                                                                <div class="card-toolbar">
+                                                                                    <a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link media">
+                                                                                        <i class="fa fa-edit"></i> Change
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="card-title mt-6"><h4>Gallery Images</h4></div>
+                                            <div class="col-md-12 col-sm-12 img-area" style="display:flex;">
+                                                <input type="file" id="logo" style="display:none;" accept=".png, .jpg, .jpeg" />
+                                                <div id="upld-btn-conctr" class="btn btn-block btn-info col-lg-2 rounded d-flex flex-column justify-content-center align-items-center thumbnail-image-h-w BtnSave">
+                                                    <div id="TakePhotoDiv">
+                                                        <i class="fa fa-camera m-0 p-0"></i>
+                                                        <p class=" m-0 p-0">Upload Photo</p>
+                                                    </div>
+                                                </div>
+                                                @*<div id="RestaurantGalleryDiv">*@
+                                                @foreach (var restaurantImage in Model.RestaurantImages)
+                                                {
+
+                                                    <div class="col-lg-1 rounded mx-2 position-relative thumbnail-image-h-w res-imgs" id="restaurantImageId" data-imgId="@restaurantImage.Id" style="background-image: url( @restaurantImage.Image.Replace(" ", "%20" ) );background-size: 110px 70px;">
+                                                        <i class="fa fa-trash position-absolute text-danger trash-icon cancelimage" id="RemoveImage" data-action="cancel" data-toggle="tooltip" title="Cancel avatar" onclick="DeleteGalleryImage(this)"></i>
+                                                    </div>
+
+                                                }
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="card-title mt-6"><h4>Restaurant Location</h4></div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Country</label>
+                                                            @Html.DropDownList("CountryId", null, "Select country", htmlAttributes: new { @class = "form-control custom-input", id = "CountryId" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">City</label>
+                                                            <select class="form-control custom-input branch-input" id="CityId" required>
+                                                                <option>Select city</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    @*<div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Delivery Address</label>
+                                                                <input name="Address" id="Address" value="@Model.RestaurantBranches.FirstOrDefault().Address" required placeholder="enter address here ..." class="form-control custom-input branch-input" />
+                                                            </div>
+                                                        </div>
+                                                        <input hidden value="@Model.RestaurantBranches.FirstOrDefault().Latitude" id="Latitude" />
+                                                        <input hidden value="@Model.RestaurantBranches.FirstOrDefault().Longitude" id="Longitude" />*@
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="wo-titleinput mb-0">Search Location</label>
+                                                            <div class="wo-form-icon">
+                                                                <input type="text" class="form-control custom-input show-map-input Address" id="Address" name="Address" placeholder="Choose location" required value="@Model.RestaurantBranches.FirstOrDefault().Address">
+                                                                <a href="javascript:void(0);" class="wo-right-icon get-current-location" onclick="getLocation()">
+                                                                    <i class="flaticon2-map"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="wo-right-icon pin-on-map" @*data-toggle="modal" data-target="#map-modal"*@ onclick="openMap()">
+                                                                    Pin On Map
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="MapSearchResult" style="display:none">
+                                                        </div>
+                                                        <input type="hidden" name="Latitude" id="Latitude" value="@Model.RestaurantBranches.FirstOrDefault().Latitude" />
+                                                        <input type="hidden" name="Longitude" id="Longitude" value="@Model.RestaurantBranches.FirstOrDefault().Longitude" />
+                                                    </div>
+                                                </div>
+
+
+
+                                                @*<div id="map" class="mt-4 mb-4 border border-dark ">
+                                                        <div id="googleMap" style="width:100%;height:400px;"></div>
+                                                    </div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CropperModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90vw;">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="img-container">
+                    <img id="image" src="https://avatars0.githubusercontent.com/u/3456749" style="width:80vw;height:80vh" aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0">
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: space-between;">
+                <div class="cropper-actions">
+                    <div class="aspectratio-section">
+                        <h6>ASPECT RATIO</h6>
+                        <div class="aspectratios">
+                            <a href="javascript:;" class="cropper-aspectratio active" data="NaN"><span class="free-style"></span>FREE STYLE</a>
+                            <a href="javascript:;" class="cropper-aspectratio" data="1"><span class="box"></span> SQUARE (1:1)</a>
+                        </div>
+                    </div>
+                    <div class="shapes-section">
+                        <h6>SHAPES</h6>
+                        <div class="shapes">
+                            <a href="javascript:;" class="cropper-shape active" data="round"><span class="round"></span> ROUND/OVAL</a>
+                            <a href="javascript:;" class="cropper-shape" data="square"><span class="square"></span> SQUARE/RECTANGLE</a>
+                        </div>
+                    </div>
+                    <div class="backgrounds-section">
+                        <h6>BACKGROUNDS</h6>
+                        <div class="backgrounds">
+                            <a href="javascript:;" class="background-color active" data="#FFFFFF"><span style="background: #FFFFFF"></span> WHITE</a>
+                            <a href="javascript:;" class="background-color" data="#000000"><span style="background: #000000"></span> BLACK</a>
+                            <a href="javascript:;" class="background-color" data="#00000000"><span style="background: #00000000"></span> TRANSPARENT</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" id="crop">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Map Modal Start -->
+<div class="modal fade wo-videopopup " tabindex="-1" role="dialog" id="map-modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="wo-modalcontent modal-content">
+            <div class="modal-body">
+                <a href="javascript:void(0);" class="close"><i class="ti-close" data-dismiss="modal"></i></a>
+                <div class="login-header">
+                    <h4 class="text-center mb-2">Search Location</h4>
+                    <p class="text-center" id="drag-map"><span>Drag marker on the map to select your desired location.</span></p>
+                </div>
+                <!-- Modal Body Start -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="map-div" style="display:none">
+                                <input type="text" class="form-control custom-input mb-3 Address" id="current-location" name="current-location" placeholder="Search Location" required="">
+                                <div id="googleMap" style="width:100%;height:400px;"></div>
+                                <button class="btn btn-block btn-theme border-radius-4 mt-3 p-3" type="button" data-dismiss="modal">Done</button>
+                            </div>
+                            <div class="map-div-spin p-5 m-5 text-center">
+                                <span class="fa fa-circle-notch fa-spin fa-2x"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Body End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Map Modal End -->
+
+@section Scripts {
+    @*<script src="~/assets/admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>*@
+    <script src="~/js/Map.js"></script>
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmOcUK0pgT3lW3Cr9LoeCVGIrm1_qFq30&callback=initMap&libraries=&v=weekly&callback=myMap"></script>*@
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8&libraries=places&callback=initAutocomplete"></script>
+
+    <script src="~/js/cropper.js"></script>
+
+    <script src="~/js/compressor.js"></script>
+    <script src="~/Admin/js/general/ImageUploader-2.0.js"></script>
+
+    <script src="~/js/FileUpload.js"></script>
+    <script src="~/Admin/js/general/ModalPopup.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
+    <script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+
+    <script>
+        //$("#TakePhotoSpinner").hide();
+        'use strict';
+        var slider;
+        var tnsCarousel = '';
+        var _URL = window.URL || window.webkitURL;
+        var CityId = '@Model.RestaurantBranches.FirstOrDefault().CityId'
+        var countryId = '@Model.RestaurantBranches.FirstOrDefault().CountryId'
+        var arrows;
+        var logoPath = "";
+        var Description
+        var logoPaths = [];
+        if (KTUtil.isRTL()) {
+            arrows = {
+                leftArrow: '<i class="la la-angle-right"></i>',
+                rightArrow: '<i class="la la-angle-left"></i>'
+            }
+        } else {
+            arrows = {
+                leftArrow: '<i class="la la-angle-left"></i>',
+                rightArrow: '<i class="la la-angle-right"></i>'
+            }
+        }
+
+        // Date Range
+        $('.kt_datepicker_range').datepicker({
+            rtl: KTUtil.isRTL(),
+            todayHighlight: true,
+            templates: arrows,
+            //format: 'dd/mm/yyyy',
+        });
+
+        // Class definition
+        var KTImageInputDemo = function () {
+            // Private functions
+            var initDemos = function () {
+                var avatar1 = new KTImageInput('kt_image_1');
+            }
+
+            return {
+                // public functions
+                init: function () {
+                    initDemos();
+                }
+            };
+        }();
+        $(document).ready(function () {
+
+            DeleteDocument()
+            BindCarousle();
+
+         $("#IsCashierAllowed").click(() => {
+                var check = $('#IsCashierAllowed').is(':checked');
+
+                if (check) {
+                    $("#IsPartnerAllowed").prop('checked', false);
+                    $("#IsCashierAllowed").prop('checked', true);
+                }
+            });
+            $("#IsPartnerAllowed").click(() => {
+                var check = $('#IsPartnerAllowed').is(':checked');
+
+                if (check) {
+                    $("#IsCashierAllowed").prop('checked', false);
+                    $("#IsPartnerAllowed").prop('checked', true);
+                }
+            });
+
+
+            $('.cropper-shape').click(function () {
+
+                $('#CropperModal').removeClass($('.cropper-shape.active').attr('data'));
+
+                $('.cropper-shape').removeClass('active');
+                $(this).addClass('active');
+
+                $('#CropperModal').addClass($(this).attr('data'));
+            })
+
+
+            $('.background-color').click(function () {
+                $('.background-color').removeClass('active');
+                $(this).addClass('active');
+
+
+                $('.cropper-view-box').css('background', $('.background-color.active').attr('data'))
+            })
+
+
+            $('.cropper-aspectratio').click(function () {
+                $('.cropper-aspectratio').removeClass('active');
+                $(this).addClass('active');
+
+
+                $('#image').attr('aspectratio', $(this).attr('data'));
+
+                cropper.setAspectRatio($(this).attr('data'))
+
+            })
+
+
+
+
+            ClassicEditor
+               .create(document.querySelector('#Description'))
+               .then(editor => {
+                   Description = editor;
+                   Description.setData(`@Html.Raw(Model.Description)`);
+               })
+               .catch(error => {
+               });
+
+
+            //Logo upload
+            //Image Validation Begin
+            @*$("#Restaurantlogo").change(function () {
+
+
+                var files, imgres;
+
+                if ((files = this.files[0])) {
+
+                    imgres = new Image();
+                    imgres.onload = function () {
+
+                        if (this.width < 200 || this.width > 200) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Image width should be 525 pixels ! ',
+
+                            }).then(function (result) {
+                                $("#Restaurantlogo").attr("src", '@Model.Logo');
+                                $(".cancelResimage").trigger('click');
+                            });
+                        }
+                        else if (this.height < 200 || this.height > 200) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Image Height should be 438 pixels!',
+
+                            }).then(function (result) {
+                                $("#Restaurantlogo").attr("src", '@Model.Logo');
+                                $(".cancelResimage").trigger('click');
+                            });
+                        }
+                        else if (files.size > 100000) {
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Image size must be less than 100 kb!',
+
+                            }).then(function (result) {
+                                $("#Restaurantlogo").attr("src", '@Model.Logo');
+                                $(".cancelResimage").trigger('click');
+                            });
+                        }
+                        else {
+                            imgres.onerror = function () {
+                                alert("not a valid file: " + file.type);
+                            };
+                        }
+                    };
+                    imgres.src = _URL.createObjectURL(files);
+
+                }
+                logoPath = UploadImageToDraft(files).responseText;
+            });
+            var avatarRes = new KTImageInput('kt_image_res');
+
+            $(".cancelResimage").click(function () {
+                DeleteImage(logoPath);
+                logoPath = "";
+                imgres.src = "https://cdn.fougito.com/images/restaurant/default.png";
+            })*@
+
+
+
+
+            //GetBranchSchedule();
+
+
+
+
+
+            $('#CountryId').change(function () {
+
+                var count = 0;
+                var $dropdown = $("#CityId");
+                if ($(this).val() == 0) {
+                    $dropdown.empty();
+                    $dropdown.append($("<option />").val('').text("Please Select Country First!"));
+                }
+                else {
+                    $.ajax({
+                        type: 'Get',
+                        url: '/Admin/Restaurant/GetCityBycountryId?countryId=' + $(this).val(),
+                        success: function (response) {
+                            $dropdown.empty();
+                            $dropdown.append($("<option />").val('').text("Select city"));
+                            var cities = response.data;
+                            $.each(cities, function (k, v) {
+                                $dropdown.append($("<option />").val(v.id).text(v.name));
+                                count++;
+                            });
+
+                            if (CityId != null)
+                                $dropdown.val(CityId)
+                        }
+                    });
+                }
+            });
+            $('#upld-btn-conctr').on('click', () => {
+                $('#logo').click();
+            });
+            $("#logo").change(function () {
+                $("#TakePhotoDiv").hide();
+                $("#TakePhotoSpinner").show();
+
+                var file = this.files[0];
+                var draftImg = UploadImageToDraft(file).responseText;
+                logoPaths.push(draftImg);
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    var html = `<div class="col-lg-1 rounded mx-2 position-relative thumbnail-image-h-w res-imgs" style="background-image:url(${draftImg}); background-size:110px 70px;">
+                                                    <i class="fa fa-trash position-absolute text-danger trash-icon cancelimage" onClick="DeleteGalleryImage(this)"></i>
+                                                </div>`;
+                    $('.img-area').append(html);
+
+                    $("#TakePhotoDiv").show();
+                    $("#TakePhotoSpinner").hide();
+                }
+                reader.readAsDataURL(file);
+            });
+
+
+
+            if (CityId != null) {
+                $('#CountryId').trigger('change');
+            }
+
+            $(".PaymentMethodSwitch").change(function () {
+                var elem = $(this).attr("name");
+
+                if (!$(this).is(":checked") && elem == "IsCODAllowed" && !$("#IsCardAllowed").is(":checked")) {
+                    $("#IsCardAllowed").prop("checked", true)
+                }
+
+                if (!$(this).is(":checked") && elem == "IsCardAllowed" && !$("#IsCardAllowed").is(":checked")) {
+                    $("#IsCODAllowed").prop("checked", true)
+                }
+            })
+
+
+        })
+
+        $('i.fa-camera').click(function () {
+            $(this).closest('.image-upload').children('input[type="file"]').trigger('click');
+        });
+
+        $('.theme-link.media').click(function () {
+            $(this).closest('.row').find(`input[type="file"]`).trigger('click');
+        });
+
+        BindImageUploader("#Restaurantlogo", "#image", "#CropperModal", "#PreviewImage");
+
+        BindImageUploader("#ThumbnailImage", "#image", "#CropperModal", "#PreviewThumbnailImage");
+
+        BindImageUploader("#RestaurantSecondarylogo", "#image", "#CropperModal", "#PreviewSecondarylogo");
+
+        function DeleteGalleryImage(object) {
+
+            var path = $(object).parent().closest('div').css("background-image").replace('url("', '').replace('")', '');
+            logoPaths.splice($.inArray(path, logoPaths), 1);
+            $(object).parent().remove();
+            path = path.replace("%20", " ");
+
+            DeleteImage(path, 'RestaurantImages')
+        }
+
+        function GetBranchSchedule() {
+            $("#schedule-tags").empty();
+            var id = $("#BranchId").val();
+            var html = '';
+            $.ajax({
+                url: '/Admin/Restaurant/GetSchedule/' + id,
+                type: 'Get',
+                success: function (response) {
+                    if (response.success) {
+                        $.each(response.data, function (k, v) {
+                            html += `
+                        <div class="item" id="MainDiv${v.day}">
+                          <span class="mr-2 label label-inline lbl-style pt-4" id="dispatch" style="display:inline-table;width:12rem">
+                               ${v.day}
+                                <p class="opacity-70 font-size-sm">${v.formattedOpeningTime} - ${v.formattedClosingTime}</p>
+
+                              </span>
+                             </div>`;
+                        });
+
+                        $("#schedule-tags").append(html);
+
+                            tns({
+                                container: "#schedule-tags",
+                                items: 1,
+                                slideBy: "page",
+                                fixedWidth: 160,
+                                nav: false,
+                                controls: false,
+                                mouseDrag: true,
+                                swipeAngle: false,
+                                speed: 400,
+                                mode: "carousel",
+                                loop: false
+                            });
+                    }
+                    else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        };
+        function saveRestaurant() {
+            var PaymentMethod;
+            
+            if ($('#IsCODAllowed').is(':checked') && $('#IsCardAllowed').is(':checked')) {
+                PaymentMethod = 'Both'
+            }
+            else if ($('#IsCODAllowed').is(':checked') && !$('#IsCardAllowed').is(':checked')) {
+                PaymentMethod = 'COD'
+            }
+            else if (!$('#IsCODAllowed').is(':checked') && $('#IsCardAllowed').is(':checked')) {
+                PaymentMethod = 'Card'
+            }
+
+            $('#DraftButton').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+            var RestaurantBranches = [];
+            var RestaurantImages = [];
+
+            $.each(logoPaths, (k, v) => {
+                RestaurantImages.push({
+                    RestaurantId: $('input[name="RestaurantId"]').val(),
+                    Image: v
+                });
+            });
+            RestaurantBranches.push({
+                Id: $('input[name="BranchId"]').val(),
+                NameAsPerTradeLicense: $('input[name="BNameAsPerTradeLicense"]').val(),
+                Email: $('input[name="BEmail"]').val(),
+                OrderingPhoneNumber: $('input[name="OrderingPhoneNumber"]').val(),
+                DeliveryType: $('input[name="DeliveryType"]:checked').val(),
+                DeliveryCharges: $('input[name="DeliveryCharges"]').val(),
+                ServiceDistance: $('input[name="Distance"]').val(),
+                DeliveryMinutes: $('input[name="DeliveryMinutes"]').val(),
+                Distance: $('input[name="Distance"]').val(),
+                CityId: $('#CityId').val(),
+                CountryId: $('#CountryId').val(),
+                Longitude: $('#Longitude').val(),
+                Latitude: $('#Latitude').val(),
+                Address: $('input[name="Address"]').val(),
+                Slug: $('input[name="BranchSlug"]').val(),
+                Status: '@Model.Status'
+            });
+            var data = {
+                Id: $('input[name="RestaurantId"]').val(),
+                NameAsPerTradeLicense: $('input[name="NameAsPerTradeLicense"]').val(),
+                Website: $('input[name="Website"]').val(),
+                Origin: $('input[name="Website"]').val(),
+                Email: $('input[name="BEmail"]').val(),
+                PhoneNumber: $('input[name="OrderingPhoneNumber"]').val(),
+                Bank: $('input[name="Bank"]').val(),
+                BankAccountHolderName: $('input[name="AccountHolder"]').val(),
+                BankAccountNumber: $('input[name="AccountNumber"]').val(),
+                IBAN: $('input[name="IBAN"]').val(),
+                Description: Description.getData(),
+                Logo: logoPath == '' ? '@Model.Logo' : logoPath,
+                ThumbnailImage: '@Model.ThumbnailImage',
+                SecondaryLogo: '@Model.SecondaryLogo',
+                WhatsappNumber: $('input[name="Whatsapp"]').val(),
+                Facebook: $('input[name="Facebook"]').val(),
+                Twitter: $('input[name="Twitter"]').val(),
+                Instagram: $('input[name="Instagram"]').val(),
+                Linkedin: $('input[name="Linkedin"]').val(),
+                ThemeColor: $('input[name="ThemeColor"]').val(),
+                RestaurantBranches: RestaurantBranches,
+                IsCashierAllowed: $('#IsCashierAllowed').is(':checked') ? $('#IsCashierAllowed').is(':checked') : 0,
+                IsPartnerAllowed: $('#IsPartnerAllowed').is(':checked') ? $('#IsPartnerAllowed').is(':checked') : 0,
+                IsKitchenManagerAllowed: $('#IsKitchenManagerAllowed').is(':checked') ? $('#IsKitchenManagerAllowed').is(':checked') : 0,
+                IsWaiterAllowed: $('#IsWaiterAllowed').is(':checked') ? $('#IsWaiterAllowed').is(':checked') : 0,
+                OrderPaymentType: PaymentMethod,
+
+                RestaurantImages: RestaurantImages,
+                User:
+                {
+                    PasswordHash: $('input[name="Password"]').val()
+                }
+            }
+            $(element).find('i').hide();
+            $(element).addClass('spinner spinner-left spinner-sm').attr('disabled', true);
+            $.ajax({
+                url: '/Admin/Restaurant/Edit',
+                type: 'POST',
+                data: { 'model': data },
+                success: (response) => {
+                    if (response.success) {
+                        $('#DraftButton').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        toastr.success("Restaurant updated successfully ...");
+                        $(".img-area").find(".res-imgs").remove();
+                        BindGalleryImages();
+                    }
+                    //location.reload();
+                }
+            })
+        }
+        function DeleteDocument() {
+            $(".DeleteDocument").on("click", function ()
+            {
+
+                $(this).find("i").removeClass("ki ki-bold-close icon-xs text-muted").addClass("spinner spinner-sm spinner-center");
+                var Id = $(this).parent().parent().attr("id");
+
+                $.ajax({
+                    url: '/Admin/Restaurant/DeleteDocument/' + Id,
+                    type: 'GET',
+                    success: function (response) {
+                        if (response.success) {
+                            toastr.options = {
+                                "positionClass": "toast-bottom-right",
+                            };
+
+                            $("#schedule-Document").find("#" + Id).remove()
+                            toastr.success(response.message)
+
+                        }
+
+                        else {
+                            //$('#SaveSchedule').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                            $(this).find("i").removeClass("spinner spinner-sm spinner-center").addClass("ki ki-bold-close icon-xs text-muted");
+                            toastr.error(response.message);
+
+                        }
+                    },
+                    error: function (error) {
+                        toastr.options = {
+                            "positionClass": "toast-bottom-right",
+                        };
+                        $(this).find("i").removeClass("spinner spinner-sm spinner-center").addClass("ki ki-bold-close icon-xs text-muted");
+                        toastr.error('Something went wrong ...');
+                    }
+
+
+                });
+
+                //$(this).find("i").removeClass("spinner spinner-sm spinner-center").addClass("ki ki-bold-close icon-xs text-muted");
+            })
+        }
+
+        function BindGalleryImages() {
+
+            var html = '';
+            $.ajax({
+                url: '/Admin/Restaurant/GetImages?RestaurantId=' + '@Model.Id',
+                type: 'GET',
+                success: (response) => {
+                    if (response.success) {
+
+                        $.each(response.data, function (k, v) {
+                            html += ` <div class="col-lg-1 rounded mx-2 position-relative thumbnail-image-h-w res-imgs" id="restaurantImageId" data-imgId="${v.restaurantId}" style="background-image: url(${v.image.replace(" ", "%20")});background-size: 110px 70px;">
+                                                        <i class="fa fa-trash position-absolute text-danger trash-icon cancelimage" id="RemoveImage" data-action="cancel" data-toggle="tooltip" title="Cancel avatar" onclick="DeleteGalleryImage(this)"></i>
+                                                    </div>`;
+
+
+                        });
+
+                        $(".img-area").append(html);
+
+                        html = '';
+                    }
+                }
+            })
+        }
+
+        function BindCarousle() {
+            if (tnsCarousel == '') {
+                tnsCarousel = document.querySelectorAll('.my-slider');
+                tnsCarousel.forEach(slider => {
+                    const tnsSlider = tns({
+                        container: slider,
+                        items: 1,
+                        slideBy: "page",
+                        fixedWidth: 160,
+                        nav: false,
+                        controls: false,
+                        mouseDrag: true,
+                        swipeAngle: false,
+                        speed: 400,
+                        mode: "carousel",
+                        loop: false
+                    });
+                });
+			}
+
+			$('.schedule').fadeIn();
+			$('.schedule').closest('.module-container').find('.spinner').remove();
+
+        }
+
+
+        function SaveCroppedImage(element) {
+
+            if (element != "#Restaurantlogo") {
+                var data = new FormData();
+                data.append("Id", $('#RestaurantID').val());
+                data.append("filePath", $(element).closest('.image-upload').find('.image-preview').attr('src'));
+
+                $.ajax({
+                    url: $(element).closest('.image-upload').attr('action'),
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+
+                            $(element).closest('.image-upload').find('.image-preview').attr('src', response.filePath);
+
+                            if (OldImage) {
+                                $.ajax({
+                                    url: "/File/Delete?path=" + Path,
+                                    type: "GET",
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (response) {
+                                        OldImage = ''
+                                    },
+                                    error: function (er) {
+                                        OldImage = ''
+                                    }
+                                });
+                            }
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+            }             
+        }
+    </script>
+}

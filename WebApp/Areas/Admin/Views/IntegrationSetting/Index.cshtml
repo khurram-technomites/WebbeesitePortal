@@ -1,0 +1,733 @@
+﻿@model WebApp.ViewModels.IntegrationSettingViewModel
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+@**@
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="/Admin/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a href="/Admin/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Integration Settings</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Dashboard-->
+            <!--begin::Card-->
+            @*<div  id="kt_page_sticky_card">*@
+            @*<div class="card-header">*@
+            @*  <div class="card-title">
+                    <h3 class="card-label" style="color:white">
+                        Configure Business settings Here...
+                        <i class="mr-2"></i>
+                    </h3>
+                </div>
+                <div class="card-toolbar">
+                    <a href="/Admin/Dashboard/Index" class="btn btn-light-primary font-weight-bolder mr-2">
+                        <i class="ki ki-long-arrow-back icon-sm"></i> Back
+                    </a>
+                </div>*@
+            @*<div class="row ">
+                <div class="col-md-12">
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body p-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="card-title">
+                                        <h3 class="card-label" style="padding:2%;">
+                                            Configure Integration Settings Here...
+                                            <i class="mr-2"></i>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card-toolbar">
+                                        <a href="/Admin/Dashboard/Index" class="btn btn-light-primary font-weight-bolder mr-2" style="float: right;">
+                                            <i class="ki ki-long-arrow-back icon-sm"></i> Back
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+            @*</div>*@
+            @*<div class="card-body">*@
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <form asp-area="Admin" asp-controller="IntegrationSetting" asp-action="Update" id="Userform">
+                        <input asp-for="Id" style="opacity:0%" hidden>
+                        @*<div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>*@
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="row " id="Emailform">
+                            <div class="col-md-12">
+                                <div class="card card-custom gutter-b">
+                                    <div class="card-body p-10">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h4 class="card-label">
+                                                    Email Settings
+                                                </h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card-toolbar">
+
+                                                    <button type="button" class="btn btn-info font-weight-bolder" id="edit-email" style="float: right; ">
+                                                        <i class="fa fa-pen icon-sm "></i> Change
+                                                    </button>
+                                                    <div class="btn-group" style="float:right">
+                                                        @*<div class="col-6 col-sm-12">*@
+                                                        <button type="button" class="btn btn-danger font-weight-bolder" id="edit-cancel" style="display: none;">
+                                                            <i class="ki ki-close icon-sm"></i> Cancel
+                                                        </button>
+                                                        @*</div>
+                                                            <div class="col-6 col-sm-12">*@
+                                                        <button type="button" class="btn btn-success font-weight-bolder" id="email-save-changes" style="display: none;">
+                                                            <i class="ki ki-check icon-sm"></i> Save Changes
+                                                        </button>
+                                                        @*</div>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Email</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Sales Email</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.SalesEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.SalesEmail, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Password</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter password here...", type = "password", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Sender Name</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.SenderName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.SenderName, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-1 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">SSL</label>
+                                                    <span class="switch">
+                                                        <label>
+                                                            @Html.CheckBox("EnableSSL")
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Port</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.Port, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.Port, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-plug"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Host</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.Host, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.Host, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-server"></i></span></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            @*<div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Enable SSL</label>
+                <div class="input-group mb-2">
+                    @Html.EditorFor(model => model.EnableSSL, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.EnableSSL, "", new { @class = "text-danger" })
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-comment-alt "></i></span></div>
+                </div>
+            </div>
+
+        </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row " id="SMSform">
+                            <div class="col-md-12">
+                                <div class="card card-custom gutter-b">
+                                    <div class="card-body p-10">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h4 class="card-label">
+                                                    SMS Settings
+                                                </h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card-toolbar">
+
+                                                    <button type="button" class="btn btn-info font-weight-bolder" id="edit-sms" style="float: right; ">
+                                                        <i class="fa fa-pen icon-sm "></i> Change
+                                                    </button>
+                                                    <div class="btn-group" style="float:right">
+                                                        @*<div class="col-6 col-sm-12">*@
+                                                        <button type="button" class="btn btn-danger font-weight-bolder" id="edit-sms-cancel" style="display: none;">
+                                                            <i class="ki ki-close icon-sm"></i> Cancel
+                                                        </button>
+                                                        @* </div>
+                                                            <div class="col-6 col-sm-12">*@
+                                                        <button type="button" class="btn btn-success font-weight-bolder" id="sms-save-changes" style="display: none; ">
+                                                            <i class="ki ki-check icon-sm"></i> Save Changes
+                                                        </button>
+                                                        @*</div>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">SMS API Key</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.SMSApiKey, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.SMSApiKey, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-key"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">SMS Sender</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.SMSSenderId, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.SMSSenderId, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">SMS URL</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.SMSUrl, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.SMSUrl, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                             <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">UserName</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.SMSUsername, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.SMSUsername, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                             <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Password</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.SMSPassword, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.SMSPassword, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                             <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Type</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          
+                                             <div class="col-md-5 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Source</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.Source, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.Source, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                               <div class="col-md-1 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">DLR</label>
+                                                    <span class="switch">
+                                                        <label>
+                                                            @Html.CheckBox("DLR")
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="row " id="FCMform">
+                            <div class="col-md-12">
+                                <div class="card card-custom gutter-b">
+                                    <div class="card-body p-10">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h4 class="card-label">
+                                                    Google FCM Key
+                                                </h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card-toolbar">
+
+                                                    <button type="button" class="btn btn-info font-weight-bolder" id="edit-fcm" style="float: right;">
+                                                        <i class="fa fa-pen icon-sm "></i> Change
+                                                    </button>
+                                                    <div class="btn-group" style=" float:right;">-->
+                                                        @*<div class="col-6 col-sm-12">*@
+                                                        <!--<button type="button" class="btn btn-danger font-weight-bolder" id="edit-fcm-cancel" style="display: none;">
+                                                            <i class="ki ki-close icon-sm"></i> Cancel
+                                                        </button>-->
+                                                        @*</div>
+                                                            <div class="col-6 col-sm-12">*@
+                                                        <!--<button type="button" class="btn btn-success font-weight-bolder" id="fcm-save-changes" style="display: none;">
+                                                            <i class="ki ki-check icon-sm"></i> Save Changes
+                                                        </button>-->
+                                                        @*</div>*@
+                                                    <!--</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Google FCM Key</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.FCMKey, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.FCMKey, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-key"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Fougito Squads FCM Key</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.SquadFCMKey, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.SquadFCMKey, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-key"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Fougito Partner FCM Key</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.PartnerFCMKey, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.PartnerFCMKey, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-key"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+                        <div class="row " id="Mapform">
+                            <div class="col-md-12">
+                                <div class="card card-custom gutter-b">
+                                    <div class="card-body p-10">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h4 class="card-label">
+                                                    Google Map Key
+                                                </h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card-toolbar">
+
+                                                    <button type="button" class="btn btn-info font-weight-bolder" id="edit-map" style="float: right;">
+                                                        <i class="fa fa-pen icon-sm "></i> Change
+                                                    </button>
+                                                    <div class="btn-group" style="float:right">
+                                                        @* <div class="col-6 col-sm-12">*@
+                                                        <button type="button" class="btn btn-danger font-weight-bolder" id="edit-map-cancel" style="display: none;">
+                                                            <i class="ki ki-close icon-sm"></i> Cancel
+                                                        </button>
+                                                        @*</div>
+                                                            <div class="col-6 col-sm-12">*@
+                                                        <button type="button" class="btn btn-success font-weight-bolder" id="map-save-changes" style="display: none;">
+                                                            <i class="ki ki-check icon-sm"></i> Save Changes
+                                                        </button>
+                                                        @* </div>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">MAP Key</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.GoogleMapKey, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.GoogleMapKey, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-key"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row " id="Paymentform">
+                            <div class="col-md-12">
+                                <div class="card card-custom gutter-b">
+                                    <div class="card-body p-10">
+                                        <div class="row ">
+                                            <div class="col-6">
+                                                <h4 class="card-label">
+                                                    Payment Gateway
+                                                </h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card-toolbar">
+                                                    <!--<a href="javascript:;" class="btn btn-success font-weight-bolder" onclick="OpenModelPopup(this, '/Admin/IntegrationSetting/Supplier')" style="float:right">
+                                                        <span class="svg-icon svg-icon-md svg-icon-black">-->
+                                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                    <rect x="0" y="0" width="24" height="24" />
+                                                                    <circle fill="#000000" cx="9" cy="15" r="6" />
+                                                                    <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                                                </g>
+                                                            </svg>-->
+                                                            <!--end::Svg Icon-->
+                                                        <!--</span>B2B Supplier
+                                                    </a>
+                                                    <a></a>
+                                                    <a href="javascript:;" class="btn btn-success font-weight-bolder" onclick="OpenModelPopup(this, '/Admin/IntegrationSetting/Restaurant')" style="float:right">
+                                                        <span class="svg-icon svg-icon-md svg-icon-black">-->
+                                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                    <rect x="0" y="0" width="24" height="24" />
+                                                                    <circle fill="#000000" cx="9" cy="15" r="6" />
+                                                                    <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                                                </g>
+                                                            </svg>-->
+                                                            <!--end::Svg Icon-->
+                                                        <!--</span>Restaurants Supplier
+                                                    </a>-->
+
+                                                    <button type="button" class="btn btn-info font-weight-bolder" id="edit-payment" style="float: right; margin-right: 1%;">
+                                                        <i class="fa fa-pen icon-sm "></i> Change
+                                                    </button>
+                                                    <div class="btn-group" style="float:right">
+                                                        @* <div class="col-6 col-sm-12">*@
+                                                        <button type="button" class="btn btn-danger font-weight-bolder" id="edit-payment-cancel" style="display: none;">
+                                                            <i class="ki ki-close icon-sm"></i> Cancel
+                                                        </button>
+                                                        @*</div>
+            <div class="col-6 col-sm-12">*@
+                                                        <button type="button" class="btn btn-success font-weight-bolder" id="payment-save-changes" style="display: none; ">
+                                                            <i class="ki ki-check icon-sm"></i> Save Changes
+                                                        </button>
+                                                        @*</div>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Sandbox Endpoint</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.SandboxEndpoint, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.GoogleMapKey, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-server"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Live Endpoint</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.LiveEndpoint, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.GoogleMapKey, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-server"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-11 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">API Key</label>
+                                                    <div class="input-group mb-2">
+                                                        @Html.EditorFor(model => model.FatoorahAPIKey, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "password", required = "required" } })
+                                                        @Html.ValidationMessageFor(model => model.GoogleMapKey, "", new { @class = "text-danger" })
+                                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-key"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Go Live</label>
+                                                    <span class="switch">
+                                                        <label>
+                                                            @Html.CheckBox("GoLive")
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--end::Card-->
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Row-->
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+	var SuccessMessage = '@ViewBag.SuccessMessage';
+	var ErrorMessage = '@ViewBag.ErrorMessage';
+</script>
+@section Scripts {
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <script src="/Admin/js/admin/IntegrationSetting/Update.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#email-save-changes").click(function () {
+                
+                $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+                var data = new FormData();
+                data.append("Id", $('#Id').val());
+                data.append("EmailAddress", $('#EmailAddress').val());
+                 data.append("SalesEmail", $('#SalesEmail').val());
+                data.append("Port", $('#Port').val());
+                data.append("SenderName", $('#SenderName').val());
+                data.append("EnableSSL", $("input[name='EnableSSL']:checked").val());
+                data.append("Password", $('#Password').val());
+                data.append("Host", $('#Host').val());
+                data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+                $.ajax({
+                    url: "/Admin/IntegrationSetting/Update/",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+                        toastr.success(response.message);
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+                return false;
+            });
+            $("#sms-save-changes").click(function () {
+                
+                $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+                var data = new FormData();
+                data.append("Id", $('#Id').val());
+                data.append("SMSApiKey", $('#SMSApiKey').val());
+                data.append("SMSSenderId", $('#SMSSenderId').val());
+                data.append("SMSUrl", $('#SMSUrl').val());
+                data.append("SMSUsername", $('#SMSUsername').val());
+                data.append("SMSPassword", $('#SMSPassword').val());
+                data.append("Type", $('#Type').val());
+                data.append("Source", $('#Source').val());
+                 data.append("DLR", $("input[name='DLR']:checked").val());
+                data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+                $.ajax({
+                    url: "/Admin/IntegrationSetting/Update/",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+                        toastr.success(response.message);
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+                return false;
+            });
+            $("#fcm-save-changes").click(function () {
+                
+                $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+                var data = new FormData();
+                data.append("Id", $('#Id').val());
+                data.append("FCMKey", $('#FCMKey').val());
+                data.append("SquadFCMKey", $('#SquadFCMKey').val());
+                data.append("PartnerFCMKey", $('#PartnerFCMKey').val());
+                data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+                $.ajax({
+                    url: "/Admin/IntegrationSetting/Update/",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+                        toastr.success(response.message);
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+                return false;
+            });
+            $("#map-save-changes").click(function () {
+                
+                $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+                var data = new FormData();
+                data.append("Id", $('#Id').val());
+                data.append("GoogleMapKey", $('#GoogleMapKey').val());
+                data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+                $.ajax({
+                    url: "/Admin/IntegrationSetting/Update/",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+                        toastr.success(response.message);
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+                return false;
+            });
+            $("#payment-save-changes").click(function () {
+                
+                $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+                var data = new FormData();
+                data.append("Id", $('#Id').val());
+                data.append("SandboxEndpoint", $('#SandboxEndpoint').val());
+                data.append("LiveEndpoint", $('#LiveEndpoint').val());
+                data.append("GoLive", $("input[name='GoLive']:checked").val());
+                data.append("FatoorahAPIKey", $('#FatoorahAPIKey').val());
+                data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+                console.log("GoLive", $('#GoLive').val());
+                $.ajax({
+                    url: "/Admin/IntegrationSetting/Update/",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+                        toastr.success(response.message);
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+                return false;
+            });
+        });
+        if (SuccessMessage) {
+            toastr.success(SuccessMessage);
+        }
+        else if (ErrorMessage) {
+            $('#edit-profile').trigger('click');
+            toastr.error(ErrorMessage);
+        }
+
+    </script>
+
+}

@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Bulk Upload";
+    Layout = null;
+}
+<link href="~/css/DropZone.css" rel="stylesheet" />
+<form>
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <div class="container-fluid">
+            <div class="row" style="justify-content: center;">
+                <div class="col-md-16 col-xs-16 text-center">
+                    <h4><i class="flaticon2-position" area-hidden="true"></i> Category</h4>
+                    <small> Upload Excel Here</small>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="notes notes-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-12">
+                <div class="input-group">
+                    <input type="file" id="fileUpload" name="FileUpload" class="form-control" required="required" />
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-upload"></i></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer text-muted">
+        <div class="row">
+            <div class="col-md-16  col-xs-16">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-info" onclick="upload()">
+                    Upload
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

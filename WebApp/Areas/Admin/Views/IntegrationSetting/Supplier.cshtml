@@ -1,0 +1,261 @@
+﻿@model WebApp.ViewModels.SupplierOBj
+
+@{
+    Layout = null;
+}
+<style>
+    #kt_datatable1 tbody tr td:last-child {
+        white-space: nowrap;
+    }
+</style>
+<div class="modal-header">
+    <h5 class="modal-title">Add B2B Supplier</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="Userform">
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        <div class=" text-center" id="divMessage" style=" display : none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Supplier</label>
+                    <div class="input-group mb-2">
+                        <select asp-for="supplier.Id" class="form-control" asp-items="@(new SelectList(ViewBag.Supplier,"Id","NameAsPerTradeLicense"))">
+                            <option>Please Select Supplier</option>
+                        </select>
+                        <span asp-validation-for="supplier.Id" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="supplier.SupplierCode" class="control-label"></label>
+                    <div class="input-group mb-2">
+                        <input asp-for="supplier.SupplierCode" class="form-control" />
+                        <span asp-validation-for="supplier.SupplierCode" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-12">
+                <div class="form-group">
+                    <button class="btn btn-info" id="btnAdd" style="margin-top: 24px;">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+    <!--begin::Content-->
+    @*<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+        <div class="d-flex flex-column-fluid">*@
+    <!--begin::Container-->
+    <div class="container">
+        <!--begin::Dashboard-->
+        <div class="row">
+            <div class="col-xl-12">
+                <!--begin::Card-->
+                @*<div class="card card-custom gutter-b">
+                    <div class="card-body">*@
+                @*@Html.AntiForgeryToken()*@
+                <!--begin: Datatable-->
+                <table class="SupplierLine table table-separate table-head-custom table-checkable" id="kt_datatable1">
+                    <thead>
+                        <tr>
+                            <th>Supplier</th>
+                            <th>Supplier Code</th>
+                            <th class="dt-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.supplierList)
+                        {
+                            <tr class="RestaurantSupplerlist">
+                                <td class="restaurantlName" value="@item.Id">@item.NameAsPerTradeLicense</td>
+                                <td>@item.SupplierCode</td>
+                                <td class="deletebutton dt-center"><button type="button" class="btn btn-info" id="Update" onclick="Delete(this,  @item.Id )"></button> </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!--end: Datatable-->
+                @*</div>
+                    </div>*@
+                <!--end::Card-->
+            </div>
+        </div>
+
+        <!--end::Dashboard-->
+    </div>
+    <!--end::Container-->
+    <!--</div>-->
+    <!--end::Entry-->
+    <!--</div>-->
+
+    <div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content" style="min-height:100px">
+                <div id='myModalContent'>
+                    <div class="row justify-content-center">
+                        <div class="col-16">
+                            <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>
+@section Scripts {
+
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="/Admin/js/admin/IntegrationSetting/list.js"></script>
+    <!--end::Page Scripts-->
+    <!--end::Page Scripts-->
+}
+
+<script>
+    var _URL = window.URL || window.webkitURL;
+    $(document).ready(function () {
+        $("#btnAdd").click(function () {
+        $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+        var data = new FormData();
+        data.append("restaurant_Id", $('#restaurant_Id').val());
+        data.append("restaurant_SupplierCode", $('#restaurant_SupplierCode').val());
+
+        $("#restaurant_Id option[value='" + $('#restaurant_Id').val() + "']").remove();
+        //$('#restaurant_Id option').closest('.SupplierLine').remove();
+
+        $.ajax({
+            url: "/Admin/IntegrationSetting/Restaurant/",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: data,
+            success: function (response) {
+                if (response.success) {
+                    toastr.options = {
+                        "positionClass": "toast-bottom-right",
+                    };
+                    toastr.success('Row add successfully ...');
+                    AddRow();
+                }
+            },
+            error: function (er) {
+                toastr.error(er);
+            }
+        });
+        return false;
+    });
+    });
+    function Delete(element, record) {
+        swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!'
+        }).then(function (result) {
+            if (result.value) {
+
+                $.ajax({
+                    url: '/Admin/IntegrationSetting/UpdateSupplierCode/' + record,
+                    type: 'POST',
+                    data: {
+                        "__RequestVerificationToken":
+                            $("input[name=__RequestVerificationToken]").val()
+                    },
+                    success: function (result) {
+                        if (result.success != undefined) {
+                            if (result.success) {
+                                toastr.options = {
+                                    "positionClass": "toast-bottom-right",
+                                };
+                                toastr.success('Row deleted successfully ...');
+                                $(element).closest("tr").remove();
+                                $("#restaurant_Id option[value='" + $('#restaurant_Id').val() + "']").append();
+                                //$("#restaurant_Id").append("<option value='" + $('.restaurantlName').val() + "'>" + $('.restaurantlName').text() + "</option>");
+                                //@* $("#restaurant_Id").append("option[value = '" + $('#restaurant_Id').val() + "']");*@
+                                //    @* deleterow();*@
+                            }
+                            else {
+                                toastr.error(result.message);
+                            }
+                        } else {
+                            swal.fire("Your are not authorize to perform this action", "For further details please contact administrator !", "warning").then(function () {
+                            });
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        if (xhr.status == 403) {
+                            try {
+                                var response = $.parseJSON(xhr.responseText);
+                                swal.fire(response.Error, response.Message, "warning").then(function () {
+                                    $('#myModal').modal('hide');
+                                });
+                            } catch (ex) {
+                                swal.fire("Access Denied", "Your are not authorize to perform this action, For further details please contact administrator !", "warning").then(function () {
+                                    $('#myModal').modal('hide');
+                                });
+                            }
+
+                            $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                            $(element).find('i').show();
+
+                        }
+                    }
+                });
+            }
+        });
+    }
+    function deleterow() {
+        $(".RestaurantSupplerlist").on("click", ".deletebutton", function () {
+            $(this).closest("tr").remove();
+
+        });
+    }
+
+    function AddRow() {
+        if ($("#restaurant_Id option:selected").val() != null && $("#restaurant_Id option:selected").val() != '' && $("#restaurant_SupplierCode").val() != null && $("#restaurant_SupplierCode").val() != '') {
+
+            var restaurantlId = $("#restaurant_Id option:selected").val();
+            var restaurantlName = $("#restaurant_Id option:selected").text();
+            var supplierCode = $("#restaurant_SupplierCode").val();
+            var deletebutton = '<button type="button" class="btn btn-info" id="Update" onclick="deleterow()">X</button>';
+
+            var htmltemplate = `<tr class="RestaurantSupplerlist">
+                                    <td class="restaurantlName" val=${restaurantlId}>${restaurantlName}</td>
+                                    <td class="supplierCode">${supplierCode} </td>
+                                    <td class="deletebutton dt-center">${deletebutton} </td>
+                                </tr>`
+            $('#kt_datatable1').append(htmltemplate);
+        }
+        else {
+            var error = 'Please fill the required field...!'
+            $('#divMessage').html('');
+            $('#divMessage').html('<div class="alert alert-danger text-center text-white">\
+									<i class="fa fa fa-exclamation-circle text-white"></i> '+ error + '\
+								</div>');
+            $('#divMessage').fadeIn();
+            setTimeout(() => {
+                $('#divMessage').hide();
+
+            }, 5000);
+        }
+    }
+</script>

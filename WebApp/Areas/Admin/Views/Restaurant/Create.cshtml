@@ -1,0 +1,109 @@
+﻿@model WebApp.ViewModels.RestaurantViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Create</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="Restaurantform" autocomplete="off">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="control-label">Name As Per Trade License</label>
+                    <div class="input-group mb-2">
+                        <input asp-for="NameAsPerTradeLicense" class="form-control" required/>
+                        <span asp-validation-for="NameAsPerTradeLicense" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-address-card"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="wrapper col-12">
+                <br />
+                <h5>Login Credentials</h5>
+                <hr />
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="User.Email" class="control-label">Email</label>
+                            <div class="input-group mb-2">
+                                <input asp-for="User.Email" class="form-control" type="email" required/>
+                                <span asp-validation-for="User.Email" class="text-danger"></span>
+                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="User.Password" class="control-label">Password</label>
+                            <div class="input-group mb-2">
+                                <input asp-for="User.Password" class="form-control" type="password" required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$" />
+                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-key"></i></span></div>
+                            </div>
+                            <span asp-validation-for="User.Password" class="text-danger"></span>
+                            <span class="text-danger" style="font-size: 9px;">Min. 8 characters, at least one uppercase letter, one lowercase letter, and one number</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" id="submit" form="Restaurantform">Submit</button>
+</div>
+
+<script>
+    var _URL = window.URL || window.webkitURL;
+
+    $(document).ready(function () {
+        $("#Restaurantform").submit(function () {
+
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+            //var data = new FormData();
+            //data.append("NameAsPerTradeLicense", $('#NameAsPerTradeLicense').val());
+            //data.append("Email", $('#User_Email').val());
+            //data.append("Password", $('#User_Password').val());
+            //data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+            var User = {
+                Email: $('#User_Email').val(),
+                Password: $('#User_Password').val()
+            }
+            var data = {
+                NameAsPerTradeLicense: $('#NameAsPerTradeLicense').val(),
+                User: User
+            }
+
+            $.ajax({
+                url: "/Admin/Restaurant/Create/",
+                type: "POST",
+                data: { 'model': data },
+                success: function (response) {
+
+                    if (callback) {
+                        callback($('#myModalContent'), element, false, response);
+                    }
+                    //location.reload();
+                },
+                error: function (er) {
+                    toastr.error("Email already exists, try a different email address.");
+                    $('#submit').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                }
+            });
+            return false;
+        });
+    });
+
+</script>

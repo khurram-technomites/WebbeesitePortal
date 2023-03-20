@@ -1,0 +1,213 @@
+﻿@model IEnumerable<WebApp.ViewModels.SparePartTestimonialViewModel>
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/SparePart/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #kt_datatable1 tbody tr td:last-child {
+        white-space: nowrap;
+    }
+</style>
+<link href="~/css/cropper.css" rel="stylesheet" />
+<link href="~/Admin/css/general/ImageUploader.css" rel="stylesheet" />
+<!--begin::Page Vendors Styles(used by this page)-->
+<link href="~/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<!--end::Page Vendors Styles-->
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="/SparePart/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a href="/SparePart/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Testimonials</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Dashboard-->
+            <div class="row">
+                <div class="col-xl-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                            <div class="card-title">
+                                <h3 class="card-label">
+                                    Testimonials
+                                    <span class="d-block text-muted pt-2 font-size-sm">Manage Testimonials Here...</span>
+                                </h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <!--begin::Dropdown-->
+                                @*  <div class="dropdown dropdown-inline mr-2">
+
+                                    <button type="button" id="ExcelButton" class="btn btn-dark btn-sm" @(Model.Count() > 0 ? "" : "disabled")>
+                                    <i class="far fa-file-excel"></i>
+                                    Export Excel
+                                    </button>
+                                    </div>*@
+                                <!--end::Dropdown-->
+                                <!--begin::Button-->
+                                <a href="javascript:;" class="btn btn-info font-weight-bolder" onclick="OpenModelPopup(this, '/SparePart/SparePartTestimonials/Create')">
+                                    <span class="svg-icon svg-icon-md svg-icon-light">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <circle fill="#000000" cx="9" cy="15" r="6" />
+                                                <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span>New Record
+                                </a>
+                                <!--end::Button-->
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @Html.AntiForgeryToken()
+                            <!--begin: Datatable-->
+                            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Name</th>
+                                        <th>Testimonial</th>
+                                        <th>Rating</th>
+                                        <th>Show on Site</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="display:none" class="star-binding">
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.CreationDate.ToString("dd MMM yyyy, h: mm tt")</td>
+                                            <td>@item.CustomerImage|@item.CustomerName</td>
+                                            <td>@item.Testimonial</td>
+                                            <td> @item.Rating</td>
+                                            <td>@item.ShowOnWebsite|@item.Id</td>
+                                            <td nowrap="nowrap">@item.Id</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <!--end: Datatable-->
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CropperModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90vw;">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="img-container">
+                    <img id="image" src="https://avatars0.githubusercontent.com/u/3456749" style="width:80vw;height:80vh" aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0">
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: space-between;">
+                <div class="cropper-actions">
+                    <div class="aspectratio-section">
+                        <h6>ASPECT RATIO</h6>
+                        <div class="aspectratios">
+                            <a href="javascript:;" class="cropper-aspectratio active" data="NaN"><span class="free-style"></span>FREE STYLE</a>
+                            <a href="javascript:;" class="cropper-aspectratio" data="1"><span class="box"></span> SQUARE (1:1)</a>
+                        </div>
+                    </div>
+                    <div class="shapes-section">
+                        <h6>SHAPES</h6>
+                        <div class="shapes">
+                            <a href="javascript:;" class="cropper-shape active" data="round"><span class="round"></span> ROUND/OVAL</a>
+                            <a href="javascript:;" class="cropper-shape" data="square"><span class="square"></span> SQUARE/RECTANGLE</a>
+                        </div>
+                    </div>
+                    <div class="backgrounds-section">
+                        <h6>BACKGROUNDS</h6>
+                        <div class="backgrounds">
+                            <a href="javascript:;" class="background-color active" data="#FFFFFF"><span style="background: #FFFFFF"></span> WHITE</a>
+                            <a href="javascript:;" class="background-color" data="#000000"><span style="background: #000000"></span> BLACK</a>
+                            <a href="javascript:;" class="background-color" data="#00000000"><span style="background: #00000000"></span> TRANSPARENT</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" id="crop">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end::Row-->
+@section Scripts {
+
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/Admin/js/sparepart/Testimonials/list.js"></script>
+    <!--end::Page Scripts-->
+    <script src="~/js/FileUpload.js"></script>
+    <!--end::Page Scripts-->
+
+    <script src="~/js/cropper.js"></script>
+    <script src="~/js/compressor.js"></script>
+    <script src="~/Admin/js/general/ImageUploader-2.0.js"></script>
+}
+
+

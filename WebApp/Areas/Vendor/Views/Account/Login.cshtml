@@ -1,0 +1,198 @@
+﻿@model WebApp.ViewModels.LoginViewModel
+
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<!--
+Template Name: Metronic - Bootstrap 4 HTML, React, Angular 10 & VueJS Admin Dashboard Theme
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Dribbble: www.dribbble.com/keenthemes
+Like: www.facebook.com/keenthemes
+Purchase: https://1.envato.market/EA4JP
+Renew Support: https://1.envato.market/EA4JP
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<html lang="en">
+<!--begin::Head-->
+<head>
+    <base href="../../../../">
+    <meta charset="utf-8" />
+    <title> WebBeeSite - Vendor </title>
+    <meta name="description" content="Login page example" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="canonical" href="https://keenthemes.com/metronic" />
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <!--end::Fonts-->
+    <!--begin::Page Custom Styles(used by this page)-->
+    <link href="~/Admin/css/pages/login/classic/login-5.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Custom Styles-->
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="~/Admin/plugins/global/plugins.bundle.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" />
+    <link href="~/Admin/css/style.bundle.css" rel="stylesheet" />
+    <!--end::Global Theme Styles-->
+    <!--begin::Layout Themes(used by all pages)-->
+    <!--end::Layout Themes-->
+    <link rel="icon" href="~/favicon.png" type="image/x-icon">
+
+    <link href="~/Admin/css/admin/Account/Login.css" rel="stylesheet" />
+
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+
+</head>
+
+<!--end::Head-->
+<!--begin::Body-->
+@*background-image: url('../../../../Assets/Admin/media/bg/LoginBackgroundImage.png')*@
+<body id="kt_body" style="background-image: url('../../../../Admin/media/bg/bg_1.jpg'); height: 100%" class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading" ondragstart="return false">
+    <!--begin::Main-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Login-->
+        <div class="login login-5 login-signin-on d-flex flex-row-fluid" id="kt_login">
+            <div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid" style="background-image: url('../../../../Admin/media/bg/bg_1.jpg')">
+                <div class="card" style="border-radius: 10px;">
+                    <div class="card-body">
+                        <div class="d-flex mb-5 justify-content-center">
+                            <a href="#">
+                                <img src="~/images/Logo/logo-login.png" class="logo mt-6 max-h-100px" alt="" />
+                            </a>
+                        </div>
+                        <div class="text-white p-7 position-relative overflow-hidden">
+                            <!--begin::Login Header-->
+                            <!--end::Login Header-->
+                            <!--begin::Login Sign in form-->
+
+                            <div class="login-signin">
+                                <div class="text-center" style="padding-bottom: 18px;">
+                                    <h3 style="color: black; font-size: 20px;" class="font-weight-bolder">Vendor LOGIN</h3>
+                                    @*<p class="" style="color:black;">Enter your details to login to your account</p>*@
+                                </div>
+                                <form class="form  mt-2" id="kt_login_signin_form">
+                                    @Html.AntiForgeryToken()
+                                    <div class="form-group">
+                                        <label class="control-label">Phone Number</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span class="input-group-text">+971</span></div>
+                                            <input name="Email" type="number" placeholder="Enter your Phone number" class="form-control branch-input" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group group mt-3">
+                                        <label class="label-light" for="formGroupExampleInput">Password</label>
+                                        <input type="Password" name="Password" id="Password" class="inputField h-auto text-black placeholder-dark-75 opacity-100 bg-grey-o-70 rounded-0 border-0 py-4 px-8" style="border-radius:8px;" 
+                                               required placeholder="Enter password here ..." autocomplete="off">
+                                                             <i class="fa fa-eye fa-eye-slash" id="togglePassword" style="margin-left: -30px; cursor: pointer; position: absolute; top: 56%; right: 3%;"></i>
+                                               <span class="highlight"></span>
+                                        <span class="bar"></span>
+
+                                    </div>
+                                    <div class="form-group d-flex flex-wrap justify-content-end align-items-center pr-8 pt-2">
+                                        <a href="javascript:;" id="kt_login_forgot" class="font-weight-bolder text-purple float-right">Forgot Password ?</a>
+                                    </div>
+                                    <div class="form-group text-center mt-5">
+                                        <button id="kt_login_signin_submit" class="btn btn-custom w-100 font-weight-boldest py-4 mt-2">Proceed</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <!--end::Login Sign in form-->
+                            <!--begin::Login Sign up form-->
+
+                            <div class="login-signup">
+                                <div class="mb-20">
+                                    <h3>Sign Up</h3>
+                                    <p class="opacity-60">Enter your details to create your account</p>
+                                </div>
+                                <form class="form text-center" id="kt_login_signup_form">
+                                    <div class="form-group">
+                                        <input class="form-control h-auto text-white placeholder-white opacity-100 bg-grey-o-70 rounded-0 border-0 py-4 px-8" type="text" placeholder="Full name" name="fullname" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control h-auto text-white placeholder-white opacity-100 bg-grey-o-70 rounded-0 border-0 py-4 px-8" type="text" placeholder="Email" name="email" autocomplete="off" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control h-auto text-white placeholder-white opacity-100 bg-grey-o-70 rounded-0 border-0 py-4 px-8" type="password" placeholder="Password" name="password" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control h-auto text-white placeholder-white opacity-100 bg-grey-o-70 rounded-0 border-0 py-4 px-8" type="password" placeholder="Confirm Password" name="cpassword" />
+                                    </div>
+                                    <div class="form-group text-left px-8">
+                                        <div class="checkbox-inline">
+                                            <label class="checkbox checkbox-outline checkbox-white text-white m-0">
+                                                <input type="checkbox" name="agree" />
+                                                <span></span>I Agree the
+                                                <a href="javascript:;" class="text-white font-weight-bold ml-1">terms and conditions</a>.
+                                            </label>
+                                        </div>
+                                        <div class="form-text text-muted text-center"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button id="kt_login_signup_submit" class="btn btn-custom font-weight-bold px-15 py-3 m-2">Sign Up</button>
+                                        <button id="kt_login_signup_cancel" class="btn btn-custom font-weight-bold px-15 py-3 m-2">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!--end::Login Sign up form-->
+                            <!--begin::Login forgot password form-->
+                            <div class="login-forgot">
+                                <div class="mb-10">
+                                    <h3 style="color:black;">Forgotten Password ?</h3>
+                                    <p class="" style="color:black;">Enter your phone number to reset your password</p>
+                                </div>
+                                <form class="form" id="kt_login_forgot_form">
+                                    @Html.AntiForgeryToken()
+                        
+                                    <div class="form-group">
+                                        <label class="control-label">Phone Number</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span class="input-group-text">+971</span></div>
+                                            <input name="ForgetEmail" type="number" placeholder="Enter your Phone number" class="form-control branch-input" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-5">
+                                        <button id="kt_login_forgot_submit" class="btn btn-custom font-weight-bold py-3 px-15 float-left" style="width:13rem">Submit</button>
+                                        <button id="kt_login_forgot_cancel" class="btn btn-custom font-weight-bold py-3 px-15  float-right" style="width: 13rem; background-color: black;">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="mt-n2 mb-n2 text-center">
+                                @*<a href="javascript:;" id="kt_login_signup" class="text-white font-weight-bold">Sign Up</a>*@
+                            </div>
+                            <!--end::Login forgot password form-->
+                        </div>
+                    </div>
+                </div>
+                <!--end::Login-->
+            </div>
+        </div>
+    </div>
+    <!--end::Main-->
+    <script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script> <!--begin::Global Config(global config for global JS scripts)-->
+    <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1200 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#6993FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#F3F6F9", "dark": "#212121" }, "light": { "white": "#ffffff", "primary": "#E1E9FF", "secondary": "#ECF0F3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#212121", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#ECF0F3", "gray-300": "#E5EAEE", "gray-400": "#D6D6E0", "gray-500": "#B5B5C3", "gray-600": "#80808F", "gray-700": "#464E5F", "gray-800": "#1B283F", "gray-900": "#212121" } }, "font-family": "Poppins" };</script> <!--end::Global Config--> <!--begin::Global Theme Bundle(used by all pages)-->
+    <script src="~/Admin/plugins/global/plugins.bundle.js"></script>
+    <script src="~/Admin/plugins/custom/prismjs/prismjs.bundle.js"></script>
+    <script src="~/Admin/js/scripts.bundle.js"></script>
+    <script src="~/Admin/js/vendor/account/login.js"></script>
+    @*<script src="~/Admin/js/supplier/account/reset.js"></script>*@<!--end::Global Theme Bundle--> <!--begin::Page Scripts(used by this page)--> @*<script src="~/Admin/js/pages/custom/login/login-general.js"></script>*@
+</body>
+<!--end::Body-->
+</html>

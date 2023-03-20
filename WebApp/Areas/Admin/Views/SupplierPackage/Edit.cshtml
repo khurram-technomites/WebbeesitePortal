@@ -1,0 +1,158 @@
+﻿@model WebApp.ViewModels.SupplierPackageViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = null;
+}
+<script type="text/javascript">
+    function EnableTextbox(free) {
+        var Price = document.getElementById("Price");
+
+        Price.disabled = $("#IsFree").prop('checked') ? true : false;
+    }
+    function EnableMotorTextbox(MotorLimit) {
+        var MotorLimit = document.getElementById("MotorLimit");
+
+        MotorLimit.disabled = $("#hasMotorModule").prop('checked') ? false : true;
+    }
+    function EnablePropertyTextbox(PropertyLimit) {
+        var PropertyLimit = document.getElementById("PropertyLimit");
+
+        PropertyLimit.disabled = $("#hasPropertyModule").prop('checked') ? false : true;
+
+    }
+</script>
+<div class="modal-header">
+    <h5 class="modal-title">Update</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    @*@using (Html.BeginForm("Edit", "VendorPackage", new { area = "Admin" }, FormMethod.Post, new { id = "frm-edit", @class = "form" }))
+    {*@
+    <form id="frm-edit">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Status)
+        @Html.HiddenFor(model => model.CreationDate)
+
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, "Name", htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter package name here ...", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa fa-tag"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @{
+                var domainsList = new SelectList(new[]
+                {
+                new SelectListItem { Text = "Monthly", Value = "Monthly", Selected = true },
+                new SelectListItem { Text = "Quarterly", Value = "Quarterly"},
+                new SelectListItem { Text = "Half Yearly", Value = "Half Yearly"},
+                new SelectListItem { Text = "Yearly", Value = "Yearly"},
+            }, "Value", "Text");
+            }
+
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BillingPeriod, "Billing Period ", htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group mb-2">
+                        @Html.DropDownListFor(model => model.BillingPeriod, domainsList, htmlAttributes: new { @class = "form-control", required = "required" })
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa fa-history"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Free</label>
+                    <span class="switch ml-10">
+                        <label type="checkbox" id="free" name="free" style="margin-left:-35px;" onclick="EnableTextbox(this)">
+                            @Html.CheckBox("IsFree")
+                            <span></span>
+                        </label>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group" style="width: 100%; margin-left: auto;">
+                    @Html.LabelFor(model => model.Price, "Price", htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", type = "number", step = "0", min = "0.00", placeholder = "Enter price here ...", required = "required", id = "Price", value = 0, enabled = "enabled" } })
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-money-bill-wave"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Description</label>
+                    <div class="input-group mb-2">
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Enter description here ...", required = "required", rows = "3" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </form>
+    @*}*@
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="frm-edit">Save Changes</button>
+</div>
+<script>
+    var _URL = window.URL || window.webkitURL;
+
+    $(document).ready(function () {
+        $("#frm-edit").submit(function () {
+
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+            var data = new FormData();
+            data.append("Id", $('#Id').val());
+            data.append("Status", $('#Status').val());
+            data.append("CreationDate", $('#CreationDate').val());
+            data.append("Name", $('#Name').val());
+            data.append("BillingPeriod", $('#BillingPeriod option:selected').val());
+            data.append("Price", $('#Price').val());
+            data.append("Description", $('#Description').val());
+            data.append("IsFree", $("#IsFree").prop("checked"));
+            data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+            
+            $.ajax({
+                url: "/Admin/SupplierPackage/Edit/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    if (callback) {
+                        callback($('#myModalContent'), element, true, response);
+                    }
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+            return false;
+        });
+    });
+
+</script>

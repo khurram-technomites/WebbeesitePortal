@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace WebApp.ViewModels
+{
+    public class GarageRepairSpecificationViewModel
+    {
+        public long Id { get; set; }
+        public long GarageId { get; set; }
+        public long CarMakeId { get; set; }
+        public long? CarModelId { get; set; }
+    }
+}

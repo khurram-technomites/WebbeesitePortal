@@ -1,0 +1,194 @@
+﻿@{
+	ViewBag.Title = "Coupon Categories";
+	Layout = null;
+}
+<div class="modal-header">
+	<h5 class="modal-title">Coupon Categories</h5>
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<i aria-hidden="true" class="ki ki-close"></i>
+	</button>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-12">
+			<input type="hidden" name="CouponID" id="CouponID" value="@ViewBag.CouponID" />
+			<div class="form-group">
+				<input id="kt_tagify_coupon_categories" class="form-control tagify" name="kt_tagify_coupon_categories" placeholder="Add Categories">
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	jQuery(document).ready(function () {
+
+
+		KTTagifyProductTags.init("kt_tagify_coupon_categories");
+	});
+
+	var KTTagifyProductTags = function (id) {
+		var tagify;
+		// Private functions
+		var demo5 = function (id) {
+			$.ajax({
+				url: '/Admin/CouponCategory/GetAll/' + $('#CouponID').val(),
+				type: 'GET',
+				success: function (response) {
+					if (response.success) {
+
+						// Init autocompletes
+						var toEl = document.getElementById(id);
+						tagify = new Tagify(toEl, {
+							delimiters: ", ", // add new tags when a comma or a space character is entered
+							maxTags: 10,
+							keepInvalidTags: false, // do not remove invalid tags (but keep them marked as invalid)
+							whitelist: response.coupons,
+							templates: {
+								dropdownItem: function (tagData) {
+									try {
+										var html = '';
+
+										html += '<div class="tagify__dropdown__item">';
+										html += '   <div class="d-flex align-items-center">';
+										//html += '       <span class="symbol sumbol-' + (tagData.initialsState ? tagData.initialsState : '') + ' mr-2">';
+										//html += '           <span class="symbol-label" style="background-image: url(\'' + (tagData.pic ? tagData.pic : '') + '\')">' + (tagData.initials ? tagData.initials : '') + '</span>';
+										//html += '       </span>';
+										html += '       <div class="d-flex flex-column">';
+										html += '           <a href="#" id="' + (tagData.id ? tagData.id : '') + '" class="text-dark-75 text-hover-primary font-weight-bold">' + (tagData.value ? tagData.value : '') + '</a>';
+										//html += '           <span class="text-muted font-weight-bold">' + (tagData.value ? tagData.value : '') + '</span>';
+										html += '       </div>';
+										html += '   </div>';
+										html += '</div>';
+
+										return html;
+									} catch (err) { }
+								}
+							},
+							transformTag: function (tagData) {
+								tagData.class = 'tagify__tag tagify__tag--primary';
+							},
+							dropdown: {
+								classname: "color-blue",
+								enabled: 1,
+								maxItems: 5
+							}
+						})
+
+						tagify.addTags(response.couponCategories);
+						tagify.on('dropdown:select', onSelectSuggestion)
+						tagify.on('remove', function (e) {
+
+							$.ajax({
+								url: '/Admin/CouponCategory/Delete/',
+								type: 'POST',
+								data: {
+									"__RequestVerificationToken": $("input[name=__RequestVerificationToken]").val(),
+									couponCategory: { CouponID: $('#CouponID').val(), CategoryID: e.detail.data.id }
+								},
+								success: function (response) {
+									if (response.success) {
+										toastr.success(response.message);
+									}
+									else {
+										toastr.error(response.message);
+										return false;
+									}
+								},
+                                error: function (xhr, ajaxOptions, thrownError) {
+
+									if (xhr.status == 403) {
+										
+                                        try {
+                                            var response = $.parseJSON(xhr.responseText);
+                                            swal.fire(response.Error, response.Message, "warning").then(function () {
+
+                                            });
+                                        } catch (ex) {
+                                            swal.fire("Access Denied", "Your are not authorize to perform this action, For further details please contact Restaurantistrator !", "warning").then(function () {
+
+                                            });
+                                        }
+                                        $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                        $(element).find('i').show();
+                                      
+                                                window.location.reload();
+                                    
+                                    }
+                                },
+                                failure: function (e) {
+                                  
+                                    toastr.error("Ooops, something went wrong.Try to refresh this page or contact Restaurantistrator if the problem persists.");
+                                }
+							});
+						})
+					} else {
+					}
+				}
+			});
+
+			var addAllSuggestionsElm;
+
+			function onSelectSuggestion(e) {
+				$.ajax({
+					url: '/Admin/CouponCategory/Create/',
+					type: 'POST',
+					data: {
+						"__RequestVerificationToken": $("input[name=__RequestVerificationToken]").val(),
+						model : { CouponId: $('#CouponID').val(), CategoryId: $(e.detail.tagify.DOM.dropdown).find('.tagify__dropdown__item--active a').attr('id') }
+					},
+					success: function (response) {
+						if (response.success) {
+							toastr.success(response.message);
+						}
+						else {
+							toastr.error(response.message);
+							return false;
+						}
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+                       
+                        if (xhr.status == 403) {
+                            try {
+                                var response = $.parseJSON(xhr.responseText);
+                                swal.fire(response.Error, response.Message, "warning").then(function () {
+
+                                });
+                            } catch (ex) {
+                                swal.fire("Access Denied", "Your are not authorize to perform this action, For further details please contact Restaurantistrator !", "warning").then(function () {
+
+                                });
+                            }
+                            $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+							$(element).find('i').show();
+                            setTimeout(window.location.reload(), 5000);
+                            
+
+                        }
+                    },
+					failure: function (e) {
+						
+						toastr.error("Ooops, something went wrong.Try to refresh this page or contact Restaurantistrator if the problem persists.");
+					}
+				});
+			}
+
+			// create a "add all" custom suggestion element every time the dropdown changes
+			function getAddAllSuggestionsElm() {
+				// suggestions items should be based on "dropdownItem" template
+				return tagify.parseTemplate('dropdownItem', [{
+					class: "addAll",
+					name: "Add all",
+					email: tagify.settings.whitelist.reduce(function (remainingSuggestions, item) {
+						return tagify.isTagDuplicate(item.value) ? remainingSuggestions : remainingSuggestions + 1
+					}, 0) + " Members"
+				}])
+			}
+		}
+		return {
+			// public functions
+			init: function (id) {
+				demo5(id);
+			}
+		};
+	}();
+</script>

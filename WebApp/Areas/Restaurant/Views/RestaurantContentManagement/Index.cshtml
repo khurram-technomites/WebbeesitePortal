@@ -1,0 +1,1190 @@
+﻿@model WebApp.ViewModels.RestaurantContentManagementViewModel
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+@**@
+@{
+	ViewBag.Title = "Index";
+	Layout = "~/Areas/Restaurant/Views/Shared/_Layout.cshtml";
+}
+<style>
+	.ck-editor {
+		width: 100% !important;
+	}
+
+	.ck-editor__editable {
+		max-height: 400px;
+	}
+
+	.card span.text-muted {
+		color: #2d2d2d66 !important;
+		font-weight: 600 !important;
+		font-size: 12px;
+	}
+
+	.theme-link {
+		color: #c90606 !important;
+		font-weight: 900;
+		cursor: pointer;
+	}
+
+		.theme-link i {
+			color: #c90606 !important;
+		}
+
+
+
+	.ck-read-only {
+		user-select: none;
+		background: #c4c4c44a !important;
+	}
+
+	.ck-content {
+		height: 300px;
+	}
+
+		.ck-content::-webkit-scrollbar {
+			width: .3em;
+		}
+
+		.ck-content::-webkit-scrollbar-track {
+			/*box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.9);*/
+			background-color: #eaecf461;
+		}
+
+		.ck-content::-webkit-scrollbar-thumb {
+			background-color: #ebedf5;
+			/*outline: 1px solid #ebedf5;*/
+		}
+</style>
+<!--begin::Content-->
+<link href="~/css/cropper.css" rel="stylesheet" />
+<link href="~/Admin/css/general/ImageUploader.css" rel="stylesheet" />
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+
+	<!--begin::Subheader-->
+	<div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+		<div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+			<!--begin::Info-->
+			<div class="d-flex align-items-center flex-wrap mr-1">
+				<!--begin::Heading-->
+				<div class="d-flex flex-column">
+
+					<!--begin::Breadcrumb-->
+					<div class="d-flex align-items-center font-weight-bold my-2">
+						<!--begin::Item-->
+						<a href="/Restaurant/Dashboard/Index" class="opacity-75 hover-opacity-100">
+							<i class="flaticon2-shelter text-white icon-1x"></i>
+						</a>
+						<!--end::Item-->
+						<!--begin::Item-->
+						<a href="/Restaurant/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+						<!--end::Item-->
+						<!--begin::Item-->
+						<span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+						<a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Content Management</a>
+						<!--end::Item-->
+					</div>
+					<!--end::Breadcrumb-->
+				</div>
+				<!--end::Heading-->
+			</div>
+			<!--end::Info-->
+		</div>
+	</div>
+	<!--end::Subheader-->
+	<!--begin::Entry-->
+	<div class="d-flex flex-column-fluid">
+		<!--begin::Container-->
+		<div class="container">
+			<!--begin::Dashboard-->
+			<!--begin::Card-->
+			<div class="row justify-content-center">
+				<div class="col-12">
+					<input asp-for="Id" style="opacity:0%" hidden>
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-custom gutter-b">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12" style="display:flex">
+                                        <div class="image-upload banner box @(ViewBag.Restaurant.Logo!=null? "uploaded" : "empty")uploaded" action="/Restaurant/RestaurantContentManagement/UpdateLogo">
+                                            <i class="fa fa-camera"></i>
+                                            <span>Upload Image</span>
+                                            <input type="file" name="Restaurantlogo" id="Restaurantlogo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+                                                   aspectratio="1" minCroppedWidth="100" minCroppedHeight="100" />
+                                            <img id="PreviewImage" class="image-preview" src='@(ViewBag.Restaurant.Logo!=null?ViewBag.Restaurant.Logo:"/Assets/images/no-data.png")' />
+                                            <i class="fa fa-trash" onclick="DeleteFile(this,'@(ViewBag.Restaurant.Logo!=null?ViewBag.Restaurant.Logo:"")')"></i>
+                                            <input name="RestaurantID" id="RestaurantID" value="@ViewBag.Restaurant.Id" hidden />
+                                        </div>
+
+                                        <div class="card card-custom card-stretch card-stretch shadow-none justify-content-center" style="width: -webkit-fill-available;">
+                                            <div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label font-weight-bolder text-dark">Restaurant Logo</span>
+                                                    <span class="text-muted mt-3">Restaurant Logo for website</span>
+                                                </h3>
+                                                <div class="text-md-right">
+                                                    <div class="card-toolbar">
+                                                        <a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link media">
+                                                            <i class="fa fa-edit"></i> Change
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-custom gutter-b">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12" style="display:flex">
+                                        <div class="image-upload banner box @(ViewBag.Restaurant.SecondaryLogo!=null? "uploaded" : "empty")uploaded" action="/Restaurant/RestaurantContentManagement/UpdateSecondaryLogo">
+                                            <i class="fa fa-camera"></i>
+                                            <span>Upload Image</span>
+                                            <input type="file" name="RestaurantSecondarylogo" id="RestaurantSecondarylogo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+                                                   aspectratio="16/9" minCroppedWidth="0" minCroppedHeight="0" />
+                                            <img id="PreviewSecondaryImage" class="image-preview" src='@(ViewBag.Restaurant.SecondaryLogo!=null?ViewBag.Restaurant.SecondaryLogo:"/Assets/images/no-data.png")' />
+                                            <i class="fa fa-trash" onclick="DeleteFile(this,'@(ViewBag.Restaurant.SecondaryLogo!=null?ViewBag.Restaurant.SecondaryLogo:"")')"></i>
+                                            <input name="RestaurantID" id="RestaurantID" value="@ViewBag.Restaurant.Id" hidden />
+                                        </div>
+
+                                        <div class="card card-custom card-stretch card-stretch shadow-none justify-content-center" style="width: -webkit-fill-available;">
+                                            <div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label font-weight-bolder text-dark">Secondary Logo</span>
+                                                    <span class="text-muted mt-3">Restaurant secondary logo for mobile view</span>
+                                                </h3>
+                                                <div class="text-md-right">
+                                                    <div class="card-toolbar">
+                                                        <a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link media">
+                                                            <i class="fa fa-edit"></i> Change
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-custom gutter-b">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12" style="display:flex">
+                                        <div class="image-upload banner box @(ViewBag.Restaurant.ThumbnailImage!=null? "uploaded" : "empty")uploaded" action="/Restaurant/RestaurantContentManagement/UpdateThumbnailImage">
+                                            <i class="fa fa-camera"></i>
+                                            <span>Upload Image</span>
+                                            <input type="file" name="RestaurantThumbnailImage" id="RestaurantThumbnailImage" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+                                            <img id="PreviewThumbnailImage" class="image-preview" src='@(ViewBag.Restaurant.ThumbnailImage!=null?ViewBag.Restaurant.ThumbnailImage:"/Assets/images/no-data.png")' />
+                                            <i class="fa fa-trash" onclick="DeleteFile(this,'@(ViewBag.Restaurant.ThumbnailImage!=null?ViewBag.Restaurant.ThumbnailImage:"")')"></i>
+                                            <input name="RestaurantID" id="RestaurantID" value="@ViewBag.Restaurant.Id" hidden />
+                                        </div>
+
+                                        <div class="card card-custom card-stretch card-stretch shadow-none justify-content-center" style="width: -webkit-fill-available;">
+                                            <div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label font-weight-bolder text-dark">Thumbnail Image</span>
+                                                    <span class="text-muted mt-3">Restaurant thumbnail image for website</span>
+                                                </h3>
+                                                <div class="text-md-right">
+                                                    <div class="card-toolbar">
+                                                        <a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link media">
+                                                            <i class="fa fa-edit"></i> Change
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="card card-custom gutter-b theme-color-section">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12" style="display:flex">
+                                        @{
+                                            string theme = "";
+                                            if (Model.restaurant != null)
+                                            {
+                                                theme = Model.restaurant.ThemeColor;
+                                            }
+                                            else
+                                            {
+                                                theme = "#F55050";
+                                            }
+
+                                        }
+                                        <div class="theme-color" style="background:@theme">
+                                            <span style="color:@theme">
+                                                @theme
+                                            </span>
+                                            <input type="color" id="color" name="color" value="@theme" style="background:@theme" enabled>
+                                        </div>
+
+                                        <div class="card card-custom card-stretch card-stretch shadow-none justify-content-center" style="width: -webkit-fill-available;">
+                                            <div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label font-weight-bolder text-dark">Theme Color</span>
+                                                    <span class="text-muted mt-3">Theme color for website</span>
+                                                </h3>
+                                                <div class="text-md-right">
+                                                    <div class="card-toolbar">
+                                                        <a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link data">
+                                                            <i class="fa fa-edit"></i> Change
+                                                        </a>
+                                                        <button type="button" class="btn btn-actions btn-cancel btn-outline-secondary font-weight-bolder mr-1" style="display: none;">
+                                                            <i class="ki ki-close icon-sm"></i> Cancel
+                                                        </button>
+                                                        <button type="button" class="btn btn-info font-weight-bolder btn-actions" style="display: none;" onclick="SaveThemeColor(this)">
+                                                            <i class="ki ki-check icon-sm"></i> Save Changes
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*<div class="card card-custom gutter-b">
+                <div class="card-body p-10" style="height: 211px !important;">
+                    <div class="d-flex" justify-content-between>
+                        <form id="ThemeColor">
+                            @{
+                                string theme = "";
+                                if (Model.restaurant != null)
+                                {
+                                    theme = Model.restaurant.ThemeColor;
+                                }
+                                else
+                                {
+                                    theme = "#F55050";
+                                }
+
+                            }
+                            <input type="color" id="color" name="color" value="@theme" style="width:125px ; height:125px" enabled>
+                        </form>
+                        <div class="card-body">
+                            <h5 class="card-title">Theme Color</h5>
+                        </div>
+                        <div class="mt-lg-12">
+                            <button type="submit" class="btn btn-info font-weight-bolder" form="ThemeColor">
+                                <i class="ki ki-check icon-sm"></i> Uplaod
+                            </button>
+
+                            <a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link data">
+                                <i class="fa fa-edit"></i> Change
+                            </a>
+                            <button type="button" class="btn btn-actions btn-cancel btn-outline-secondary font-weight-bolder mr-1" style="display: none;">
+                                <i class="ki ki-close icon-sm"></i> Cancel
+                            </button>
+                            <button type="button" class="btn btn-info font-weight-bolder btn-actions" style="display: none;" onclick="SaveThemeColor(this,'AboutUs')">
+                                <i class="ki ki-check icon-sm"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-custom gutter-b">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12" style="display:flex">
+                                        <div class="image-upload banner box @(ViewBag.Restaurant.Favicon !=null? "uploaded" : "empty") uploaded" action="/Restaurant/RestaurantContentManagement/UpdateFavicon">
+                                            <i class="fa fa-camera"></i>
+                                            <span>Upload Image</span>
+                                            <input type="file" name="RestaurantFavicon" id="RestaurantFavicon" class="logo" accept=".ico" style="width:1px !important;height:1px !important" aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+                                            <img id="PreviewFavicon" class="image-preview" src='@(ViewBag.Restaurant.Favicon!=null?ViewBag.Restaurant.Favicon:"/Assets/images/no-data.png")' />
+                                            <i class="fa fa-trash" onclick="DeleteFile(this,'@(ViewBag.Restaurant.Favicon!=null?ViewBag.Restaurant.Favicon:"")')"></i>
+                                            <input name="RestaurantID" id="RestaurantID" value="@ViewBag.Restaurant.Id" hidden />
+                                        </div>
+
+                                        <div class="card card-custom card-stretch card-stretch shadow-none justify-content-center" style="width: -webkit-fill-available;">
+                                            <div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label font-weight-bolder text-dark">Favicon</span>
+                                                    <span class="text-muted mt-3">Restaurant favicon for website</span>
+                                                </h3>
+                                                <div class="text-md-right">
+                                                    <div class="card-toolbar">
+                                                        <a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link media">
+                                                            <i class="fa fa-edit"></i> Change
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card card-custom card-stretch gutter-b card-stretch">
+								<!--begin::Header-->
+								<div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+									<h3 class="card-title align-items-start flex-column">
+										<span class="card-label font-weight-bolder text-dark">Menu Top Banner</span>
+										<span class="text-muted mt-3">Banner for menu page top section</span>
+									</h3>
+									<div class="text-md-right">
+										<div class="card-toolbar">
+											<a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link media">
+												<i class="fa fa-edit"></i> Change
+											</a>
+											<!--end::Button-->
+										</div>
+									</div>
+								</div>
+								<!--end::Header-->
+								<!--begin::Body-->
+								<div class="card-body pt-0">
+									<div class="image-upload banner @(ViewBag.RestaurantBanner!=null? "uploaded" : "empty")" action="/Restaurant/RestaurantContentManagement/PromotionCreate">
+										<i class="fa fa-camera"></i>
+										<span>Upload Image</span>
+										<input type="file" name="MenuBanner" id="MenuBanner" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+										<img id="MenuBannerPreview" class="image-preview" src='@(ViewBag.RestaurantBanner!=null?ViewBag.RestaurantBanner.ImagePath:"/Assets/images/no-data.png")' />
+										<i class="fa fa-trash" onclick="DeleteFile(this,'@(ViewBag.RestaurantBanner!=null?ViewBag.RestaurantBanner.ImagePath:"")')"></i>
+										<input name="RestaurantID" id="RestaurantID" value="@ViewBag.Restaurant.Id" hidden />
+									</div>
+								</div>
+								<!--end::Body-->
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="card card-custom card-stretch gutter-b card-stretch">
+								<div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+									<h3 class="card-title align-items-start flex-column">
+										<span class="card-label font-weight-bolder text-dark">About Us Banner</span>
+										<span class="text-muted mt-3">Banner for home page about us section</span>
+									</h3>
+									<div class="text-md-right">
+										<div class="card-toolbar">
+											<a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link media">
+												<i class="fa fa-edit"></i> Change
+											</a>
+										</div>
+									</div>
+								</div>
+								<div class="card-body pt-0">
+									<div class="image-upload banner @(ViewBag.Restaurant.DescriptionImage!=null? "uploaded" : "empty")" action="/Restaurant/RestaurantContentManagement/Create/">
+										<i class="fa fa-camera"></i>
+										<span>Upload Image</span>
+										<input type="file" name="AboutUsBanner" id="AboutUsBanner" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" aspectratio="0.97" minCroppedWidth="400" minCroppedHeight="410" />
+										<img id="AboutUsPreview" class="image-preview" src='@(ViewBag.Restaurant.DescriptionImage!=null?ViewBag.Restaurant.DescriptionImage:"/Assets/images/no-data.png")' />
+										<i class="fa fa-trash" onclick="DeleteFile(this,'@(ViewBag.Restaurant.DescriptionImage!=null?ViewBag.Restaurant.DescriptionImage:"")')"></i>
+										<input name="RestaurantID" id="RestaurantID" value="@ViewBag.Restaurant.Id" hidden />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<div class="card card-custom card-stretch gutter-b card-stretch about-us-section">
+								<div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+									<h3 class="card-title align-items-start flex-column">
+										<span class="card-label font-weight-bolder text-dark">About Us</span>
+										<span class="text-muted mt-3">Content for home page about us section</span>
+									</h3>
+									<div class="text-md-right">
+										<div class="card-toolbar">
+											<a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link data">
+												<i class="fa fa-edit"></i> Change
+											</a>
+											<button type="button" class="btn btn-actions btn-cancel btn-outline-secondary font-weight-bolder mr-1" style="display: none;">
+												<i class="ki ki-close icon-sm"></i> Cancel
+											</button>
+											<button type="button" class="btn btn-info font-weight-bolder btn-actions" style="display: none;" onclick="SaveContent(this,'AboutUs')">
+												<i class="ki ki-check icon-sm"></i> Save Changes
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="card-body pt-0">
+									@Html.TextAreaFor(model => model.AboutUs, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+									@Html.ValidationMessageFor(model => model.AboutUs, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="card card-custom card-stretch gutter-b card-stretch terms-and-conditions-section">
+								<div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+									<h3 class="card-title align-items-start flex-column">
+										<span class="card-label font-weight-bolder text-dark">Terms And Conditions</span>
+										<span class="text-muted mt-3">Content for Terms And Conditions</span>
+									</h3>
+									<div class="text-md-right">
+										<div class="card-toolbar">
+											<a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link data">
+												<i class="fa fa-edit"></i> Change
+											</a>
+											<button type="button" class="btn btn-actions btn-cancel btn-outline-secondary font-weight-bolder mr-1" style="display: none;">
+												<i class="ki ki-close icon-sm"></i> Cancel
+											</button>
+											<button type="button" class="btn btn-info font-weight-bolder btn-actions" style="display: none;" onclick="SaveContent(this,'TermsAndConditions')">
+												<i class="ki ki-check icon-sm"></i> Save Changes
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="card-body pt-0">
+									@Html.TextAreaFor(model => model.TermsAndConditions, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+									@Html.ValidationMessageFor(model => model.TermsAndConditions, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card card-custom card-stretch gutter-b card-stretch privacy-policy-section">
+								<div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+									<h3 class="card-title align-items-start flex-column">
+										<span class="card-label font-weight-bolder text-dark">Privacy Policy</span>
+										<span class="text-muted mt-3">Content for Privacy Policy</span>
+									</h3>
+									<div class="text-md-right">
+										<div class="card-toolbar">
+											<a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link data">
+												<i class="fa fa-edit"></i> Change
+											</a>
+											<button type="button" class="btn btn-actions btn-cancel btn-outline-secondary font-weight-bolder mr-1" style="display: none;">
+												<i class="ki ki-close icon-sm"></i> Cancel
+											</button>
+											<button type="button" class="btn btn-info font-weight-bolder btn-actions" style="display: none;" onclick="SaveContent(this,'PrivacyPolicy')">
+												<i class="ki ki-check icon-sm"></i> Save Changes
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="card-body pt-0">
+									@Html.TextAreaFor(model => model.PrivacyPolicy, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+									@Html.ValidationMessageFor(model => model.PrivacyPolicy, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="card card-custom card-stretch gutter-b card-stretch delivery-policy-section">
+								<div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+									<h3 class="card-title align-items-start flex-column">
+										<span class="card-label font-weight-bolder text-dark">Delivery Policy</span>
+										<span class="text-muted mt-3">Content for Delivery Policy</span>
+									</h3>
+									<div class="text-md-right">
+										<div class="card-toolbar">
+											<a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link data">
+												<i class="fa fa-edit"></i> Change
+											</a>
+											<button type="button" class="btn btn-actions btn-cancel btn-outline-secondary font-weight-bolder mr-1" style="display: none;">
+												<i class="ki ki-close icon-sm"></i> Cancel
+											</button>
+											<button type="button" class="btn btn-info font-weight-bolder btn-actions" style="display: none;" onclick="SaveContent(this,'DeliveryPolicy')">
+												<i class="ki ki-check icon-sm"></i> Save Changes
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="card-body pt-0">
+									@Html.TextAreaFor(model => model.DeliveryPolicy, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+									@Html.ValidationMessageFor(model => model.DeliveryPolicy, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card card-custom card-stretch gutter-b card-stretch return-policy-section">
+								<div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+									<h3 class="card-title align-items-start flex-column">
+										<span class="card-label font-weight-bolder text-dark">Return Policy</span>
+										<span class="text-muted mt-3">Content for Return Policy</span>
+									</h3>
+									<div class="text-md-right">
+										<div class="card-toolbar">
+											<a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link data">
+												<i class="fa fa-edit"></i> Change
+											</a>
+											<button type="button" class="btn btn-actions btn-cancel btn-outline-secondary font-weight-bolder mr-1" style="display: none;">
+												<i class="ki ki-close icon-sm"></i> Cancel
+											</button>
+											<button type="button" class="btn btn-info font-weight-bolder btn-actions" style="display: none;" onclick="SaveContent(this,'ReturnPolicy')">
+												<i class="ki ki-check icon-sm"></i> Save Changes
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="card-body pt-0">
+									@Html.TextAreaFor(model => model.ReturnPolicy, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+									@Html.ValidationMessageFor(model => model.ReturnPolicy, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card card-custom card-stretch gutter-b card-stretch">
+								<!--begin::Header-->
+								<div class="card-header border-0 py-5" style="display: flex; align-items: center;">
+									<h3 class="card-title align-items-start flex-column">
+										<span class="card-label font-weight-bolder text-dark">Footer Banner</span>
+										<span class="text-muted mt-3">Banner for footer section</span>
+									</h3>
+									<div class="text-md-right">
+										<div class="card-toolbar">
+											<a href="javascript:;" class="opacity-75 hover-opacity-100 theme-link media">
+												<i class="fa fa-edit"></i> Change
+											</a>
+											<!--end::Button-->
+										</div>
+									</div>
+								</div>
+								<!--end::Header-->
+								<!--begin::Body-->
+								<div class="card-body pt-0">
+									<div class="image-upload banner @(!string.IsNullOrEmpty(Model.FooterImage)? "uploaded" : "empty")" action="/Restaurant/RestaurantContentManagement/Footer/">
+										<i class="fa fa-camera"></i>
+										<span>Upload Image</span>
+										<input type="file" name="FooterBanner" id="FooterBanner" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+										<img id="FooterBannerPreview" class="image-preview" src='@(!string.IsNullOrEmpty(Model.FooterImage)?Model.FooterImage:"/Assets/images/no-data.png")' />
+										<i class="fa fa-trash" onclick="DeleteFile(this,'@Model.FooterImage')"></i>
+										<input name="RestaurantID" id="RestaurantID" value="@ViewBag.Restaurant.Id" hidden />
+									</div>
+								</div>
+								<!--end::Body-->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--end::Card-->
+			<!--end::Dashboard-->
+		</div>
+		<!--end::Container-->
+	</div>
+	<!--end::Entry-->
+</div>
+<!--end::Row-->
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content" style="min-height:100px">
+			<div id='myModalContent'>
+				<div class="row justify-content-center">
+					<div class="col-16">
+						<div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="CropperModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90vw;">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="img-container">
+					<img id="image" src="https://avatars0.githubusercontent.com/u/3456749" style="width:80vw;height:80vh" aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0">
+				</div>
+			</div>
+			<div class="modal-footer" style="justify-content: space-between;">
+				<div class="cropper-actions">
+					<div class="aspectratio-section">
+						<h6>ASPECT RATIO</h6>
+						<div class="aspectratios">
+							<a href="javascript:;" class="cropper-aspectratio active" data="NaN"><span class="free-style"></span>FREE STYLE</a>
+							<a href="javascript:;" class="cropper-aspectratio" data="1"><span class="box"></span> SQUARE (1:1)</a>
+						</div>
+					</div>
+					<div class="shapes-section">
+						<h6>SHAPES</h6>
+						<div class="shapes">
+							<a href="javascript:;" class="cropper-shape active" data="round"><span class="round"></span> ROUND/OVAL</a>
+							<a href="javascript:;" class="cropper-shape" data="square"><span class="square"></span> SQUARE/RECTANGLE</a>
+						</div>
+					</div>
+					<div class="backgrounds-section">
+						<h6>BACKGROUNDS</h6>
+						<div class="backgrounds">
+							<a href="javascript:;" class="background-color active" data="#FFFFFF"><span style="background: #FFFFFF"></span> WHITE</a>
+							<a href="javascript:;" class="background-color" data="#000000"><span style="background: #000000"></span> BLACK</a>
+							<a href="javascript:;" class="background-color" data="#00000000"><span style="background: #00000000"></span> TRANSPARENT</a>
+						</div>
+					</div>
+				</div>
+				<div class="">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-info" id="crop">Submit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var SuccessMessage = '@ViewBag.SuccessMessage';
+	var ErrorMessage = '@ViewBag.ErrorMessage';
+</script>
+
+@section Scripts {
+	<script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+	<script src="/Admin/js/general/ModalPopup.js"></script>
+	<script src="/Admin/js/restaurant/RestaurantContentManagement/Update.js"></script>
+	<script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+
+	<script src="~/js/cropper.js"></script>
+	<script src="~/js/compressor.js"></script>
+	<script src="~/Admin/js/general/ImageUploader-2.0.js"></script>
+	<script src="~/Admin/js/restaurant/RestaurantContentManagement/media.js"></script>
+
+	<script>
+
+        var DescriptionAboutUs , Description, DescriptionPrivacy, DescriptionDeliveryPolicy, DescriptionReturnPolicy  ;
+
+		var AboutUsEditor
+		, TermsAndConditionsEditor
+			, PrivacyPolicyEditor
+			, DeliveryPolicyEditor
+			, ReturnPolicyEditor
+        var ImagePath = "";
+		var UpdateLogo = "";
+
+		$(document).ready(function () {
+
+			$("#btnRestaurantlogo").click(function () {
+				
+				$(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+				var data = new FormData();
+				data.append("Id", $('#RestaurantID').val());
+				data.append("logo", UpdateLogo);
+				$.ajax({
+					url: "/Restaurant/RestaurantContentManagement/UpdateLogo/",
+					type: "POST",
+					processData: false,
+					contentType: false,
+					data: data,
+					success: function (response) {
+
+						if (callback) {
+							callback($('#myModalContent'), element, false, response);
+						}
+						location.reload();
+					},
+					error: function (er) {
+						toastr.error(er);
+					}
+				});
+				return false;
+			});
+
+            $(".ImagePath").change(function (e) {
+                $(".ImagePath").attr('required', true);
+                
+                var file, img;
+
+                if ((file = this.files[0])) {
+
+                    //img = new Image();
+                    //img.onload = function () {
+
+                    //    if (this.width < 400 || this.width > 400) {
+                    //        Swal.fire({
+                    //            icon: 'error',
+                    //            title: 'Oops...',
+                    //            text: 'Image dimension should be equal to 400 x 400!',
+
+                    //        }).then(function (result) {
+                    //            $(".ImagePath").attr("src", "/Assets/AppFiles/Images/default.png");
+                    //            $(".cancelimage").trigger('click');
+                    //        });
+                    //    }
+                    //    else if (this.height < 410 || this.height > 410) {
+                    //        Swal.fire({
+                    //            icon: 'error',
+                    //            title: 'Oops...',
+                    //            text: 'Image dimension should be equal to 410 x 410!',
+
+                    //        }).then(function (result) {
+                    //            $(".ImagePath").attr("src", "/Assets/AppFiles/Images/default.png");
+                    //            $(".cancelimage").trigger('click');
+                    //        });
+                    //    }
+                    //    else if (file.size > 500000) {
+                    //        Swal.fire({
+                    //            icon: 'error',
+                    //            title: 'Oops...',
+                    //            text: 'Image size must be less than 500 kb!',
+
+                    //        }).then(function (result) {
+                    //            $(".ImagePath").attr("src", "/Assets/AppFiles/Images/default.png");
+                    //            $(".cancelimage").trigger('click');
+                    //        });
+                    //    }
+                    //    else {
+                    //        img.onerror = function () {
+                    //            alert("not a valid file: " + file.type);
+                    //        };
+                    //    }
+                    //};
+                    //
+                    //img.src = _URL.createObjectURL(file);
+                    ImagePath = UploadImageToDraft(file).responseText;
+                }
+            });
+            $("#Userform").submit(function () {
+                
+                $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+                var data = new FormData();
+                data.append("logoPath", logoPath);
+                $.ajax({
+                    url: "/Restaurant/RestaurantContentManagement/Create/",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+
+                        //if (callback) {
+                        //    //callback($('#myModalContent'), element, false, response);
+                        //}
+                        location.reload();
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+                return false;
+            });
+            //Image Validation End
+            $(".Image").change(function (e) {
+                $(".Image").attr('required', true);
+                
+                var file, img;
+
+                if ((file = this.files[0])) {
+
+                    img = new Image();
+                    img.onload = function () {
+
+                        if (this.width < 400 || this.width > 400) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Image dimension should be equal to 400 x 400!',
+
+                            }).then(function (result) {
+                                $(".Image").attr("src", "/Assets/AppFiles/Images/default.png");
+                                $(".cancelimage").trigger('click');
+                            });
+                        }
+                        else if (this.height < 410 || this.height > 410) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Image dimension should be equal to 410 x 410!',
+
+                            }).then(function (result) {
+                                $(".Image").attr("src", "/Assets/AppFiles/Images/default.png");
+                                $(".cancelimage").trigger('click');
+                            });
+                        }
+                        else if (file.size > 500000) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Image size must be less than 500 kb!',
+
+                            }).then(function (result) {
+                                $(".logo").attr("src", "/Assets/AppFiles/Images/default.png");
+                                $(".cancelimage").trigger('click');
+                            });
+                        }
+                        else {
+                            img.onerror = function () {
+                                alert("not a valid file: " + file.type);
+                            };
+                        }
+                    };
+                    
+                    img.src = _URL.createObjectURL(file);
+                    logoPath = UploadImageToDraft(file).responseText;
+
+                }
+            });
+            $(".UpdateLogo").change(function (e) {
+                $(".UpdateLogo").attr('required', true);
+                
+                var file, img;
+
+                if ((file = this.files[0])) {
+
+                    img = new Image();
+                    img.onload = function () {
+
+                        if (this.width < 400 || this.width > 400) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Image dimension should be equal to 400 x 400!',
+
+                            }).then(function (result) {
+                                $(".UpdateLogo").attr("src", "/Assets/AppFiles/Images/default.png");
+                                $(".cancelimage").trigger('click');
+                            });
+                        }
+                        else if (this.height < 410 || this.height > 410) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Image dimension should be equal to 410 x 410!',
+
+                            }).then(function (result) {
+                                $(".UpdateLogo").attr("src", "/Assets/AppFiles/Images/default.png");
+                                $(".cancelimage").trigger('click');
+                            });
+                        }
+                        else if (file.size > 500000) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Image size must be less than 500 kb!',
+
+                            }).then(function (result) {
+                                $(".UpdateLogo").attr("src", "/Assets/AppFiles/Images/default.png");
+                                $(".cancelimage").trigger('click');
+                            });
+                        }
+                        else {
+                            img.onerror = function () {
+                                alert("not a valid file: " + file.type);
+                            };
+                        }
+                    };
+                    
+                    img.src = _URL.createObjectURL(file);
+					UpdateLogo = UploadImageToDraft(file).responseText;
+
+                }
+            });
+            $("#Menuform").submit(function () {
+                
+                $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+                var data = new FormData();
+                data.append("ImagePath", ImagePath);
+                $.ajax({
+                    url: "/Restaurant/RestaurantContentManagement/PromotionCreate/",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+
+                        //if (callback) {
+                        //    //callback($('#myModalContent'), element, false, response);
+                        //}
+                        location.reload();
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+                return false;
+            });
+
+
+			ClassicEditor.defaultConfig = {
+				toolbar: {
+					items: [
+						'heading',
+						'|',
+						'bold',
+						'italic',
+						'|',
+						'bulletedList',
+						'numberedList',
+						'|',
+						'insertTable',
+						'|',
+						'undo',
+						'redo'
+					]
+				},
+				image: {
+					toolbar: [
+						'imageStyle:full',
+						'imageStyle:side',
+						'|',
+						'imageTextAlternative'
+					]
+				},
+				table: {
+					contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+				},
+				language: 'en'
+			};
+
+            ClassicEditor
+				.create(document.querySelector('#AboutUs'))
+				.then(editor => {
+					AboutUsEditor = editor;
+
+					let toolbarElement = AboutUsEditor.ui.view.toolbar.element;
+
+					AboutUsEditor.on('change:isReadOnly', (evt, propertyName, isReadOnly) => {
+						if (isReadOnly) {
+							toolbarElement.style.display = 'none';
+						} else {
+							toolbarElement.style.display = 'flex';
+						}
+					});
+
+					AboutUsEditor.setData(`@Html.Raw(Model.AboutUs)`);
+					AboutUsEditor.isReadOnly = true;
+               })
+               .catch(error => {
+                   console.log(error);
+			   });
+
+
+             ClassicEditor
+                 .create(document.querySelector('#TermsAndConditions'))
+				 .then(editor => {
+					 TermsAndConditionsEditor = editor;
+					 let toolbarElement = TermsAndConditionsEditor.ui.view.toolbar.element;
+
+					 TermsAndConditionsEditor.on('change:isReadOnly', (evt, propertyName, isReadOnly) => {
+						 if (isReadOnly) {
+							 toolbarElement.style.display = 'none';
+						 } else {
+							 toolbarElement.style.display = 'flex';
+						 }
+					 });
+
+
+					 TermsAndConditionsEditor.setData(`@Html.Raw(Model.TermsAndConditions)`);
+					 TermsAndConditionsEditor.isReadOnly = true;
+               })
+               .catch(error => {
+                   console.log(error);
+			   });
+
+
+                 ClassicEditor
+                 .create(document.querySelector('#PrivacyPolicy'))
+					 .then(editor => {
+						 PrivacyPolicyEditor = editor;
+
+						 const toolbarElement = PrivacyPolicyEditor.ui.view.toolbar.element;
+
+						 PrivacyPolicyEditor.on('change:isReadOnly', (evt, propertyName, isReadOnly) => {
+							 if (isReadOnly) {
+								 toolbarElement.style.display = 'none';
+							 } else {
+								 toolbarElement.style.display = 'flex';
+							 }
+						 });
+
+
+						 PrivacyPolicyEditor.setData(`@Html.Raw(Model.PrivacyPolicy)`);
+						 PrivacyPolicyEditor.isReadOnly = true;
+               })
+               .catch(error => {
+                   console.log(error);
+			   });
+
+              ClassicEditor
+                  .create(document.querySelector('#DeliveryPolicy'))
+				  .then(editor => {
+					  DeliveryPolicyEditor = editor;
+					  let toolbarElement = DeliveryPolicyEditor.ui.view.toolbar.element;
+
+					  DeliveryPolicyEditor.on('change:isReadOnly', (evt, propertyName, isReadOnly) => {
+						  if (isReadOnly) {
+							  toolbarElement.style.display = 'none';
+						  } else {
+							  toolbarElement.style.display = 'flex';
+						  }
+					  });
+
+					  DeliveryPolicyEditor.setData(`@Html.Raw(Model.DeliveryPolicy)`);
+					  DeliveryPolicyEditor.isReadOnly = true;
+               })
+               .catch(error => {
+                   console.log(error);
+			   });
+
+            ClassicEditor
+                .create(document.querySelector('#ReturnPolicy'))
+				.then(editor => {
+					ReturnPolicyEditor = editor;
+					const toolbarElement = ReturnPolicyEditor.ui.view.toolbar.element;
+
+					ReturnPolicyEditor.on('change:isReadOnly', (evt, propertyName, isReadOnly) => {
+						if (isReadOnly) {
+							toolbarElement.style.display = 'none';
+						} else {
+							toolbarElement.style.display = 'flex';
+						}
+					});
+
+
+					ReturnPolicyEditor.setData(`@Html.Raw(Model.ReturnPolicy)`);
+					ReturnPolicyEditor.isReadOnly = true;
+               })
+               .catch(error => {
+                   console.log(error);
+               });
+        });
+        if (SuccessMessage) {
+            toastr.success(SuccessMessage);
+        }
+        else if (ErrorMessage) {
+            $('#edit-profile').trigger('click');
+            toastr.error(ErrorMessage);
+        }
+
+
+        jQuery(document).ready(function () {
+
+        });
+
+        function Delete(element, record) {
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+                if (result.value) {
+
+                    $.ajax({
+                        url: '/Restaurant/RestaurantContentManagement/DeleteAboutUs/' + record,
+                        type: 'POST',
+                        data: {
+                            "__RequestVerificationToken":
+                                $("input[name=__RequestVerificationToken]").val()
+                        },
+                        success: function (result) {
+                            if (result.success != undefined) {
+                                if (result.success) {
+                                    toastr.options = {
+                                        "positionClass": "toast-bottom-right",
+                                    };
+                                    toastr.success('Banner Deleted Successfully');
+
+                                    $(element).closest('.banner').remove();
+                                }
+                                else {
+                                    toastr.error(result.message);
+                                }
+                            } else {
+                                swal.fire("Your are not authorize to perform this action", "For further details please contact Restaurantistrator !", "warning").then(function () {
+                                });
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            if (xhr.status == 403) {
+                                try {
+                                    var response = $.parseJSON(xhr.responseText);
+                                    swal.fire(response.Error, response.Message, "warning").then(function () {
+                                        $('#myModal').modal('hide');
+                                    });
+                                } catch (ex) {
+                                    swal.fire("Access Denied", "Your are not authorize to perform this action, For further details please contact Restaurantistrator !", "warning").then(function () {
+                                        $('#myModal').modal('hide');
+                                    });
+                                }
+
+                                $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                $(element).find('i').show();
+
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        function DeleteMenuImage(element, record) {
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+                if (result.value) {
+
+                    $.ajax({
+                        url: '/Restaurant/RestaurantContentManagement/DeleteMenuImage/' + record,
+                        type: 'POST',
+                        data: {
+                            "__RequestVerificationToken":
+                                $("input[name=__RequestVerificationToken]").val()
+                        },
+                        success: function (result) {
+                            if (result.success != undefined) {
+                                if (result.success) {
+                                    toastr.options = {
+                                        "positionClass": "toast-bottom-right",
+                                    };
+                                    toastr.success('Banner Deleted Successfully');
+
+                                    $(element).closest('.banner').remove();
+                                }
+                                else {
+                                    toastr.error(result.message);
+                                }
+                            } else {
+                                swal.fire("Your are not authorize to perform this action", "For further details please contact Restaurantistrator !", "warning").then(function () {
+                                });
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            if (xhr.status == 403) {
+                                try {
+                                    var response = $.parseJSON(xhr.responseText);
+                                    swal.fire(response.Error, response.Message, "warning").then(function () {
+                                        $('#myModal').modal('hide');
+                                    });
+                                } catch (ex) {
+                                    swal.fire("Access Denied", "Your are not authorize to perform this action, For further details please contact Restaurantistrator !", "warning").then(function () {
+                                        $('#myModal').modal('hide');
+                                    });
+                                }
+
+                                $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                $(element).find('i').show();
+
+                            }
+                        }
+                    });
+                }
+            });
+        }
+	</script>
+
+}

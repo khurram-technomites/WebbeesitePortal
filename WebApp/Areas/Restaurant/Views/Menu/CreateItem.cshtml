@@ -1,0 +1,216 @@
+﻿@{
+    Layout = null;
+}
+
+<style>
+    .tagify__dropdown__wrapper {
+        border-color: rgb(221 228 236) !important;
+        
+    }
+
+    .tagify__dropdown__item--active {
+        background: rgb(255 149 149) !important;
+    }
+
+    .tagify .tagify__tag {
+        background-color: #f67a7a;
+    }
+
+        .tagify .tagify__tag div .tagify__tag-text {
+            color: #f7f7f7;
+        }
+</style>
+<div class="modal-header">
+    <h5 class="modal-title">Add Item</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    <div class="col-md-12 col-sm-12">
+        <div class="form-group">
+            <label class="control-label">Category Item</label>
+            <div class="input-group mb-2">
+                @Html.DropDownList("Category", null, "Select Category", htmlAttributes: new { @class = "form-control kt_select2" , id = "Category" })
+                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 category-item">
+        @*<input type="hidden" name="CouponID" id="CouponID" value="@ViewBag.CouponID" />*@
+
+    </div>
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" id="Save-btn" form="form-menu">Save</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.12.0/tagify.min.js" integrity="sha512-uDMk0LmYVhMq6mKY7QfiJAXBchLmLiCZjh5hmZ6UUEJ/iNDk2s8maQDx4lOPCqLJqvhktN/g7oZTesQ6SOIjhw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function () {
+        $('.kt_select2').select2({
+            placeholder: "Select an option"
+        });
+    });
+    var items = [];
+
+    $("#Category").change(function() {
+
+        var flag = false;
+        var CategoryId = $(this).val();
+        $(".category-item").empty();
+        $(".category-item").append(`<div class="form-group">
+            <input name='tags-manual-suggestions' class="" placeholder='Add Items'>
+        </div>`);
+
+
+
+                $.ajax({
+                    url: '/Restaurant/Menu/CategoryItems/' + CategoryId + "?menuId=" + @ViewBag.MenuId,
+                    type: 'GET',
+                    success: function(response) {
+                        if (response.success) {
+                            var input = document.querySelector('input[name=tags-manual-suggestions]'),
+                                tagify = new Tagify(input, {
+                                    enforceWhitelist: true,
+                                    whitelist: response.items,
+                                    dropdown: {
+                                        position: "manual",
+                                        maxItems: Infinity,
+                                        enabled: 0,
+                                        classname: "customSuggestionsList"
+                                    },
+                                    templates: {
+                                        dropdownItem: function (tagData) {
+                                            try {
+                                                var html = '';
+                                                
+                                                html += '<div class="tagify__dropdown__item">';
+                                                html += '   <div class="d-flex align-items-center">';
+                                                //html += '       <span class="symbol sumbol-' + (tagData.initialsState ? tagData.initialsState : '') + ' mr-2">';
+                                                //html += '           <span class="symbol-label" style="background-image: url(\'' + (tagData.pic ? tagData.pic : '') + '\')">' + (tagData.initials ? tagData.initials : '') + '</span>';
+                                                //html += '       </span>';
+                                                html += '       <div class="d-flex flex-column">';
+                                                html += '           <a href="javascript:void(0);" id="' + (tagData.id ? tagData.id : '') + '" class="text-dark-75 text-hover-primary font-weight-bold">' + (tagData.value ? tagData.value.trim() : '') + '</a>';
+                                                //html += '           <span class="text-muted font-weight-bold">' + (tagData.value ? tagData.value : '') + '</span>';
+                                                html += '       </div>';
+                                                html += '   </div>';
+                                                html += '</div>';
+
+                                                return html;
+                                            } catch (err) { }
+                                        }
+                                    },
+                          
+                                })
+
+                            tagify.on('remove', function (e) {
+
+
+                                var indexOfObject = items.findIndex(object => {
+                                    return object.id === e.detail.data.id;
+                                });
+
+                                items.splice(indexOfObject, 1);
+
+                            });
+
+                            tagify.on("dropdown:show", onSuggestionsListUpdate)
+                                .on("dropdown:hide", onSuggestionsListHide)
+                                .on('dropdown:scroll', onDropdownScroll)
+
+                            tagify.on('dropdown:select', onSelectSuggestion);
+                           
+
+                            renderSuggestionsList()
+
+                            // ES2015 argument destructuring
+                            function onSuggestionsListUpdate({ detail: suggestionsElm }) {
+                                
+                            }
+
+                            function onSuggestionsListHide() {
+                            }
+
+                            function onDropdownScroll(e) {
+                            }
+
+
+                            function renderSuggestionsList() {
+                                
+                                tagify.dropdown.show() // load the list
+                                tagify.DOM.scope.parentNode.appendChild(tagify.DOM.dropdown)
+                            }
+
+                            function onSelectSuggestion(e) {
+                                items.push({
+                                    id: $(e.detail.tagify.DOM.dropdown).find('.tagify__dropdown__item--active a').attr('id')
+                                })
+                            }
+                        }
+                    }
+                });
+
+
+
+
+    });
+
+
+
+    $("#Save-btn").click(function () {
+        
+        var e = this;
+        var url = window.location.href;
+        var MenuId = url.split('/').reverse()[0];
+
+        $(e).addClass('spinner spinner-light spinner-left').prop('disabled', true);
+
+        $.ajax({
+
+            url: '/Restaurant/Menu/CreateItem/',
+            type: 'POST',
+            data: {
+                categoryId: $("#Category").val(),
+                menuId : MenuId,
+                items : items
+
+            },
+            success: function (response) {
+                
+                if (response.success) {
+                    
+                    $("#notAvalaible").remove();
+                    AddCategoryItems(response);
+                    toastr.success(response.message);
+                    $('#myModal').modal('hide');
+
+                }
+                else {
+                    toastr.error(response.message);
+                }
+
+                $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+
+            },
+            error: function(e) {
+                $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+            },
+            failure: function(e) {
+                $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+            }
+        });
+    });
+
+</script>
+

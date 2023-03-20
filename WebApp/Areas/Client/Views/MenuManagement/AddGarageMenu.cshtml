@@ -1,0 +1,73 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    #txtstatus option:disabled {
+        background-color: #80808078;
+    }
+</style>
+
+<div class="modal-header">
+    <h5 class="modal-title">Add Menu</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+
+    <form id="ChangeStatus">
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-12 col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label">Website Menu </label>
+                        <div class="input-group mb-2">
+                            @Html.DropDownList("GarageMenu", null, "Select Menu", htmlAttributes: new { @class = "form-control", id = "GarageMenu" })
+                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" id="submit-btn" onclick="AddMenu(this)">Add</button>
+</div>
+<script>
+    function AddMenu(e) {
+        $(e).addClass("spinner spinner-notch spinner-left").attr("disabled", true);
+        $.ajax({
+            url: "/Client/MenuManagement/AddGarageMenu",
+            type : "POST",
+            data: {
+                id: $("#GarageMenu").val()
+            },
+            success: function (response) {
+                if (response.success)
+                {
+                    AppendMenu(response.data);
+                    toastr.success("Menu Added Successfully...!");
+                    $("#myModal").modal("hide");
+                }
+                
+            }
+
+
+
+        })
+    };
+
+    
+
+</script>
+
+
+

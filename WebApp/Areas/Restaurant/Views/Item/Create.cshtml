@@ -1,0 +1,167 @@
+﻿@model WebApp.ViewModels.ItemViewModel
+
+@{
+	Layout = null;
+}
+
+
+<div class="modal-header">
+	<h5 class="modal-title">Create</h5>
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<i aria-hidden="true" class="ki ki-close"></i>
+	</button>
+</div>
+<div class="modal-body">
+
+	<form asp-action="Create" asp-controller="Item" id="Userform">
+
+		@Html.AntiForgeryToken()
+		<div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+		<div class="row">
+			<div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+				<div class="image-upload empty">
+					<i class="fa fa-camera"></i>
+					<span>Upload Image</span>
+					<input type="file" name="logo" id="logo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+						   aspectratio="1" minCroppedWidth="100" minCroppedHeight="100"/>
+					<img id="PreviewImage" src='' />
+					@*<i class="fa fa-trash"></i>*@
+					<i class="fa fa-pen"></i>
+				</div>
+			</div>
+			<input type="text" class="" value="-" name="NameAr" hidden="" />
+			<div class="col-md-12 col-sm-6">
+				<div class="form-group">
+					<label class="control-label">Item Category</label>
+					<div class="input-group mb-2">
+						@Html.DropDownList("Category", null, "Select Parent Item", htmlAttributes: new { @class = "form-control", id = "Category" })@Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Item Name</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Item name here ...", required = "required" } })@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Price</label>
+					<div class="input-group mb-2">
+						<input type="number" asp-for="Price" id="Price" placeholder="0" step=".01" min="0" class="form-control" />
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12 col-sm-6">
+				<div class="form-group">
+					<label class="control-label">Description</label>
+					<div class="input-group mb-2">
+						<textarea class="form-control" name="Description" id="Description" rows="3" placeholder="Enter Description name here ..." required="required"></textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	<button type="submit" class="btn btn-info" form="Userform">Submit</button>
+</div>
+
+<script>
+	var _URL = window.URL || window.webkitURL;
+	var logoPath = '';
+	$(document).ready(function () {
+
+        $('.cropper-shape').click(function () {
+
+            $('#CropperModal').removeClass($('.cropper-shape.active').attr('data'));
+
+            $('.cropper-shape').removeClass('active');
+            $(this).addClass('active');
+
+            $('#CropperModal').addClass($(this).attr('data'));
+        })
+
+
+        $('.background-color').click(function () {
+            $('.background-color').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('.cropper-view-box').css('background', $('.background-color.active').attr('data'))
+        })
+
+
+        $('.cropper-aspectratio').click(function () {
+            $('.cropper-aspectratio').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('#image').attr('aspectratio', $(this).attr('data'));
+
+            cropper.setAspectRatio($(this).attr('data'))
+
+		})
+
+		$('i.fa-camera').click(function () {
+			$("#logo").trigger('click');
+		});
+
+
+		BindImageUploader("#logo", "#image", "#CropperModal", "#PreviewImage");
+
+		$("#Userform").submit(function () {
+
+			$(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+			var data = new FormData();
+
+			var files = $("#logo").get(0).files;
+			if (files.length > 0) {
+				data.append("Logo", files[0]);
+			}
+
+			data.append("CategoryId", $('#Category').val());
+			data.append("Name", $('#Name').val());
+			data.append("Description", $('#Description').val());
+			data.append("Price", $("#Price").val());
+			data.append("Image", logoPath);
+
+			data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+
+			$.ajax({
+				url: "/Restaurant/Item/Create/",
+				type: "POST",
+				processData: false,
+				contentType: false,
+				data: data,
+				success: function (response) {
+
+					if (callback) {
+						callback($('#myModalContent'), element, false, response);
+					}
+				},
+				error: function (er) {
+					toastr.error(er);
+				}
+			});
+
+			return false;
+		});
+
+		$("#Name").on('change', function () {
+			var name = $(this);
+			$("#Slug").val($(name).val().replace(/ /g, "-").replace(/'/g, "").toLocaleLowerCase());
+		});
+	});
+
+
+</script>

@@ -1,0 +1,664 @@
+﻿@model WebApp.ViewModels.ItemViewModel
+
+@{
+    Layout = "~/Areas/Restaurant/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/cropper.css" rel="stylesheet" />
+<link href="~/Admin/css/general/ImageUploader.css" rel="stylesheet" />
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container-fluid align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="d-flex align-items-center flex-wrap mr-1">
+                        <!--begin::Heading-->
+                        <div class="d-flex flex-column">
+
+                            <!--begin::Breadcrumb-->
+                            <div class="d-flex align-items-center font-weight-bold my-2">
+                                <!--begin::Item-->
+                                <a href="/Vendor/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                                    <i class="flaticon2-shelter text-white icon-1x"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="/Restaurant/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                                <a href="/Restaurant/Item/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">Items</a>
+                                <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                                <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Edit</a>
+                                <!--end::Item-->
+                            </div>
+                            <!--end::Breadcrumb-->
+                        </div>
+                        <!--end::Heading-->
+                    </div>
+                </div>
+            </div>
+
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Dashboard-->
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <!--begin::Card-->
+                    @*<div class="card card-custom  gutter-b" id="kt_page_sticky_card">
+                        <div class="card-body">
+
+                        </div>
+                        </div>*@
+                    <div class="card card-custom  gutter-b">
+                        <div class="card-header flex-wrap border-0 pt-6 pb-0 justify-content-end">
+                            <div class="card-toolbar">
+                                <!--begin::Button-->
+                                <button type="submit" form="frm-edit" id="sv-btn" class="btn btn-info font-weight-bolder">
+                                    <span class="svg-icon svg-icon-md">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24"></rect>
+                                                <circle fill="#000000" cx="9" cy="15" r="6"></circle>
+                                                <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3"></path>
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span> Save
+                                </button>
+                                <!--end::Button-->
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form id="frm-edit">
+                                @Html.AntiForgeryToken()
+                                <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.Id, new { id = "Id" })
+                                @Html.HiddenFor(model => model.Status, new { id = "Status" })
+                                <div class="row">
+                                    <div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+                                        <div class="image-upload uploaded">
+                                            <i class="fa fa-camera"></i>
+                                            <span>Upload Image</span>
+                                            <input type="file" name="logo" id="logo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+                                                   aspectratio="1" minCroppedWidth="100" minCroppedHeight="100" />
+                                            <img id="PreviewImage" src='@Model.Image' />
+                                            @*<i class="fa fa-trash" onclick="DeleteFile(this,'@Model.Image')"></i>*@
+
+                                            <i class="fa fa-pen" onclick="DeleteFile(this,'@Model.Image')"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Category Item</label>
+                                            <div class="input-group mb-2">
+                                                @Html.DropDownList("Category", null, "Select Parent Item", htmlAttributes: new { @class = "form-control", id = "Category" })@Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Item Name</label>
+                                            <div class="input-group mb-2">
+                                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Item name here ...", required = "required" } })@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="" value="-" name="NameAr" hidden="" />
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Price</label>
+                                            <div class="input-group mb-2">
+                                                <input type="number" asp-for="Price" id="Price" placeholder="0" step=".01" min="0" value="@Model.Price" class="form-control" />
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Description</label>
+                                            <div class="input-group mb-2">
+                                                <textarea class="form-control" name="Description" id="Description" rows="3" placeholder="Enter Description name here ..." required="required">@Model.Description</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>Manage Item Option</h3>
+                                </div>
+                                <div class="col-md-2 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Options</label>
+                                        <div class="input-group mb-2">
+                                            <select class="form-control" onchange="ChangeOption(this)">
+                                                <option value="Option">Add Option</option>
+                                                <option value="Value">Add Value</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-10 card-spacer" id="option_tab">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-2 col-sm-8">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="option-title" placeholder="Name" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4">
+                                            <div class="checkbox-inline mt-lg-3">
+                                                <label class="checkbox">
+                                                    <input type="checkbox" id="required_chkbx" />
+                                                    <span></span>
+                                                    Required
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4">
+                                            <div class="checkbox-inline mt-lg-3">
+                                                <label class="checkbox">
+                                                    <input type="checkbox" id="mainprice_chkbx" />
+                                                    <span></span>
+                                                    Main Price
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4">
+                                            <div class="form-group row">
+                                                <label class="col-7 col-form-label">Pick One</label>
+                                                <span class="col-5 switch switch-sm">
+                                                    <label>
+                                                        <input type="checkbox" onchange="ChangeRadio(this)" id="RadioButton" checked="checked" name="select" />
+                                                        <span> </span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="number" placeholder="Maximum" class="form-control" onkeypress="return isNumber(event)" id="MaxValue" />
+                                        </div>
+                                        <div class="col-md-2 ">
+                                            <button class="btn btn-info" onclick="SaveOption(this)"><i class="fa fa-plus"></i>Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9 card-spacer" id="value_tab" style="display:none">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-4 col-sm-8">
+                                            <div class="form-group">
+                                                <div class="input-group mb-2">
+                                                    <select class="form-control" id="option_id">
+                                                        <option value="">Select Option first</option>
+                                                        @foreach (var item in ViewBag.Option)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="value-name" placeholder="Title" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="value-price" placeholder="Price" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-info" onclick="SaveValue(this)"><i class="fa fa-plus"></i>Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="item_option">
+                                @foreach (var itemoption in Model.ItemOptions)
+                                {
+                                    <div class="col-md-4" id="option-@itemoption.Id">
+                                        <div class="accordion accordion-light accordion-light-borderless accordion-svg-toggle" id="accordionExample7">
+                                            <div class="card">
+                                                <div class="card-header" id="headingOne7">
+                                                    <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseOne-@itemoption.Id">
+                                                        <span class="svg-icon svg-icon-primary">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                    <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                                                    <path d="M12.2928955,6.70710318 C11.9023712,6.31657888 11.9023712,5.68341391 12.2928955,5.29288961 C12.6834198,4.90236532 13.3165848,4.90236532 13.7071091,5.29288961 L19.7071091,11.2928896 C20.085688,11.6714686 20.0989336,12.281055 19.7371564,12.675721 L14.2371564,18.675721 C13.863964,19.08284 13.2313966,19.1103429 12.8242777,18.7371505 C12.4171587,18.3639581 12.3896557,17.7313908 12.7628481,17.3242718 L17.6158645,12.0300721 L12.2928955,6.70710318 Z" fill="#000000" fill-rule="nonzero"></path>
+                                                                    <path d="M3.70710678,15.7071068 C3.31658249,16.0976311 2.68341751,16.0976311 2.29289322,15.7071068 C1.90236893,15.3165825 1.90236893,14.6834175 2.29289322,14.2928932 L8.29289322,8.29289322 C8.67147216,7.91431428 9.28105859,7.90106866 9.67572463,8.26284586 L15.6757246,13.7628459 C16.0828436,14.1360383 16.1103465,14.7686056 15.7371541,15.1757246 C15.3639617,15.5828436 14.7313944,15.6103465 14.3242754,15.2371541 L9.03007575,10.3841378 L3.70710678,15.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.000003, 11.999999) rotate(-270.000000) translate(-9.000003, -11.999999) "></path>
+                                                                </g>
+                                                            </svg>
+                                                        </span>
+                                                        <div class="card-label pl-4">
+                                                            @itemoption.Title
+                                                            <span>
+                                                                <i class="flaticon-delete icon-sm-1x" onclick="DeleteOption(this,@itemoption.Id)" style="color: #f97c7c">
+                                                                </i>
+                                                            </span>
+                                                            <span>
+                                                            </span>
+                                                            <span class="" @(itemoption.IsRequired == true ? "" : "hidden")><a class="label label-inline label-danger">Required</a></span>
+                                                            <span class="" @(itemoption.IsPriceMain == true ? "" : "hidden")><a class="label label-inline label-danger">Main</a></span>
+                                                            <span class="" @(itemoption.IsRadioButton == true ? "" : "hidden")><a class="label label-inline label-danger">Pick one</a></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="collapseOne-@itemoption.Id" class="collapse" data-parent="#accordionExample7">
+                                                    <div class="card-body pl-12">
+                                                        <ul id="valuelist-@itemoption.Id">
+                                                            @foreach (var itemvalue in itemoption.ItemOptionValues)
+                                                            {
+                                                                <li id="value-@itemvalue.Id">
+                                                                    <label>Title : <span class="label label-warning label-pill label-inline mr-2">@itemvalue.Value</span></label>
+                                                                    <label>Price : <span class="label label-light-danger label-pill label-inline mr-2">@itemvalue.Price</span></label>
+                                                                    <button class="btn btn-icon" onclick="DeleteValue(this,@itemvalue.Id)"><i class="flaticon-delete" style="color: #f97c7c"></i></button>
+                                                                </li>
+                                                            }
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!--end::Card-->
+                    </div>
+                </div>
+                <!--end::Dashboard-->
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::Entry-->
+    </div>
+</div>
+
+<div class="modal fade" id="CropperModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90vw;">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="img-container">
+                    <img id="image" src="https://avatars0.githubusercontent.com/u/3456749" style="width:80vw;height:80vh" aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0">
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: space-between;">
+                <div class="cropper-actions">
+                    <div class="aspectratio-section">
+                        <h6>ASPECT RATIO</h6>
+                        <div class="aspectratios">
+                            <a href="javascript:;" class="cropper-aspectratio active" data="1"><span class="box"></span> SQUARE (1:1)</a>
+                        </div>
+                    </div>
+                    <div class="shapes-section">
+                        <h6>SHAPES</h6>
+                        <div class="shapes">
+                            <a href="javascript:;" class="cropper-shape active" data="square"><span class="square"></span> SQUARE/RECTANGLE</a>
+                        </div>
+                    </div>
+                    <div class="backgrounds-section">
+                        <h6>BACKGROUNDS</h6>
+                        <div class="backgrounds">
+                            <a href="javascript:;" class="background-color active" data="#FFFFFF"><span style="background: #FFFFFF"></span> WHITE</a>
+                            <a href="javascript:;" class="background-color" data="#000000"><span style="background: #000000"></span> BLACK</a>
+                            <a href="javascript:;" class="background-color" data="#00000000"><span style="background: #00000000"></span> TRANSPARENT</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" id="crop">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+
+    <script src="/Admin/js/restaurant/Item/list.js"></script>
+    <!--end::Page Scripts-->
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <script src="~/js/cropper.js"></script>
+
+    <script src="~/js/compressor.js"></script>
+    <script src="~/Admin/js/general/ImageUploader-2.0.js"></script>
+
+    <script>
+        var _URL = window.URL || window.webkitURL;
+        var logoPath = "";
+
+
+        $(document).ready(function () {
+
+            $('.cropper-shape').click(function () {
+
+                $('#CropperModal').removeClass($('.cropper-shape.active').attr('data'));
+
+                $('.cropper-shape').removeClass('active');
+                $(this).addClass('active');
+
+                $('#CropperModal').addClass($(this).attr('data'));
+            })
+
+
+            $('.background-color').click(function () {
+                $('.background-color').removeClass('active');
+                $(this).addClass('active');
+
+
+                $('.cropper-view-box').css('background', $('.background-color.active').attr('data'))
+            })
+
+
+            $('.cropper-aspectratio').click(function () {
+                $('.cropper-aspectratio').removeClass('active');
+                $(this).addClass('active');
+
+
+                $('#image').attr('aspectratio', $(this).attr('data'));
+
+                cropper.setAspectRatio($(this).attr('data'))
+
+            })
+
+            $('i.fa-camera').click(function () {
+                $("#logo").trigger('click');
+            });
+            $("#RadioButton").prop("checked", true);
+            $("#MaxValue").hide();
+
+
+            BindImageUploader("#logo", "#image", "#CropperModal", "#PreviewImage");
+
+            $("#frm-edit").submit(function () {
+
+                $("#sv-btn").addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+                var data = new FormData();
+
+
+
+                data.append("Id", $('#Id').val());
+                data.append("CategoryId", $('#Category').val());
+                data.append("Name", $('#Name').val());
+                data.append("Status", $('#Status').val());
+                data.append("Description", $('#Description').val());
+                data.append("Price", $("#Price").val());
+                data.append("Image", logoPath);
+                data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+                $.ajax({
+                    url: "/Restaurant/Item/Edit/",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+                        $("#sv-btn").removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        if (response.success) {
+
+                            location.reload();
+                            toastr.success(response.message);
+                        }
+                    },
+                    error: function (er) {
+                        $("#sv-btn").removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        toastr.error(er);
+                    }
+                });
+                return false;
+            });
+        });
+
+        function ChangeOption(e) {
+            if ($(e).val() == 'Option') {
+                $("#option_tab").show();
+                $("#value_tab").hide();
+            }
+
+            else {
+                $("#option_tab").hide();
+                $("#value_tab").show();
+            }
+        };
+
+        function SaveValue(e) {
+            $(e).find('i').hide();
+            $(e).addClass('spinner spinner-light spinner-left').prop('disabled', true);
+            var html = "";
+            if ($("#option_id").val() == "") {
+                toastr.error("Please select option first ...");
+            }
+
+            else {
+                $.ajax({
+                    url: "/Restaurant/Item/AddItemOptionValue/",
+                    type: "POST",
+                    data: {
+                        ItemOptionId: $("#option_id").val(),
+                        Name: $("#value-name").val(),
+                        Price: $("#value-price").val()
+                    },
+                    success: function (response) {
+
+                        if (response.success) {
+                            $("#value-name").val("");
+                            $("#value-price").val("");
+                            $(e).removeClass('spinner spinner-light spinner-left spinner-darker-dark').prop('disabled', false);
+                            $(e).find('i').show();
+                            html = `<li id="value-${response.data.id}">
+                                                                                                                                                                        <label>Title : <span class="label label-warning label-pill label-inline mr-2">${response.data.value}</span></label>
+                                                                                                                                                                        <label>Price : <span class="label label-light-danger label-pill label-inline mr-2">${response.data.price}</span></label>
+                                                                                                                                                                        <button class="btn btn-icon" onclick="DeleteValue(this,${response.data.id})"><i class="flaticon-delete" style="color: #f97c7c"></i></button>
+                                                                                                                                                                    </li>`;
+                            $("#valuelist-" + response.data.itemOptionId).append(html);
+
+                            toastr.success(response.message);
+                        }
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+            }
+
+        };
+
+        function ChangeRadio(e) {
+
+            if ($(e).is(":checked")) {
+
+                $("#MaxValue").fadeOut(1000);
+
+            }
+            else {
+                $("#MaxValue").fadeIn(1000);
+            }
+
+        };
+
+
+        function SaveOption(e) {
+            var html = "";
+            var isRequired = "";
+            var isMain = "";
+            var Variation = "";
+            $(e).find('i').hide();
+            $(e).addClass('spinner spinner-light spinner-left').prop('disabled', true);
+
+
+            $.ajax({
+                url: "/Restaurant/Item/AddItemOption/",
+                type: "POST",
+                data: {
+                    ItemId: $("#Id").val(),
+                    Title: $("#option-title").val(),
+                    IsRequired: $("#required_chkbx").is(":checked"),
+                    isPriceMain: $("#mainprice_chkbx").is(":checked"),
+                    IsRadio: $("#RadioButton").is(":checked"),
+                    Maximum: $("#MaxValue").val()
+
+                },
+                success: function (response) {
+                    if (response.success) {
+
+                        isRequired = response.data.isRequired == true ? "" : "hidden";
+                        isMain = response.data.isMain == true ? "" : "hidden";
+                        Variation = response.data.isRadio == true ? "" : "hidden";
+                        $(e).removeClass('spinner spinner-light spinner-left spinner-darker-dark').prop('disabled', false);
+                        $(e).find('i').show();
+                        $("#option-title").val("");
+                        $("#required_chkbx").prop("checked", false);
+                        $("#mainprice_chkbx").prop("checked", false);
+                        $("#RadioButton").prop("checked", true);
+                        $("#MaxValue").val(0);
+                        $("#MaxValue").hide();
+
+                        html = `  <div class="col-md-4" id="option-${response.data.id}">
+                                                                                                <div class="accordion accordion-light accordion-light-borderless accordion-svg-toggle" id="accordionExample-${response.data.id}">
+                                                                                                    <div class="card">
+                                                                                                        <div class="card-header" id="headingOne7">
+                                                                                                            <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseOne-${response.data.id}">
+                                                                                                                <span class="svg-icon svg-icon-primary">
+                                                                                                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                                                                            <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                                                                                                            <path d="M12.2928955,6.70710318 C11.9023712,6.31657888 11.9023712,5.68341391 12.2928955,5.29288961 C12.6834198,4.90236532 13.3165848,4.90236532 13.7071091,5.29288961 L19.7071091,11.2928896 C20.085688,11.6714686 20.0989336,12.281055 19.7371564,12.675721 L14.2371564,18.675721 C13.863964,19.08284 13.2313966,19.1103429 12.8242777,18.7371505 C12.4171587,18.3639581 12.3896557,17.7313908 12.7628481,17.3242718 L17.6158645,12.0300721 L12.2928955,6.70710318 Z" fill="#000000" fill-rule="nonzero"></path>
+                                                                                                                            <path d="M3.70710678,15.7071068 C3.31658249,16.0976311 2.68341751,16.0976311 2.29289322,15.7071068 C1.90236893,15.3165825 1.90236893,14.6834175 2.29289322,14.2928932 L8.29289322,8.29289322 C8.67147216,7.91431428 9.28105859,7.90106866 9.67572463,8.26284586 L15.6757246,13.7628459 C16.0828436,14.1360383 16.1103465,14.7686056 15.7371541,15.1757246 C15.3639617,15.5828436 14.7313944,15.6103465 14.3242754,15.2371541 L9.03007575,10.3841378 L3.70710678,15.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.000003, 11.999999) rotate(-270.000000) translate(-9.000003, -11.999999) "></path>
+                                                                                                                        </g>
+                                                                                                                    </svg>
+                                                                                                                </span>
+
+                                                                                                                <div class="card-label pl-4">${response.data.name}
+<span><i class="flaticon-delete icon-sm-1x"  onclick="DeleteOption(this , ${response.data.id})"  style="color: #f97c7c"></i></span>
+             <span ${isRequired} ><a class="label label-inline label-danger">Required</a></span>
+                                                      <span ${isMain}><a class="label label-inline label-danger">Main</a></span>
+                                                      <span ${Variation}><a class="label label-inline label-danger">Pick one</a></span>
+</div>
+
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div id="collapseOne-${response.data.id}" class="collapse" data-parent="#accordionExample-${response.data.id}">
+                                                                                                                <div class="card-body pl-12">
+                                                                                                                    <ul id="valuelist-${response.data.id}">
+
+
+                                                                                                                    </ul>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>`;
+
+                        $("#item_option").append(html);
+                        toastr.success(response.message);
+                        AppendDropDown();
+                    };
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+        };
+
+        function DeleteOption(e, id) {
+
+            $(e).find('i').hide();
+            $(e).addClass('spinner spinner-light spinner-left spinner-darker-dark').prop('disabled', true);
+            $.ajax({
+                url: "/Restaurant/Item/DeleteOption/" + id,
+                type: "GET",
+                success: function (response) {
+
+                    if (response.success) {
+                        $(e).removeClass('spinner spinner-light spinner-left spinner-darker-dark').prop('disabled', false);
+                        $(e).find('i').show();
+                        $("#option-" + id).remove();
+                        AppendDropDown();
+
+                    }
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+        }
+
+        function DeleteValue(e, id) {
+            $(e).find('i').hide();
+            $(e).addClass('spinner spinner-light spinner-left spinner-darker-dark').prop('disabled', true);
+            $.ajax({
+                url: "/Restaurant/Item/DeleteValue/" + id,
+                type: "GET",
+                success: function (response) {
+
+                    if (response.success) {
+                        $(e).removeClass('spinner spinner-light spinner-left spinner-darker-dark').prop('disabled', false);
+                        $(e).find('i').show();
+                        $("#value-" + id).remove();
+
+                    }
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+        }
+
+        function AppendDropDown() {
+            var id = $("#Id").val();
+            var html = `<option value="">Select Option first</option>`;
+            $.ajax({
+                url: "/Restaurant/Item/OptionDropDown/" + id,
+                type: "GET",
+                success: function (response) {
+
+                    if (response.success) {
+                        $("#option_id").empty();
+                        $.each(response.data, function (k, v) {
+
+                            html += `<option value="${v.id}">${v.name}</option>`;
+
+
+                        });
+                        $("#option_id").append(html);
+
+
+                    }
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+        };
+
+
+
+
+    </script>
+}

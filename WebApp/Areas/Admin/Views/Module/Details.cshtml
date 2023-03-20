@@ -1,0 +1,100 @@
+﻿@model WebApp.ViewModels.ModuleViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Details</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+   
+        <div class="row">
+
+
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">ServiceName</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.ServiceName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter  name here ...", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.ServiceName, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-comment-alt "></i></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Price</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter  price here ...", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-dollar-sign"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Description</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter  Description here ...", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-folder"></i></span></div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Default</label>
+                    <span class="switch">
+                        <label>
+                            @Html.CheckBoxFor(Model=>Model.IsDefault,new{ disabled = "disabled"})
+                            <span></span>
+                        </label>
+                    </span>
+                </div>
+            </div>
+             <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">ManageQunatity</label>
+                    <span class="switch">
+                        <label>
+                            @Html.CheckBoxFor(Model=>Model.ManageQunatity,new{ disabled = "disabled"})
+                            <span></span>
+                        </label>
+                    </span>
+                </div>
+            </div>
+             <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Min</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.Min, new { htmlAttributes = new { @class = "form-control",disabled="disabled", placeholder = "Enter  Min here ...", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Min, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-pen"></i></span></div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Max</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.Max, new { htmlAttributes = new { @class = "form-control",disabled="disabled", placeholder = "Enter  Max here ..." , @readonly = "readonly"} })
+                        @Html.ValidationMessageFor(model => model.Max, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-pen"></i></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+   
+</div>
+
+

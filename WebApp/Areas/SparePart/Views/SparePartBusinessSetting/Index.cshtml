@@ -1,0 +1,596 @@
+﻿@model WebApp.ViewModels.SparePartBusinessSettingViewModel
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/SparePart/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .btn-send-for-approval {
+        margin-top: -41px !important;
+    }
+
+    .btn-remarks {
+        margin-right: 180px !important;
+    }
+
+    .fa-arrow-right:before {
+        content: "\f061";
+        color: red;
+    }
+
+    .vertical {
+        width: 0.1rem;
+        height: auto;
+        border: none;
+        background: #dacdcd;
+    }
+
+    .color-circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50px;
+        display: inline-block;
+        position: relative;
+        margin-top: 0px;
+        padding-top: 5px;
+        top: 1px;
+    }
+
+    .variat {
+        border-top: 1px solid #0000001c;
+        padding-top: 1.25rem !important;
+        border-bottom: 1px solid #0000004a;
+        padding-bottom: 1.25rem !important;
+    }
+
+    .branch-input {
+        background-color: #e8e8e8;
+    }
+
+        .branch-input::placeholder {
+            color: #8e8a8a;
+            opacity: 70;
+        }
+
+    .pin-on-map {
+        right: 50px;
+        padding-right: 5px;
+        border-right: 1px solid rgb(255 63 64 / 5%);
+    }
+
+    .get-current-location {
+        top: 25px;
+        right: 30px;
+    }
+
+        .get-current-location i {
+            color: #FF3F40;
+        }
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map {
+        height: 100%;
+    }
+
+
+    div.pac-container {
+        /*for search locaton on map model popup txtaddress*/
+        z-index: 99999999999 !important;
+    }
+
+    .wo-right-icon {
+        position: absolute;
+        top: 30px;
+        font-size: 12px;
+        color: #FF3F40;
+        font-weight: 900;
+    }
+
+        .wo-right-icon:hover {
+            color: #c91e1f;
+        }
+
+    .pac-card {
+        background-color: #fff;
+        border: 0;
+        border-radius: 2px;
+        box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+        margin: 10px;
+        padding: 0 0.5em;
+        font: 400 18px Roboto, Arial, sans-serif;
+        font-family: Roboto;
+        padding: 0;
+    }
+
+    #pac-container {
+        z-index: 1051 !important;
+    }
+
+    .pac-container {
+        z-index: 1051 !important;
+    }
+
+    .pac-controls {
+        padding: 5px 11px;
+    }
+
+        .pac-controls label {
+            font-family: Roboto;
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+    #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 503px;
+        height: 40px;
+    }
+
+        #pac-input:focus {
+            border-color: #4d90fe;
+        }
+
+    @@media(max-width: 500px) {
+        .btn-send-for-approval {
+            margin-top: 10px !important;
+        }
+
+        .btn-remarks {
+            margin-top: 10px !important;
+            margin-right: 0px !important;
+        }
+    }
+</style>
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="/SparePart/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a href="/SparePart/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Business Settings</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Dashboard-->
+            <!--begin::Card-->
+            <div class="card card-custom" id="kt_page_sticky_card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">
+                            Configure Business settings Here...
+                            <i class="mr-2"></i>
+                        </h3>
+                    </div>
+                    <div class="card-toolbar">
+                        <a href="/SparePart/Dashboard/Index" class="btn btn-light-primary font-weight-bolder mr-2">
+                            <i class="ki ki-long-arrow-back icon-sm"></i> Back
+                        </a>
+                        <button type="button" class="btn btn-info font-weight-bolder" id="edit-profile">
+                            <i class="fa fa-pen icon-sm "></i> Change
+                        </button>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger font-weight-bolder" id="edit-cancel" style="display:none;">
+                                <i class="ki ki-close icon-sm"></i> Cancel
+                            </button>
+                            <button type="button" class="btn btn-success font-weight-bolder" id="save-changes" style="display:none;">
+                                <i class="ki ki-check icon-sm"></i> Save Changes
+                            </button>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-light-google font-weight-bolder ml-2" onclick="OpenModelPopup(this, '/SparePart/SparePartBusinessSetting/GetBranchSetting/@Model.Id')">
+                                <i class="fa fa-pen icon-sm "></i> Branch Setting
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-8">
+
+                            <form asp-area="SparePart" asp-controller="BusinessSetting" asp-action="Update" id="Userform">
+                                <input asp-for="Id" style="opacity:0%" hidden>
+                                <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <h4 class="card-label">
+                                        Whatsapp Integration
+                                    </h4>
+                                    <hr />
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Title</label>
+                                        <div class="input-group mb-2">
+                                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-comment-alt "></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Message</label>
+                                        <div class="input-group mb-2">
+                                            <textarea class="form-control" name="FirstMessage" id="FirstMessage" rows="3" placeholder="Enter your first message here...">@Model.FirstMessage</textarea>
+                                            @Html.ValidationMessageFor(model => model.FirstMessage, "", new { @class = "text-danger" })
+                                            <div class="input-group-append "><span class="input-group-text"><i class="fa fa-comment-dots"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 mt-5">
+                                    <h4 class="card-label">
+                                        Contact Settings
+                                    </h4>
+                                    <hr />
+                                </div>
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Contact Person Name</label>
+                                        <div class="input-group mb-2">
+                                            @Html.EditorFor(model => model.ContactPersonName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                            @Html.ValidationMessageFor(model => model.ContactPersonName, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Contact 1</label>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">+971</span>
+                                            </div>
+                                            @Html.EditorFor(model => model.Contact01, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "number", required = "required", @onblur = "validate(this.value,this)" } })
+                                            @Html.ValidationMessageFor(model => model.Contact01, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Contact 2</label>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">+971</span>
+                                            </div>
+                                            @Html.EditorFor(model => model.Contact02, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "number", required = "required", @onblur = "validate(this.value,this)" } })
+                                            @Html.ValidationMessageFor(model => model.Contact02, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Email</label>
+                                        <div class="input-group mb-2">
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter text here...", type = "text", required = "required" } })
+                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope "></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Fax No</label>
+                                        <div class="input-group mb-2">
+                                            @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter fax number here..." } })
+                                            @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-fax"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Address</label>
+                                        <div class="input-group mb-2">
+                                            <textarea class="form-control" name="StreetAddress" id="StreetAddress" rows="3" placeholder="Enter street address here..." required="">@Model.StreetAddress</textarea>
+                                            @Html.ValidationMessageFor(model => model.StreetAddress, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-home"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="wo-titleinput mb-0">Search Location</label>
+                                        <div class="wo-form-icon">
+                                            <input type="text" class="form-control show-map-input Address" style="padding-right:18%" id="Address" asp-for="CompleteAddress" placeholder="Choose location" required>
+                                            <a href="javascript:void(0);" class="wo-right-icon get-current-location" onclick="getLocation()">
+                                                <i class="flaticon2-map"></i>
+                                            </a>
+                                            <a href="javascript:void(0);" class="wo-right-icon pin-on-map" @*data-toggle="modal" data-target="#map-modal"*@ onclick="openMap()">
+                                                Pin On Map
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="MapSearchResult" style="display:none">
+                                    </div>
+                                    <input type="hidden" name="Latitude" asp-for="Latitude" value="@Model.Latitude" />
+                                    <input type="hidden" name="Longitude" asp-for="Longitude" value="@Model.Longitude" />
+                                </div>
+                                <div class="col-md-12 col-sm-12 mt-5">
+                                    <h4 class="card-label">
+                                        Quick Intro
+                                    </h4>
+                                    <hr />
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Short Introduction</label>
+                                        <div class="input-group mb-2">
+                                            <textarea class="form-control" name="ShortIntro" id="ShortIntro" rows="3" placeholder="Enter short intro here..." required="">@Model.ShortIntro</textarea>
+                                            @Html.ValidationMessageFor(model => model.ShortIntro, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fab fa-tag"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="col-md-12 col-sm-12 mt-5">
+                                    <h4 class="card-label">
+                                        Social Media Links
+                                    </h4>
+                                    <hr />
+                                </div>
+
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Facebook</label>
+                                        <div class="input-group mb-2">
+                                            @Html.EditorFor(model => model.Facebook, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter facebook link here...", } })
+                                            @Html.ValidationMessageFor(model => model.Facebook, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fab fa-facebook"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">WhatsApp</label>
+                                        <div class="input-group mb-2">
+                                            @Html.EditorFor(model => model.Whatsapp, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter facebook link here...", } })
+                                            @Html.ValidationMessageFor(model => model.Whatsapp, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fab fa-whatsapp"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Instagram</label>
+                                        <div class="input-group mb-2">
+                                            @Html.EditorFor(model => model.Instagram, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter instagram link here...", } })
+                                            @Html.ValidationMessageFor(model => model.Instagram, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fab fa-instagram-square"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Youtube</label>
+                                        <div class="input-group mb-2">
+                                            @Html.EditorFor(model => model.Youtube, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter youtube link here...", } })
+                                            @Html.ValidationMessageFor(model => model.Youtube, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fab fa-youtube"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Twitter</label>
+                                        <div class="input-group mb-2">
+                                            @Html.EditorFor(model => model.Twitter, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter twitter link here...", } })
+                                            @Html.ValidationMessageFor(model => model.Twitter, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fab fa-twitter"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Snapchat</label>
+                                        <div class="input-group mb-2">
+                                            @Html.EditorFor(model => model.Snapchat, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter snapchat link here...", } })
+                                            @Html.ValidationMessageFor(model => model.Snapchat, "", new { @class = "text-danger" })
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fab fa-snapchat"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Card-->
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Map Modal Start -->
+<div class="modal fade wo-videopopup " tabindex="-1" role="dialog" id="map-modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="wo-modalcontent modal-content">
+            <div class="modal-body">
+                <a href="javascript:void(0);" class="close"><i class="ti-close" data-dismiss="modal"></i></a>
+                <div class="login-header">
+                    <h4 class="text-center mb-2">Search Location</h4>
+                    <p class="text-center" id="drag-map"><span>Drag marker on the map to select your desired location.</span></p>
+                </div>
+                <!-- Modal Body Start -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="map-div" style="display:none">
+                                <input type="text" class="form-control mb-3 Address" id="current-location" name="current-location" placeholder="Search Location" required="">
+                                <div id="googleMap" style="width:100%;height:400px;"></div>
+                                <button class="btn btn-block btn-theme border-radius-4 mt-3 p-3" type="button" data-dismiss="modal">Done</button>
+                            </div>
+                            <div class="map-div-spin p-5 m-5 text-center">
+                                <span class="fa fa-circle-notch fa-spin fa-2x"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Body End -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+	var SuccessMessage = '@ViewBag.SuccessMessage';
+	var ErrorMessage = '@ViewBag.ErrorMessage';
+</script>
+@section Scripts {
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <script src="/Admin/js/admin/businessSetting/Update.js"></script>
+    <script src="~/js/Map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8&libraries=places&callback=initAutocomplete"></script>
+    @*<script src="/Admin/js/general/ModalPopup.js"></script>*@
+<script>
+        $(document).ready(function () {
+            $("#save-changes").click(function () {
+                var e = $(this);
+                $(e).addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+                var data = new FormData();
+                data.append("Id", $('#Id').val());
+                data.append("Title", $('#Title').val());
+                data.append("FirstMessage", $('#FirstMessage').val());
+                data.append("StreetAddress", $('#StreetAddress').val());
+                data.append("CompleteAddress", $('#Address').val());
+                data.append("Email", $('#Email').val());
+                data.append("Latitude", $('#Latitude').val());
+                data.append("Longitude", $('#Longitude').val());
+                data.append("ContactPersonName", $('#ContactPersonName').val());
+                data.append("Contact01", $('#Contact01').val());
+                data.append("Contact02", $('#Contact02').val());
+                data.append("Fax", $('#Fax').val());
+                data.append("Whatsapp", $('#Whatsapp').val());
+                data.append("Facebook", $('#Facebook').val());
+                data.append("Instagram", $('#Instagram').val());
+                data.append("Youtube", $('#Youtube').val());
+                data.append("Twitter", $('#Twitter').val());
+                data.append("Snapchat", $('#Snapchat').val());
+                data.append("ShortIntro", $('#ShortIntro').val());
+                data.append("ContentManagementId", '@Model.ContentManagementId');
+                data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+
+
+                $.ajax({
+                    url: "/SparePart/SparePartBusinessSetting/Update/",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+                        toastr.success(response.message);
+                        debugger;
+                        $(e).removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                    },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+                return false;
+            });
+
+            //$("#CategoryName").on('change', function () {
+            //    var name = $(this);
+            //    $("#Slug").val($(name).val().replace(/ /g, "-").replace(/'/g, "").toLocaleLowerCase());
+            //});
+        });
+        if (SuccessMessage) {
+            toastr.success(SuccessMessage);
+        }
+        else if (ErrorMessage) {
+            $('#edit-profile').trigger('click');
+            toastr.error(ErrorMessage);
+        }
+
+
+        function validate(v, dom) {
+            debugger;
+            if (v.length < 9) {
+                debugger;
+                $($(dom).next()[0].parentElement.parentElement).find('.confPassError').text('Please enter 9 digits!')
+                $('.save-changes').prop('disabled', true)
+            }
+            else if (v.length == 9) {
+                $('.confPassError').text('');
+                $('.save-changes').prop('disabled', false)
+            }
+            else {
+                dom.value = v.slice(0, 9);
+            }
+        }
+
+
+</script>
+
+}

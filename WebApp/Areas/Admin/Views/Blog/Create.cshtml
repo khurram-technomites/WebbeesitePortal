@@ -1,0 +1,293 @@
+﻿@model WebApp.ViewModels.BlogViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Create</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="Userform">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-12 form-group row justify-content-center">
+            <div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+                <div class="image-upload uploaded">
+                    <i class="fa fa-camera"></i>
+                    <span>Upload Image</span>
+                    <input type="file" name="Restaurantlogo" id="Restaurantlogo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+                           aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+                    <img id="PreviewImage" src='@Model.BannerImage' />
+
+                    <i class="fa fa-pen" onclick="DeleteFile(this,'@Model.BannerImage')"></i>
+                </div>
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label">Title</label>
+                <div class="input-group mb-2">
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fas fa-paragraph"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="Author" class="control-label">Author</label>
+                <div class="input-group mb-2">
+                    <input asp-for="Author" class="form-control" />
+                    <span asp-validation-for="Author" class="text-danger"></span>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fas fa-user"></i></span></div>
+                </div>
+            </div>
+        </div>
+        @*<div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="TitleAr" class="control-label">Title(Ar)</label>
+                <div class="input-group mb-2">
+                    <input asp-for="TitleAr" class="form-control" />
+                    <span asp-validation-for="TitleAr" class="text-danger"></span>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fas fa-paragraph"></i></span></div>
+                </div>
+            </div>
+        </div>*@
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="TitleDescription" class="control-label">Title Description</label>
+                <div >
+                    <textarea asp-for="TitleDescription" class="form-control" style="height:100px" name="Description" id="Description" rows="10" placeholder="Type Here" class="form-control branch-input" />
+                    <span asp-validation-for="TitleDescription" class="text-danger"></span>
+                    @*<div class="input-group-append"><span class="input-group-text"><i class="fas fa-paragraph"></i></span></div>*@
+                </div>
+            </div>
+        </div>
+        @*<div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="TitleDescriptionAr" class="control-label">Title Description(Ar)</label>
+                <div class="input-group mb-2">
+                    <textarea asp-for="TitleDescriptionAr" class="form-control" />
+                    <span asp-validation-for="TitleDescriptionAr" class="text-danger"></span>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fas fa-paragraph"></i></span></div>
+                </div>
+            </div>
+        </div>*@
+        @*<div class="col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Description</label>
+                <div class="input-group mb-2">
+                    <textarea name="Description" id="Description" rows="10" placeholder="Type Here" class="form-control branch-input" >@Model.TitleDescription</textarea>
+                </div>
+            </div>
+        </div>*@
+        <!--<div class="col-md-12 col-sm-12">
+        <div class="form-group">
+            <label asp-for="MobileDescription" class="control-label">Mobile Description</label>
+            <div class="input-group mb-2">
+                <textarea asp-for="MobileDescription" class="form-control" style=" height:100px" />
+                <span asp-validation-for="MobileDescription" class="text-danger"></span>-->
+        @*  <div class="input-group-append"><span class="input-group-text"><i class="fas fa-paragraph"></i></span></div>*@
+        <!--</div>
+        </div>
+    </div>-->
+        @*<div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="MobileDescriptionAr" class="control-label">Mobile Description(Ar)</label>
+                <div class="input-group mb-2">
+                    <textarea asp-for="MobileDescriptionAr" class="form-control" />
+                    <span asp-validation-for="MobileDescriptionAr" class="text-danger"></span>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fas fa-paragraph"></i></span></div>
+                </div>
+            </div>
+        </div>*@
+
+        @*<div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Video</label>
+                <div class="input-group mb-2">
+                    @Html.TextBox("Video", "", new { type = "file", name = "Video", @class = "form-control" })
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-video"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" form="Userform">Submit</button>
+</div>
+<script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+<script>
+    var _URL = window.URL || window.webkitURL;
+    var logoPath;
+     var Description;
+
+    $(document).ready(function () {
+        ClassicEditor
+               .create(document.querySelector('#Description'))
+               .then(editor => {
+                   Description = editor;
+                   Description.setData(`@Html.Raw(Model.TitleDescription)`);
+               })
+               .catch(error => {
+                   console.log(error);
+               });
+        //$("#logo").change(function (e) {
+        //    var file, img;
+
+        //    if ((file = this.files[0])) {
+
+        //        img = new Image();
+        //        img.onload = function () {
+
+
+        //            if (this.width < 200 || this.width > 200) {
+        //                Swal.fire({
+        //                    icon: 'error',
+        //                    title: 'Oops...',
+        //                    text: 'Image dimension should be 200 x 200 ! ',
+
+        //                }).then(function (result) {
+        //                    $("#logo").attr("src", "/Assets/AppFiles/Images/default.png");
+        //                    $(".cancelimage").trigger('click');
+        //                });
+        //            }
+        //            else if (this.height < 200 || this.height > 200) {
+        //                Swal.fire({
+        //                    icon: 'error',
+        //                    title: 'Oops...',
+        //                    text: 'Image dimension should be 200 x 200 !',
+
+        //                }).then(function (result) {
+        //                    $("#logo").attr("src", "/Assets/AppFiles/Images/default.png");
+        //                    $(".cancelimage").trigger('click');
+        //                });
+        //        }
+        //        if (file.size > 10000000) {
+
+        //            Swal.fire({
+        //                icon: 'error',
+        //                title: 'Oops...',
+        //                text: 'Image size must be less than 100 kb!',
+
+        //            }).then(function (result) {
+        //                $("#logo").attr("src", "/Assets/AppFiles/Images/default.png");
+        //                $(".cancelimage").trigger('click');
+        //            });
+        //        }
+        //        else {
+        //            img.onerror = function () {
+        //                alert("not a valid file: " + file.type);
+        //            };
+        //        }
+        //    };
+        //    img.src = _URL.createObjectURL(file);
+        //    logoPath = UploadImageToDraft(file).responseText;
+        //});
+
+
+        //Image Validation End
+
+        var avatar1 = new KTImageInput('kt_image_1');
+        var avatar2 = new KTImageInput('kt_image_2');
+
+        $(".cancelimage").click(function () {
+            DeleteImage(logoPath);
+        })
+        //Image Cropper 
+
+        $('.cropper-shape').click(function () {
+
+            $('#CropperModal').removeClass($('.cropper-shape.active').attr('data'));
+
+            $('.cropper-shape').removeClass('active');
+            $(this).addClass('active');
+
+            $('#CropperModal').addClass($(this).attr('data'));
+        })
+
+
+        $('.background-color').click(function () {
+            $('.background-color').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('.cropper-view-box').css('background', $('.background-color.active').attr('data'))
+        })
+
+
+        $('.cropper-aspectratio').click(function () {
+            $('.cropper-aspectratio').removeClass('active');
+            $(this).addClass('active');
+
+
+            $('#image').attr('aspectratio', $(this).attr('data'));
+
+            cropper.setAspectRatio($(this).attr('data'))
+
+        })
+
+        $('i.fa-camera').click(function () {
+            $("#logo").trigger('click');
+        });
+
+        //aspectratio = 0.76;
+        //minCroppedWidth = 250;
+        //minCroppedHeight = 330;
+
+        $('i.fa-camera').click(function () {
+            $("#Restaurantlogo").trigger('click');
+        });
+        BindImageUploader("#Restaurantlogo", "#image", "#CropperModal", "#PreviewImage");
+
+        $("#Userform").submit(function () {
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+            var data = new FormData();
+            data.append("Title", $('#Title').val());
+            data.append("TitleAr", $('#TitleAr').val());
+            data.append("TitleDescription", Description.getData());
+            data.append("TitleDescriptionAr", $('#TitleDescriptionAr').val());
+            data.append("MobileDescription", $('#MobileDescription').val());
+            data.append("MobileDescriptionAr", $('#MobileDescriptionAr').val());
+            data.append("BannerImage", logoPath);
+            data.append("Author", $('#Author').val());
+            data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+            $.ajax({
+                url: "/Admin/Blog/Create/",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    if (callback) {
+                        callback($('#myModalContent'), element, false, response);
+
+                    }
+                    location.reload();
+
+                },
+                error: function (er) {
+                    toastr.error(er);
+                    location.reload();
+                }
+
+            });
+            return false;
+        });
+    });
+
+</script>

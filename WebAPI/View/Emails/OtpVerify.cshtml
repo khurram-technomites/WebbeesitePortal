@@ -1,0 +1,70 @@
+﻿@model HelperClasses.DTOs.Authentication.ConfirmEmailDTO
+
+
+<div style="background:#e8e8e8; font-family: 'Inter', sans-serif;">
+    <div section="main" style="max-width: 600px; margin: auto; padding-top: 50px;padding-bottom: 50px;">
+        <div class="template" style="background :#fff; margin: 7% 0%; border-radius: 10px;">
+            <div class="logo" style="text-align: center;padding: 2rem">
+                <a href="https://portal.webbeesite.com/" style="text-decoration: none; " target="_blank">
+                    <img src="https://v1-cdn-webbeesite.azurewebsites.net/Images/logo/email-template-logo.png">
+                </a>
+
+
+            </div>
+            <div class="content" style="padding: 0px 30px 16px;">
+                <div style="background: #f6f6f6;padding:2rem">
+                    <h3 style="text-align: left;">@Model.Title</h3>
+
+                    <p style="text-align: left; font-size: 12px">
+                        Below is your one time password<br />
+                    </p>
+
+                    <h3 style="color: #E14E4E; letter-spacing:3px">@Model.AuthCode</h3>
+
+                    <p style="text-align: left; font-size: 12px">
+                        If you didn't request this, you can ignore this email.
+                    </p>
+
+                </div>
+            </div>
+           @* <div class="store" style="display:flex; padding:0px 30px; border-bottom:2px solid #f2f2f2; align-items: center ;background:#fff">
+                <div class="heading" style="width: 50%;">
+                    <h4>Download Our App</h4>
+                </div>
+                <div class="img1" style="width: 31%;">
+                    <a href="javascript:;" style="text-decoration: none; ">
+                        <img class="tb_r" src="https://cdn.fougito.com/images/assets/email/GoogleStore.png" alt=""
+                             style="margin-right:10px ;" />
+                    </a>
+                </div>
+                <div class="img2" style="width: 31%;">
+                    <a href="javascript:;" style="text-decoration: none; ">
+                        <img src="https://cdn.fougito.com/images/assets/email/AppleStore.png" alt="" />
+                    </a>
+                </div>
+            </div>*@
+            <div class="followus" style="padding: 20px 30px; text-align: left;background:#fff; display:flex">
+                <p style="font-size:12px">
+                    You can follow our social media accounts for more <br /> information and updates.
+                </p>
+                <div class="social-accounts" style="padding-left:1rem">
+                    <a href="javascript:;" style="text-decoration: none; ">
+                        <img src="https://cdn.fougito.com/images/assets/email/FacebookIcon.png" alt="" />
+                    </a>
+                    <a href="javascript:;" style="text-decoration: none; margin-left: 5px;">
+                        <img src="https://cdn.fougito.com/images/assets/email/TwitterIcon.png" alt="" />
+                    </a>
+                    <a href="javascript:;" style="text-decoration: none;margin-left: 5px;">
+                        <img src="https://cdn.fougito.com/images/assets/email/InstagramIcon.png" alt="" />
+                    </a>
+                    <a href="javascript:;" style="text-decoration: none;margin-left: 5px;">
+                        <img src="https://cdn.fougito.com/images/assets/email/LinkedinIcon.png" alt="" />
+                    </a>
+                    <a href="javascript:;" style="text-decoration: none;margin-left: 5px;">
+                        <img src="https://cdn.fougito.com/images/assets/email/youtubeicon.png" alt="" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

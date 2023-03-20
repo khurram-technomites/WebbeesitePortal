@@ -1,0 +1,808 @@
+﻿@model WebApp.ViewModels.SupplierOrderViewModel
+@using HelperClasses.Classes
+@using Microsoft.AspNetCore.Authorization
+
+@{
+    Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .rating .checked {
+        color: orange;
+    }
+</style>
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="/Supplier/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a href="/Supplier/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="/Supplier/SupplierOrder/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">Orders</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Details</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Dashboard-->
+            <!--begin::Row-->
+            <div class="row justify-content-center">
+                <div class="col-xl-12">
+                    <div class="row">
+                        <div class="col-md-8 d-flex flex-column">
+                            <!--begin::Card-->
+                            <div class="card card-custom gutter-b">
+
+                                <div class="card-body">
+                                    <!-- begin: Invoice-->
+                                    <!-- begin: Invoice header-->
+                                    <div class="justify-content-center px-8 row text-center">
+                                        <div class="col-md-12">
+                                            <div class="d-flex flex-column">
+                                                <div><h3 class="text-left">Order Details</h3></div>
+                                                <div><h6 class="text-left opacity-70">@Model.OrderNo</h6></div>
+                                                <input type="hidden" value="@Model.Id" id="OrderId" />
+                                            </div>
+
+                                            <div class="row" style="background-color: #fbfbfb; border-radius: 20px;">
+                                                <div class="col-md-4">
+                                                    <img src="" id="ImageGif" style="width: 100%;" />
+                                                </div>
+                                                <div class="col-md-8 mt-lg-28 text-left">
+                                                    <div class="d-flex flex-column">
+                                                        <div>
+                                                            <h6 style="color:red">Status <i class="fa fa-pencil-alt fa-sm" onclick="OpenModelPopup(this, '/Supplier/SupplierOrder/ChangeStatus/' + @Model.Id)"></i></h6>
+                                                        </div>
+                                                        <div>
+                                                            <h3 id="Status">@Model.Status</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class=" px-8 px-md-0 py-8 row text-center justify-content-center">
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-md-8 text-left">
+                                                    <div class="d-flex flex-column">
+                                                        <div>
+                                                            <label><i class="flaticon-users-1 icon-sm-1x"></i>  Name</label>
+                                                        </div>
+                                                        <div>
+                                                            <label class="opacity-70">@(Model.RestaurantName != null ? Model.RestaurantName : "-")</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 text-left">
+                                                    <div class="d-flex flex-column">
+                                                        <div>
+                                                            <label><i class="flaticon2-phone icon-sm-1x"></i>  Phone Number</label>
+                                                        </div>
+                                                        <div>
+                                                            <label class="opacity-70">@(Model.RestauantContact != null ? Model.RestauantContact : "-")</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 text-left">
+                                                    <div class="d-flex flex-column">
+                                                        <div>
+                                                            <label><i class="fa fa-map-marker-alt icon-sm-1x"></i>  Delivery Address</label>
+                                                        </div>
+                                                        <div>
+                                                            <a class="opacity-70" id="Address" href="">@Model.DeliveryAddress</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 text-left">
+                                                    <div class="d-flex flex-column">
+                                                        <div>
+                                                            <label><i class="fa fa-biking icon-sm-1x"></i>  Note to rider</label>
+                                                        </div>
+                                                        <div>
+                                                            <label class="opacity-70">@(Model.NoteToRider != null ? Model.NoteToRider : "-")</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 text-left">
+                                                    <div class="d-flex flex-column">
+                                                        <div>
+                                                            <label><i class="fa fa-calendar icon-sm-1x"></i>Order Date</label>
+                                                        </div>
+                                                        <div>
+                                                            <label class="opacity-70">@(Model.OrderRequiredDate.ToString() != "1/1/0001 12:00:00 AM" ? Model.OrderRequiredDate.ToString("dd MMM yyyy,h:mm:ss") : "-")</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                    @*<div class=" px-8 px-md-0 py-8 row text-center justify-content-center">
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                @if (Model.SupplierOrderDetails.Any())
+                                                {
+                                                    <div class="col-md-8 text-left">
+                                                        <div class="d-flex flex-column">
+                                                            <div>
+                                                                <label><i class="fa fa-star  icon-sm-1x"></i> Order Name</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    foreach (var item in Model.SupplierOrderDetails)
+                                                    {
+                                                        <div class="col-md-8 text-left">
+                                                            <div class="d-flex flex-column">
+                                                                <div>
+                                                                    <label class="opacity-70">@(Model.SupplierOrderDetails != null ? Model.SupplierOrderDetails.FirstOrDefault().SupplierItemName : "-")</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    }
+                                                    <div class="col-md-4 text-left">
+                                                        <div class="d-flex flex-column">
+                                                            <div>
+                                                                <label><i class="fa fa-pencil-alt icon-sm-1x"></i> Description</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    foreach (var item in Model.SupplierOrderDetails)
+                                                    {
+                                            <div class="col-md-4 text-left">
+                                                <div class="d-flex flex-column">
+                                                    <div>
+                                                        <label class="opacity-70">@(Model.SupplierOrderDetails != null ? Model.SupplierOrderDetails.FirstOrDefault().SupplierItem.Description : "-")</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                                    }
+                                                }
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>*@
+
+
+
+
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <div class="card card-custom gutter-b">
+
+                                <div class="card-body">
+                                    <!-- begin: Invoice-->
+                                    <!-- begin: Invoice header-->
+                                    <div class="card justify-content-center p-4 row text-center">
+
+
+                                        <div class="col-md-12">
+                                            <!--begin::Top-->
+                                            <div class="d-flex">
+                                                <!--begin::Pic-->
+                                                <div class="flex-shrink-0 mr-7">
+                                                    <div class="symbol symbol-50 symbol-lg-120">
+                                                        <img alt="Pic" src="/Images/Logo/menu-default.png" style="height:80px;" />
+                                                    </div>
+                                                </div>
+                                                <!--end::Pic-->
+                                                <!--begin: Info-->
+                                                <div class="flex-grow-1">
+                                                    <!--begin::Title-->
+                                                    <div class="row align-items-center justify-content-between flex-wrap general-info mt-lg-5">
+                                                        <!--begin::User-->
+                                                        <div class="col-8">
+                                                            <!--begin::Name-->
+                                                            <a href="#" id="menu-name" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">Payment Method</a>
+                                                            <div class="d-flex flex-wrap">
+                                                                <a href="#" id="menu-item-count" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-2 opacity-70">Credit/Debit Card</a>
+                                                            </div>
+                                                            <!--end::Name-->
+                                                            <!--begin::Contacts-->
+                                                            <!--end::Contacts-->
+                                                        </div>
+                                                        <!--begin::User-->
+                                                        <!--begin::Actions-->
+                                                        <div class="my-lg-0 my-1">
+                                                            <h5 class="opacity-70 menu-status-label" style="color:red">@(Model.IsPaid == true ? "Paid" : "Paid")</h5>
+
+                                                        </div>
+                                                        <!--end::Actions-->
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Content-->
+                                                    <!--end::Content-->
+                                                </div>
+                                                <!--end::Info-->
+                                            </div>
+                                            <!--end::Top-->
+                                            <!--begin::Separator-->
+                                            <!--end::Separator-->
+                                            <!--begin::Bottom-->
+                                            <!--end::Bottom-->
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <div class="card card-custom gutter-b">
+
+                                <div class="card-body">
+                                    <!-- begin: Invoice-->
+                                    <!-- begin: Invoice header-->
+                                    <div class="justify-content-center px-8 row text-center">
+                                        <div class="col-md-12">
+                                            <div class="d-flex flex-column">
+                                                <div><h3 class="text-left">Order Transaction Details</h3></div>
+                                                <div><h6 class="text-left opacity-70">@Model.OrderNo</h6></div>
+                                                <input type="hidden" value="@Model.Id" id="OrderId" />
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    @*<div class="row p-4" style="background-color: #efeeee; border-radius: 10px">
+                                            <div class="col-md-6 text-left">
+                                                <label style=" font-size: 20px;"><i class="flaticon-users-1 icon-sm-2x"></i> &nbsp Name</label>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <label style=" font-size: 20px;" class="opacity-70">@(Model.Transaction != null ? Model.Transaction.NameOnCard : "-")</label>
+                                            </div>
+                                            <div class="col-md-6 text-left">
+                                                <label style=" font-size: 20px;"><i class="fa fa-credit-card icon-sm-2x"></i>&nbsp Card No</label>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <label style=" font-size: 20px;" class="opacity-70">@(Model.Transaction != null ? Model.Transaction.MaskCardNo : "-")</label>
+                                            </div>
+                                            <div class="col-md-6 text-left">
+                                                <label style=" font-size: 20px;"><i class="fa fa-comment-dollar icon-sm-2x"></i>&nbsp Amount</label>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <a style=" font-size: 20px;" class="opacity-70" id="Address" href="">@(Model.Transaction != null ? Model.Transaction.Amount : "-")</a>
+                                            </div>
+                                            <div class="col-md-6 text-left">
+                                                <label style=" font-size: 20px;"><i class="fa fa-star icon-sm-2x"></i>&nbsp Status</label>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <label style=" font-size: 20px;" class="opacity-70">@(Model.Transaction != null ? Model.Transaction.TransactionStatus: "-")</label>
+                                            </div>
+                                            <div class="col-md-6 text-left">
+                                                <label style=" font-size: 24px; color: red;" class="font-weight-bolder" >Total</label>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <a style=" font-size: 20px;" class="opacity-70" id="Address" href="">@(Model.Transaction != null ? Model.Transaction.Amount : "-")</a>
+                                            </div>
+                                        </div>*@
+
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="width : 130px; " class="dt-left">Date</th>
+                                                <th style="width : 100px; " class="dt-left">Order #</th>
+                                                <th style="width : 220px; " class="dt-left">Name On Card</th>
+                                                <th style="width : 220px; " class="dt-left">Mask Card #</th>
+                                                <th style="width : 220px; " class="dt-left">Transaction Status</th>
+                                                <th style="width : 95px; " class="dt-left">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@(Model.RestaurantTransactionHistory != null ? Model.CreationDate.ToString("dd MMM yyyy, hh:mm tt") : "-") </td>
+                                                <td>@(Model.RestaurantTransactionHistory != null ? Model.RestaurantTransactionHistory.SupplierOrder.OrderNo : "-")</td>
+                                                <td>@(Model.RestaurantTransactionHistory != null ? Model.RestaurantTransactionHistory.NameOnCard : "-")</td>
+                                                <td>@(Model.RestaurantTransactionHistory != null ? Model.RestaurantTransactionHistory.MaskCardNo : "-")</td>
+                                                <td>@(Model.RestaurantTransactionHistory != null ? Model.RestaurantTransactionHistory.TransactionStatus : "-")</td>
+                                                <td>@(Model.RestaurantTransactionHistory != null ? Model.RestaurantTransactionHistory.Amount : "-")</td>
+                                            </tr>
+                                            @*<tr>
+                                                <td>- </td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                            </tr>*@
+                                        </tbody>
+                                    </table>
+
+
+
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 d-flex flex-column">
+
+                            <div class="card card-custom gutter-b">
+
+                                <div class="card-body">
+                                    <!-- begin: Invoice-->
+                                    <!-- begin: Invoice header-->
+                                    <div class="justify-content-center px-8 row text-center">
+
+
+                                        <div class="col-md-12">
+                                            <div><h3 class="text-left">Product Details</h3></div>
+                                            <div class="separator separator-solid mb-3"></div>
+                                            @if (Model.SupplierOrderDetails.Any())
+                                            {
+                                                foreach (var item in Model.SupplierOrderDetails)
+                                                {
+                                                    <div id="item">
+                                                        <div class="row justify-content-end">
+                                                            <div class="col-md-6 text-left">
+                                                                <label>  @item.Quantity x <b> @item.SupplierItemName </b></label>
+                                                            </div>
+                                                            <div class="col-md-6 text-right">
+                                                                <label>@item.Price</label>
+                                                            </div>
+                                                        </div>
+                                                        @*@if (item.SupplierItem.Any())
+                                    {
+
+                                        foreach (var value in item.SupplierItem)
+                                        {
+                                            <ul class="text-left">
+                                                <li>
+                                                    <div class="d-flex justify-content-lg-between">
+                                                        <label class="opacity-70">@value.SupplierItemName : @value.SupplierItemName</label>
+                                                        <label class="opacity-70">@value.Price</label>
+                                                    </div>
+                                                </li>
+
+                                            </ul>
+                                        }
+
+                                    }*@
+
+
+                                                    </div>
+                                                }
+                                            }
+
+
+                                            <div class="row p-4" style="background-color: #efeeee; border-radius: 10px">
+                                                <div class="col-md-6 text-left">
+                                                    <label class="font-weight-bolder">Subtotal</label>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <label class="font-weight-bolder">@Model.Amount AED</label>
+                                                </div>
+                                                <div class="col-md-6 text-left">
+                                                    <label class="font-weight-bolder">Coupon Code</label>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <label class="font-weight-bolder">@(Model.CouponCode != null ? Model.CouponCode : "-" ) </label>
+                                                </div>
+                                                <div class="col-md-6 text-left">
+                                                    <label class="font-weight-bolder">Coupon Discount</label>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <label class="font-weight-bolder">@(Model.CouponCode != null ? Model.CouponDiscount + "AED" : "-" ) </label>
+                                                </div>
+                                                <div class="col-md-6 text-left">
+                                                    <label class="font-weight-bolder">Delivery Charges</label>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <label class="font-weight-bolder">@*@Model.DeliveryCharges*@ 0 AED</label>
+                                                </div>
+                                                <div class="col-md-6 text-left">
+                                                    <label class="font-weight-bolder">VAT(%)</label>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <label class="font-weight-bolder">@Model.TaxAmount AED</label>
+                                                </div>
+
+                                                <div class="col-md-6 text-left">
+                                                    <label class="font-weight-bolder" style="color:red">Total</label>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <label class="font-weight-bolder" style="color:red">@Model.Amount AED</label>
+                                                </div>
+                                            </div>
+                                            <!--begin::Top-->
+                                            <!--end::Top-->
+                                            <!--begin::Separator-->
+                                            <!--end::Separator-->
+                                            <!--begin::Bottom-->
+                                            <!--end::Bottom-->
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <!--<div class="card card-custom gutter-b">
+
+                                <div class="card-body">-->
+                                    <!-- begin: Invoice-->
+                                    <!-- begin: Invoice header-->
+                                    <!--<div class="justify-content-center px-8 row text-center">
+
+
+                                        <div class="col-md-12">
+                                            <div><h3 class="text-left">Item Details</h3></div>
+                                            <div class="row">
+                                                <div class="col text-left">
+                                                    <div class="d-flex flex-column">
+                                                        <div>
+                                                            <label> Order Name</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col text-right">
+                                                    <div class="d-flex flex-column">
+                                                        <div>
+                                                            <label> Description</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <div class="separator separator-solid mb-3"></div>
+
+                                                @if (Model.SupplierOrderDetails.Any())
+                                                {
+                                                    foreach (var item in Model.SupplierOrderDetails)
+                                                    {
+                                                        <div id="item">
+                                                            <div class="row justify-content-end">
+                                                                <div class="col-md-6 text-left">
+                                                                    <label>@(Model.SupplierOrderDetails != null ? Model.SupplierOrderDetails.FirstOrDefault().SupplierItemName : "-")</label>
+                                                                </div>
+                                                                <div class="col-md-6 text-right">
+                                                                    <label>@(Model.SupplierOrderDetails != null ? Model.SupplierOrderDetails.FirstOrDefault().SupplierItem.Description : "-")</label>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    }
+                                                }-->
+                                                <!--begin::Top-->
+                                                <!--end::Top-->
+                                                <!--begin::Separator-->
+                                                <!--end::Separator-->
+                                                <!--begin::Bottom-->
+                                                <!--end::Bottom-->
+                                            <!--</div>
+
+
+                                        </div>
+
+
+                                </div>-->
+                                <!--end::Row-->
+                            <!--</div>-->
+                            <!--<div class="card card-custom gutter-b">
+
+                                <div class="card-body">
+                                    <!-- begin: Invoice-->
+                                    <!-- begin: Invoice header-->
+                                    <!--<div class="justify-content-center row text-center">
+
+
+                                        <div class="col-md-12">
+
+                                            <div class="col-md-12">
+                                                <div><h3 class="text-left">Ratings </h3></div>
+                                                <div class="separator separator-solid mb-3"></div>-->
+                                                <!--begin::Top-->
+                                                <!--<div>-->
+                                                    <!--begin::Pic-->
+                                                    <!--<div class="rating text-left" id="rating" data="@*@(Model.Restaurant.restaurantRatings != null ? Model.Restaurant.restaurantRatings : 0)" *@>
+                                                        <span class="ratingstar fa fa-star fa-2x"></span>
+                                                        <span class="ratingstar fa fa-star fa-2x"></span>
+                                                        <span class="ratingstar fa fa-star fa-2x"></span>
+                                                        <span class="ratingstar fa fa-star fa-2x"></span>
+                                                        <span class="ratingstar fa fa-star fa-2x"></span>
+                                                    </div>
+                                                    <div class="text-left text-justify pt-2">
+                                                        <p class="opacity-70"><em>-->@*@(Model.Restaurant.restaurantRatings.FirstOrDefault() != null ? Model.Restaurant.restaurantRatings.FirstOrDefault().Review : "No Reviews")*@- @*</em></p>*@
+                                                    @*</div>-->*@
+                                                    <!--end::Pic-->
+                                                    <!--begin: Info-->
+                                                    <!--end::Info-->
+                                                <!--</div>-->
+                                                <!--end::Top-->
+                                                <!--begin::Separator-->
+                                                <!--end::Separator-->
+                                                <!--begin::Bottom-->
+                                                <!--end::Bottom-->
+                                            <!--</div>
+
+
+                                        </div>
+
+
+                                    </div>-->
+                                    <!--end::Row-->
+                                <!--</div>
+
+
+
+                            </div>-->
+
+                            <div class="card card-custom gutter-b" id="DeliveryStaff" style="display:none">
+
+                                <div class="card-body">
+                                    <!-- begin: Invoice-->
+                                    <!-- begin: Invoice header-->
+                                    <div class="justify-content-center row text-center">
+
+                                        <div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <div>
+                                                    <h3 class="text-left">Delivery Staff </h3>
+                                                </div>
+                                                <div class="separator separator-solid mb-3"></div>
+                                                <div id="deliveryStaffData">
+                                                    @*@if (Model.DeliveryStaff != null)
+                                {
+                                    <div class="row">
+                                        <div class="d-flex mt-lg-0">
+
+                                            <div class="symbol symbol-50 flex-shrink-0 mr-4">
+                                                <div class="symbol-label" style="background-image: url(@Model.DeliveryStaff.Logo)"></div>
+                                            </div>
+                                            <span class="font-weight-bolder mb-2 text-left">
+                                                @Model.DeliveryStaff.FirstName
+                                                <p class="opacity-70">@Model.DeliveryStaff.PhoneNumber</p>
+                                            </span>
+
+
+                                        </div>
+
+                                    </div>
+                                }
+
+                                else
+                                {
+                                    <div class="row justify-content-center">
+                                        <div class="d-flex mt-lg-0">
+
+                                            <button class="btn btn-secondary" onclick="OpenModelPopup(this, '/Restaurant/RestaurantOrder/AssignDeliveryStaff')">Assign Delivery Staff</button>
+
+
+                                        </div>
+
+                                    </div>
+                                }*@
+
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!--end::Row-->
+                                </div>
+
+
+
+                            </div>
+
+
+                        </div>
+                        <!--end::Container-->
+                    </div>
+
+
+
+
+                    <!--end::Entry-->
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="myModal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        jQuery(document).ready(function () {
+
+
+            var rating = parseFloat($("#rating").attr('data'));
+            var ratingStar = $("#rating").find(".ratingstar");
+            for (var i = 0; i < rating; i++) {
+                $(ratingStar[i]).addClass("checked");
+            };
+
+            var status = '@Model.Status';
+            $("#ImageGif").attr("src", "/Images/Icons/" + status + ".gif");
+            if (status == "Ready") {
+                $("#DeliveryStaff").show();
+            }
+
+            var mapRoute = 'https://www.google.com/maps/search/?api=1&query=' + @Model.Latitude + ',' + '@Model.Longitude';
+            $("#Address").prop("href", mapRoute);
+
+
+
+
+        });
+
+
+        function ChangeStatus(e) {
+
+            $('#submit-btn').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+            $.ajax({
+                url: '/Supplier/SupplierOrder/ChangeStatus',
+                type: 'Post',
+                data: {
+                    OrderId: $("#Id").val(),
+                    Status: $("#txtstatus").val()
+                },
+                success: function (response) {
+                    if (response.success == true) {
+
+                        toastr.success(response.message);
+                        $('#myModal').modal('hide');
+                        var imageRoute = "/Images/Icons/" + response.data.status + ".gif";
+                        $("#ImageGif").attr("src", imageRoute);
+                        $("#Status").text(response.data.status);
+
+                        if (response.data.status == "Ready") {
+                            $("#DeliveryStaff").show();
+                        }
+                        else {
+                            $("#DeliveryStaff").hide();
+                        }
+
+
+                    } else {
+                        $('#submit-btn').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                    }
+                }
+            });
+    };
+
+
+    function ChangeStaff(e) {
+
+            $('#submit-btn').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+            $.ajax({
+            url: '/Restaurant/RestaurantOrder/AssignDeliveryStaff',
+                type: 'Post',
+                data: {
+                id: $("#OrderId").val(),
+                    staffId: $("#StaffID").val()
+                },
+                success: function (response) {
+                if (response.success == true) {
+
+                    toastr.success(response.message);
+                        $('#myModal').modal('hide');
+                        $("#deliveryStaffData").empty();
+                        $("#deliveryStaffData").append(`<div class="row">
+                                                                <div class="d-flex mt-lg-0">
+
+                                                                    <div class="symbol symbol-50 flex-shrink-0 mr-4">
+                                                                        <div class="symbol-label" style="background-image: url(${response.data.logo})"></div>
+                                                                    </div>
+                                                                    <span class="font-weight-bolder mb-2 text-left">
+                                                                       ${response.data.name}
+                                                                        <p class="opacity-70">${response.data.contact}</p>
+                                                                    </span>
+
+
+                                                                </div>
+
+                                                            </div>`);
+
+
+                    } else {
+                        $('#submit-btn').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+    }
+                }
+            });
+        };
+
+
+    function callback(dialog, elem, isedit, response) {
+
+
+        if (response.success) {
+
+            toastr.success(response.message);
+            window.location.href = "/Vendor/TournamentBooking/Details?id=" + response.data.ID;
+        }
+        else {
+            jQuery('form', dialog).closest('.modal').find('button[type=submit]').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+
+            toastr.error(response.message);
+        }
+    }
+
+                                                                                                        //function addRow(row) {
+
+    //	table1.row.add([
+    //		row.Date,
+    //		row.OrderNo,
+    //		row.Customer ? row.Customer.Name + '|' + row.Customer.Contact : '',
+    //		row.TotalAmount + ' ' + row.Currency,
+    //		row.ShipmentStatus,
+    //		row.Status,
+    //		row.ID,
+    //	]).draw(true);
+
+    //}
+    </script>
+
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="~/assets/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    @*<script src="@Url.ContentVersioned("~/Assets/Admin/js/vendor/order/list.js")"></script>*@
+    <!--end::Page Scripts-->
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <!--end::Page Scripts-->
+}
+
+
+
+
+

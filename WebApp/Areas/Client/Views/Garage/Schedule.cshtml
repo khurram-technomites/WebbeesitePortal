@@ -1,0 +1,375 @@
+﻿@model WebApp.ViewModels.GarageScheduleViewModel
+
+@{
+    Layout = null;
+}
+
+<style>
+    .label.label-xl {
+        height: 53px;
+        width: 55px;
+        font-size: 1.2rem;
+    }
+
+    .garage-input {
+        background-color: #e8e8e8;
+    }
+
+        .garage-input::placeholder {
+            color: #8e8a8a;
+            opacity: 70;
+        }
+</style>
+<div class="modal-header">
+    <h5 class="modal-title">Create a Schedule</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <h6 class="ml-3 mb-3 opacity-70">Select Days</h6>
+        <div class="col-md-12 col-sm-12">
+            <div class="Weekday">
+                <span class="label label-xl mr-2" onclick="Edit(this)" id="Monday">M</span>
+                <span class="label label-xl mr-2" onclick="Edit(this)" id="Tuesday">T</span>
+                <span class="label label-xl mr-2" onclick="Edit(this)" id="Wednesday">W</span>
+                <span class="label label-xl mr-2" onclick="Edit(this)" id="Thursday">T</span>
+                <span class="label label-xl mr-2" onclick="Edit(this)" id="Friday">F</span>
+                <span class="label label-xl mr-2" onclick="Edit(this)" id="Saturday">S</span>
+                <span class="label label-xl mr-2" onclick="Edit(this)" id="Sunday">S</span>
+            </div>
+        </div>
+    </div>
+    <div id="schedule-time" class="pt-6">
+        <div class="row">
+            <div class="col-md-12 schedule-time">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-block btn-info" id="SaveSchedule">Save</button>
+</div>
+
+<script>
+
+    var GarageId = @ViewBag.GarageId;
+           var id;
+           var day;
+           var openingTime;
+           var closingTime;
+    var GarageId;
+    var IsBreak;
+    var BreakTimeStart;
+    var BreakTimeEnd;
+
+        var garageSchedule = [];
+        var _URL = window.URL || window.webkitURL;
+
+        $(document).ready(function () {
+            GetSchedule();
+
+
+            });
+
+
+        function GetSchedule(){
+
+            var weekdays;
+            var days;
+            var html;
+
+             $.ajax({
+                 url: '/Client/Garage/GetSchedule/' + GarageId,
+                type: 'Get',
+                success: function (response) {
+
+                    if (response.success) {
+                        $.each(response.data, function (k, v) {
+
+                          days = v.day.slice(0,1);
+                          weekdays =  $(".Weekday").find('#' + v.day);
+                          if(weekdays)
+                           {
+                            weekdays.addClass("label-danger");
+                           }
+                        html='';
+                        html = `
+                        <div class="${v.day}" id="${v.id}">
+                        <div class="row">
+                            <h4 class="ml-3 day-Name">${v.day}</h4>
+                        </div>
+                         <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Start Time</label>
+                                    <input class="form-control garage-input" type="time" value="${v.openingTime}" onchange="rowUpdate(this)" data-attr="${v.day}" id="opening-time-input" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Closing Time</label>
+                                    <input class="form-control garage-input" type="time" value="${v.closingTime}" onchange="rowUpdate(this)" data-attr="${v.day}" id="closing-time-input" />
+                                </div>
+                            </div>`
+                            if (v.isBreak) {
+                                
+                                html += `<div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">Break</label>
+                                    <input class="form-control IsBreak" type="checkbox" style="margin-left:15px;width:20px" checked onchange="rowUpdate(this)" data-attr="${v.day}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="control-label">Start Time</label>
+                                    <input class="form-control BreakTime-input" type="time" value="${v.breakTimeStart}" onchange="rowUpdate(this)" data-attr="${v.day}" id="breakTimeStart-time-input" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="control-label">Closing Time</label>
+                                    <input class="form-control BreakTime-input" type="time" value="${v.breakTimeEnd}" onchange="rowUpdate(this)" data-attr="${v.day}" id="breakTimeEnd-time-input" />
+                                </div>
+                            </div>`
+                            }
+                                    else {
+                                html += `<div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">Break</label>
+                                    <input class="form-control IsBreak" style="margin-left:15px;width:20px" onchange="rowUpdate(this)" type="checkbox" data-attr="${v.day}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-5 BreakTimeDiv">
+                                <div class="form-group">
+                                    <label class="control-label">Start Time</label>
+                                    <input class="form-control BreakTime-input" type="time" value="${v.BreakTimeStart}" onchange="rowUpdate(this)" data-attr="${v.day}" id="breakTimeStart-time-input" disabled/>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-5 BreakTimeDiv">
+                                <div class="form-group">
+                                    <label class="control-label">Closing Time</label>
+                                    <input class="form-control BreakTime-input" type="time" value="${v.BreakTimeEnd}" onchange="rowUpdate(this)" data-attr="${v.day}" id="breakTimeEnd-time-input" disabled/>
+                                </div>
+                            </div>`
+                            }
+
+                            html += `</div></div>`
+
+                        $("#schedule-time").append(html);
+                            HandleSaveButtonState();
+                            BindBreakCheckbox();
+                        });
+
+
+                    }
+                    else {
+                        toastr.error(response.message);
+                    }
+                    }
+             });
+
+
+        };
+
+        function Edit(f){
+
+            var check = $(f).hasClass('label-danger');
+            if(check)
+            {
+                $(f).removeClass('label-danger');
+                var day = $(f).attr("id");
+                var elementId = $("." + day).attr("id");
+                if(elementId != '')
+                {
+                    $.ajax({
+                url: '/Client/Garage/DeleteSchedule/' + elementId,
+                type: 'Get',
+                success: function (response) {
+
+                    if (response.success) {
+                        $("." + day).remove();
+                        $("#MainDiv" + day).remove();
+                        toastr.success("Schedule Deleted Successfully !");
+                    }
+                }
+                 });
+            }
+      else    {
+       $("." + day).remove();
+      }
+
+
+            }
+            else{
+                $(f).addClass('label-danger');
+                var day = $(f).attr("id");
+                var elementId = $("." + day).attr("id");
+                 html = `
+                        <div class="${day} updated" id="">
+                        <div class="row">
+                            <h4 class="ml-3 day-Name">${day}</h4>
+                        </div>
+                         <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Start Time</label>
+                                    <input class="form-control garage-input" type="time" value="08:00" onchange="rowUpdate(this)"  data-attr="${day}" id="opening-time-input" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Closing Time</label>
+                                    <input class="form-control garage-input" type="time" value="22:00" onchange="rowUpdate(this)" data-attr="${day}" id="closing-time-input" />
+
+                                </div>
+                            </div>
+
+                        </div>
+<div class="row">
+<div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">Break</label>
+                                    <input class="form-control IsBreak" onchange="rowUpdate(this)" style="margin-left:15px;width:20px" type="checkbox" data-attr="${day}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-5 BreakTimeDiv">
+                                <div class="form-group">
+                                    <label class="control-label">Start Time</label>
+                                    <input class="form-control BreakTime-input" type="time" onchange="rowUpdate(this)" data-attr="${day}" id="breakTimeStart-time-input" disabled/>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-5 BreakTimeDiv">
+                                <div class="form-group">
+                                    <label class="control-label">Closing Time</label>
+                                    <input class="form-control BreakTime-input" type="time" onchange="rowUpdate(this)" data-attr="${day}" id="breakTimeEnd-time-input" disabled/>
+                                </div>
+                            </div>
+</div>`
+
+                        $("#schedule-time").append(html);
+            }
+
+            HandleSaveButtonState();
+            BindBreakCheckbox()
+        };
+
+
+    $("#SaveSchedule").click(function () {
+        $('#SaveSchedule').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+        var e = this;
+        
+            $(".updated").each(function() {
+
+                 id = $(this).attr("id");
+                 day =  $(this).find(".day-Name").text();
+                 openingTime = $(this).find("#opening-time-input").val();
+                 closingTime = $(this).find("#closing-time-input").val();
+                garageId = GarageId;
+
+                if ($(this).find(".IsBreak").is(":checked")) {
+                    IsBreak = true;
+                    BreakTimeStart = $(this).find("#breakTimeStart-time-input").val();
+                    BreakTimeEnd = $(this).find("#breakTimeEnd-time-input").val();
+                }
+                else {
+                    IsBreak = false;
+                    BreakTimeStart = null;
+                    BreakTimeEnd = null;
+                }
+
+                   garageSchedule.push({
+                    Id: id,
+                    Day: day,
+                    OpeningTime : openingTime,
+                    ClosingTime: closingTime,
+                       garageId: GarageId,
+                       breakTimeStart: BreakTimeStart,
+                       isBreak: IsBreak,
+                       breakTimeEnd: BreakTimeEnd
+
+                });
+
+
+          });
+
+        $.ajax({
+            url: '/Client/Garage/SetSchedule',
+            type: 'POST',
+            data: {
+                    model : garageSchedule
+            },
+            success: function (response) {
+                if (response.success) {
+                    toastr.success(response.message);
+                    GetGarageSchedule();
+                    jQuery('#myModal').modal('hide');
+                }
+                else {
+                    toastr.error(response.message);
+                    $('#SaveSchedule').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                }
+
+                $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+
+            },
+            error: function (e) {
+                $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+            },
+            failure: function (e) {
+                $(e).removeClass('spinner spinner-light spinner-left').prop('disabled', false);
+                toastr.error("Ooops, something went wrong.Try to refresh this page or contact Administrator if the problem persists.");
+            }
+        });
+
+          //console.log(branchSchedule);
+
+        });
+
+    function rowUpdate(f) {
+        
+               var day = $(f).attr("data-attr");
+              var result = $(f).closest("." + day);
+              if(!result.hasClass("updated"))
+              {
+                 result.addClass("updated");
+              }
+    }
+
+    function HandleSaveButtonState() {
+
+        if ($(".Weekday").find(".label-danger").length == 0)
+            $('#SaveSchedule').attr('disabled', true);
+        else
+            $('#SaveSchedule').attr('disabled', false);
+    }
+
+    function BindBreakCheckbox() {
+        $(".IsBreak").click(function () {
+            var check = $(this).is(":checked")
+            if (check) {
+                $(this).closest(".row").find("#breakTimeStart-time-input").attr("disabled", false).val("13:00:00")
+                $(this).closest(".row").find("#breakTimeEnd-time-input").attr("disabled", false).val("16:00:00")
+            } else {
+                $(this).closest(".row").find("#breakTimeStart-time-input").attr("disabled", true).val("")
+                $(this).closest(".row").find("#breakTimeEnd-time-input").attr("disabled", true).val("")
+            }
+        })
+    }
+
+</script>

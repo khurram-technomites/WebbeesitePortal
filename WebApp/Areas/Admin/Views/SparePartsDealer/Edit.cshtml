@@ -1,0 +1,1195 @@
+﻿@model WebApp.ViewModels.SparePartsDealerViewModel
+@using HelperClasses.Classes
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .Selected {
+    }
+</style>
+
+<link href="~/Admin/css/admin/restaurant/edit.css" rel="stylesheet" />
+<link href="~/css/cropper.css" rel="stylesheet" />
+<link href="~/Admin/css/general/ImageUploader.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <div class="d-flex flex-column">
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <a href="/Admin/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <a href="/Admin/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="/Admin/SparePartsDealer/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">Spare Part Dealers</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-custom gutter-b">
+
+
+                        <div class="card-body">
+                            @*<form method="post" action="Edit">*@
+                            <div class="" id="headingImage">
+                                <div class="row">
+                                    @*<div class="col-12">*@
+                                    <div class="col-6">
+                                        <div class="d-flex flex-column">
+                                            <div><h4>Spare Parts Dealer Edit</h4></div>
+                                            <div><h6>Reference Code : <span style="color:red">@Model.ReferenceCode</span></h6></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="card-toolbar" id="SaveProfileDiv">
+                                            <div class="col-5 float-right">
+                                                <button type="submit" id="sv-btn" form="Userform" class="btn btn-block btn-info">
+                                                    @*<i class="ki ki-check icon-sm"></i>*@Update
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*</div >*@
+                                </div>
+                                <div class="card-body pl-12" id="formInputs">
+                                    <form id="Userform">
+                                        <div class="form-group row">
+                                            <input name="Id" id="Id" value="@Model.Id" hidden />
+                                            <input name="UserId" id="UserId" value="@Model.UserId" hidden />
+                                            <input name="Status" id="Status" value="@Model.Status" hidden />
+                                            <input name="ReferenceCode" id="ReferenceCode" value="@Model.ReferenceCode" hidden />
+
+
+
+                                            <div class="col-lg-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="card-title"><h4>Spare Parts Dealer Info</h4></div>
+                                                        <div class="form-group row justify-content-center">
+                                                            <div class="col-md-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+                                                                <div class="image-upload uploaded">
+                                                                    <i class="fa fa-camera"></i>
+                                                                    <span>Upload Image</span>
+                                                                    <input type="file" name="GarageLogo" id="GarageLogo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important"
+                                                                           aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0" />
+                                                                    <img id="PreviewImage" src='@Model.Logo' />
+
+                                                                    <i class="fa fa-pen" onclick="DeleteFile(this,'@Model.Logo', 'SparePartsDealer')"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Name As Per Trade License</label>
+                                                                    <input type="text" class="form-control branch-input" asp-for="NameAsPerTradeLicense" name="NameAsPerTradeLicense" id="NameAsPerTradeLicense" value="@Model.NameAsPerTradeLicense" required placeholder="Enter your Garage name" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">About Us</label>
+                                                                    <div class="input-group mb-2">
+                                                                        <textarea name="Description" id="Description" rows="10" placeholder="Type Here" class="form-control branch-input" value="@Model.Description">@Model.Description</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="card-title"><h4>Login Credentials</h4></div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Phone Number</label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend"><span class="input-group-text">+971</span></div>
+                                                                        <input name="PhoneNumber" value="@Model.User.PhoneNumber.Remove(0,3)" placeholder="Enter your Phone number" class="form-control branch-input" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Password</label>
+                                                                    <input type="password" name="Password" value="@Model.User.PasswordHash" required placeholder="Enter your password" class="form-control custom-input branch-input" readonly />
+                                                                    <small class="text-danger">* Leave this field unchange if you don't wish to change the password</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="card-title"><h4>Bank Details</h4></div>
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Bank</label>
+                                                                    <div class="input-group mb-3">
+                                                                        <select asp-for="Bank" required class="form-control">
+                                                                            <option value="">Select Bank ...</option>
+                                                                            <option value="UAE - United Emirates Bank(UEB)">UAE - United Emirates Bank(UEB)</option>
+                                                                            <option value="UAE - Abu Dhabi Commercial Bank(ADCB)">UAE - Abu Dhabi Commercial Bank(ADCB)</option>
+                                                                            <option value="UAE - Abu Dhabi Islamic Bank(ADIB)">UAE - Abu Dhabi Islamic Bank(ADIB)</option>
+                                                                            <option value="UAE - Arab Bank(ABU)">UAE - Arab Bank(ABU)</option>
+                                                                            <option value="UAE - Arab Emirates Investment Bank(AEIB)">UAE - Arab Emirates Investment Bank(AEIB)</option>
+                                                                            <option value="UAE - Bank of Sharjah(BOS)">UAE - Bank of Sharjah(BOS)</option>
+                                                                            <option value="UAE - Commercial Bank of Dubai CBD">UAE - Commercial Bank of Dubai CBD</option>
+                                                                            <option value="UAE - Emirates Islamic Bank(EIB)">UAE - Emirates Islamic Bank(EIB)</option>
+                                                                            <option value="UAE - Dubai Islamic Bank(DIB)">UAE - Dubai Islamic Bank(DIB)</option>
+                                                                            <option value="UAE - Finance House(FH)">UAE - Finance House(FH)</option>
+                                                                            <option value="UAE - First Gulf Bank(FGB)">UAE - First Gulf Bank(FGB)</option>
+                                                                            <option value="UAE - Invest Bank(IB)">UAE - Invest Bank(IB)</option>
+                                                                            <option value="UAE - ZBAVI Bank(ZB)">UAE - ZBAVI Bank(ZB)</option>
+                                                                            <option value="UAE - National Bank of Abu Dhabi(NBOAD)">UAE - National Bank of Abu Dhabi(NBOAD)</option>
+                                                                            <option value="UAE - National Bank of Fujairah(NBOF)">UAE - National Bank of Fujairah(NBOF)</option>
+                                                                            <option value="UAE - National Bank of Umm Al-Qaiwain(NBOUQ)">UAE - National Bank of Umm Al-Qaiwain(NBOUQ)</option>
+                                                                            <option value="UAE - United Arab Bank(UAB)">UAE - United Arab Bank(UAB)</option>
+                                                                            <option value="UAE - EMIRATES NBD BANK">UAE - EMIRATES NBD BANK</option>
+                                                                            <option value="UAE - Al Hilal Bank">UAE - Al Hilal Bank</option>
+                                                                            <option value="UAE - National Bank Of Fujairah">UAE - National Bank Of Fujairah</option>
+                                                                            <option value="UAE - RAKBANK National Bank Of Ras Al Khaimah">UAE - RAKBANK National Bank Of Ras Al Khaimah</option>
+                                                                            <option value="UAE - FIRST ABU DHABI BANK">UAE - FIRST ABU DHABI BANK</option>
+                                                                            <option value="UAE - Mashreq Bank (Mashreq)">UAE - Mashreq Bank (Mashreq)</option>
+                                                                            <option value="UAE - Noor Islamic Bank">UAE - Noor Islamic Bank</option>
+                                                                            <option value="UAE - HSBC BANK">UAE - HSBC BANK</option>
+                                                                            <option value="UAE - Al Masraf Bank">UAE - Al Masraf Bank</option>
+                                                                            <option value="UAE - Ajman Bank">UAE - Ajman Bank</option>
+                                                                            <option value="UAE - Union National Bank">UAE - Union National Bank</option>
+                                                                            <option value="UAE - HSBC BANK MIDDLE EAST LIMITED">UAE - HSBC BANK MIDDLE EAST LIMITED</option>
+                                                                            <option value="UAE - BLOM France Bank">UAE - BLOM France Bank</option>
+                                                                            <option value="UAE - ARAB BANK PLC">UAE - ARAB BANK PLC</option>
+                                                                            <option value="UAE - BNP Paribas">UAE - BNP Paribas</option>
+                                                                            <option value="UAE - ARAB BANK FOR INVESTMENT AND FOREIGN TRADE">UAE - ARAB BANK FOR INVESTMENT AND FOREIGN TRADE</option>
+                                                                            <option value="UAE -  ALBARAKA TURK PARTICIPATION BANK">UAE -  ALBARAKA TURK PARTICIPATION BANK</option>
+                                                                            <option value="UAE - Habib Bank AG Zurich">UAE - Habib Bank AG Zurich</option>
+                                                                            <option value="UAE - Standard Chartered Bank">UAE - Standard Chartered Bank</option>
+                                                                            <option value="UAE - ARAB AFRICAN INTERNATIONAL BANK">UAE - ARAB AFRICAN INTERNATIONAL BANK</option>
+                                                                            <option value="UAE - Citi Bank UAE">UAE - Citi Bank UAE</option>
+                                                                            <option value="UAE - Bank of Baroda">UAE - Bank of Baroda</option>
+                                                                            <option value="UAE - INTESA SANPAOLO">UAE - INTESA SANPAOLO</option>
+                                                                            <option value="UAE - National Bank Of Kuwait">UAE - National Bank Of Kuwait</option>
+                                                                            <option value="UAE - Janata Bank Limited">UAE - Janata Bank Limited</option>
+                                                                            <option value="UAE - BANQUE MISR">UAE - BANQUE MISR</option>
+                                                                            <option value="UAE - EMIRATES DEVELOPMENT BANK">UAE - EMIRATES DEVELOPMENT BANK</option>
+
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Bank Account Number</label>
+                                                                    <input type="number" id="BankAccountNumber" value="@Model.BankAccountNumber" name="BankAccountNumber" required placeholder="Enter bank account number" class="form-control branch-input" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Account Holder Name</label>
+                                                                    <input type="text" id="BankAccountHolderName" value="@Model.BankAccountHolderName" name="BankAccountHolderName" required placeholder="Enter bank account holder name" class="form-control branch-input" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">IBAN</label>
+                                                                    <input type="text" name="IBAN" id="IBAN" value="@Model.IBAN" required placeholder="Enter IBAN" class="form-control branch-input" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <hr class="vertical" />
+                                                    <div class="col-md-5">
+                                                        <div class="card-title"><h4>Contact Person Details</h4></div>
+                                                        <div class="row">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Name</label>
+                                                                        <input type="text" name="ContactPersonName" id="ContactPersonName" value="@Model.ContactPersonName" required placeholder="Enter branch name" class="form-control branch-input" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Email Address</label>
+                                                                        <input type="email" name="ContactPersonEmail" id="ContactPersonEmail" value="@Model.ContactPersonEmail" required class="form-control branch-input" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    @{
+                                                                        string cValue = Model.ContactPersonNumber != null ? Model.ContactPersonNumber.Replace("971", "") : "";
+                                                                    }
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Phone Number 01</label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-prepend"><span class="input-group-text">+971</span></div>
+                                                                            <input name="ContactPersonNumber" id="ContactPersonNumber" value="@cValue" placeholder="Enter your Phone number" class="form-control branch-input" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    @{
+                                                                        string cValue01 = Model.ContactPersonNumber01 != null ? Model.ContactPersonNumber01.Replace("971", "") : "";
+                                                                    }
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Phone Number 02</label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-prepend"><span class="input-group-text">+971</span></div>
+                                                                            <input name="ContactPersonNumber01" id="ContactPersonNumber01" value="@cValue01" placeholder="Enter your Phone number" class="form-control branch-input" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="col-12">
+
+
+                                                                <div class="card-title"><h4>Spare Parts Dealer Schedule</h4></div>
+                                                                @*<div class="container text-center owl-carousel owl-theme">*@
+
+                                                                <div class="module-container">
+                                                                    <div class="schedule">
+                                                                        <div class="d-flex mb-4 slider my-slider" id="schedule-tags" style="width:100%;">
+                                                                            @{
+                                                                                @*if (!Model.DealerSchedules.Any())
+                                                                                    {
+                                                                                    <div class="d-flex mb-4 justify-content-center" style="width:100%">
+                                                                                        <span class="text-danger">No Document Found</span>
+                                                                                    </div>
+                                                                                    }
+                                                                                    else
+                                                                                    {*@
+                                                                                <div class="my-slider d-flex mb-4 slider" id="schedule-tags" style="width:100%">
+                                                                                    @foreach (var schedule in Model.DealerSchedules)
+                                                                                    {
+                                                                                        <div class="item">
+                                                                                            <span class="mr-2 label label-inline lbl-style pt-4" id="dispatch" style="display:inline-table;width:12rem">
+                                                                                                @schedule.Day
+                                                                                                <p class="opacity-70 font-size-sm">@schedule.FormattedOpeningTime - @schedule.FormattedClosingTime</p>
+
+                                                                                            </span>
+                                                                                        </div>
+
+                                                                                    }
+                                                                                </div>
+                                                                            }
+                                                                            }
+                                                                        </div>
+
+                                                                        <button type="button" class="btn btn-block btn-info" onclick="OpenModelPopup(this, '/Admin/SparePartsDealer/Schedule?Id=@Model.Id')">
+                                                                            Manage
+                                                                            <i class="fa fa-arrow-right float-right" style="color:#f55050"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    @*<div class="spinner spinner-center"></div>*@
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="card-title"><h4>Spare Parts Dealer Documents</h4></div>
+                                                            @*<div class="container">*@
+                                                            <div class="d-flex mb-4 slider my-slider" id="schedule-Document" style="width:100%">
+
+                                                                @{
+                                                                    foreach (var items in Model.SparePartsDealerDocuments)
+                                                                    {
+
+                                                                        <div class="item" id="@items.Id">
+                                                                            <span class="mr-2 label label-inline lbl-style pt-4" id="dispatch" style="display:inline-table;width:12rem">
+                                                                                <a href="@items.Path" class="text-danger" target="_blank">
+                                                                                    @items.Type
+                                                                                </a>
+                                                                                <p class="opacity-70 font-size-sm">Expiry: @items.FormattedDate</p>
+
+                                                                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow float-right DeleteDocument"
+                                                                                      data-action="cancel" data-toggle="tooltip" data-original-title="Delete Document">
+                                                                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+
+                                                                                </span>
+                                                                            </span>
+
+
+                                                                            @*<label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow">
+                                                                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                                                                </label>*@
+                                                                        </div>
+
+                                                                    }
+                                                                }
+
+
+
+                                                            </div>
+                                                            @*</div>*@
+                                                            <div class="col-12">
+                                                                <button type="button" class="btn btn-block btn-info" onclick="OpenModelPopup(this, '/Admin/SparePartsDealer/DocumentModel?Id=@Model.Id')">Upload  <i class="fa fa-arrow-right float-right" style="color:#f55050"></i></button>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="card-title">
+                                                                <div class="row">
+                                                                    <h4 class="col-8">Garage Repair Specifications</h4>
+                                                                    <input class="col-4 form-control" style="height: 25px;border-top: 0px; border-left: 0px; border-right: 0px;border-radius:0px" placeholder="Search" id="CarMakeSearch">
+                                                                </div>
+                                                            </div>
+                                                            @{
+
+                                                                @*if (!Model.DealerInventorySpecifications.Any())
+                                                                    {
+                                                                    <div class="d-flex mb-4 justify-content-center" style="width:100%">
+                                                                        <span class="text-danger">No Document Found</span>
+                                                                    </div>
+
+                                                                    }
+                                                                    else
+                                                                    {*@
+                                                                List<long> list = Model.DealerInventorySpecifications.Select(x => x.CarMakeId).ToList();
+                                                                <div class="my-slider d-flex mb-4 slider" id="Repair-Specification" style="width:100%">
+                                                                    @foreach (var items in@*(IEnumerable<CarMakeViewModel>)*@ViewBag.CarMake)
+            {
+                var url = items.Logo == "undefined" ? "https://cdn.fougito.com/Images/CarMake/Default.png" : items.Logo;
+                if (list.Contains(items.Id))
+                {
+
+                    <div class="item">
+                        <div class="mr-2 label label-inline lbl-style pt-4" id="dispatch" style="display:flex;width:12rem;padding-bottom:11px;height:87%">
+                            <div class="row">
+                                <img src="@url" style="width:50px; margin-left:10px;border-radius:25px" />
+                                <div class="align-self-center" style="margin-left:10px">
+                                    <bold class="m-0 text-danger">@items.Name</bold>
+                                </div>
+                                <input class="form-check CarMakeSelected" type="checkbox" value="@items.Id" style="position: relative; top: -24px" checked>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="item">
+                        <div class="mr-2 label label-inline lbl-style pt-4" id="dispatch" style="display:flex;width:12rem;padding-bottom:11px;height:87%">
+                            <div class="row">
+                                <img src="@url" style="width:50px; margin-left:10px;border-radius:25px" />
+                                <div class="align-self-center" style="margin-left:10px">
+                                    <bold class="m-0 text-danger">@items.Name</bold>
+                                </div>
+                                <input class="form-check CarMakeSelected" type="checkbox" value="@items.Id" style="position: relative; top: -24px">
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+                                                                </div>
+                                                                //}
+                                                            }
+                                                            @*<div class="row">*@
+                                                            <div class="col-8"></div>
+                                                            <div class="form-group col-4">
+                                                                <label class="checkbox">
+                                                                    <input type="checkbox" id="ShowSelectedSpecs" />
+                                                                    <span style="margin-right:10px"></span>
+                                                                    Show selected
+                                                                </label>
+                                                                @*</div>*@
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="card-title"><h4>Video</h4></div>
+                                                            <div class="col-12">
+                                                                <button type="button" class="btn btn-block btn-info" id="UploadVideo">Upload Video<i class="fa fa-video float-right" style="color:#f55050"></i></button>
+                                                                <input type="file" hidden id="Video" accept=".mp4 , .m4v" />
+                                                            </div>
+                                                            <div class="col-12" style="padding-top:3%">
+                                                                <video height="240" controls style="width:100%" src="@Model.Video">
+                                                                    Your browser does not support the video tag.
+                                                                </video>
+
+                                                                <i class="fa fa-trash position-absolute trash-icon" id="RemoveVideo" data-action="cancel" data-toggle="tooltip" title="" onclick="DeleteVideo()" data-original-title="Delete Video"
+                                                                   style="width: 50px; height: 50px; top: 85%; right: 0%; background-color: #F64E60 !important; color: white;"></i>
+
+
+                                                            </div>
+
+
+                                                        </div>
+
+
+
+
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="card-title mt-6"><h4>Gallery Images</h4></div>
+                                                    <div class="col-md-12 col-sm-12 img-area" style="display:flex;width:100%">
+                                                        <input type="file" id="gallery" style="display:none;" accept=".png, .jpg, .jpeg" multiple />
+                                                        <div id="upld-btn-conctr" class="btn btn-block btn-info col-2 rounded d-flex flex-column justify-content-center align-items-center thumbnail-image-h-w">
+                                                            <div id="TakePhotoDiv">
+                                                                <i class="fa fa-camera-retro m-0 p-0"></i>
+                                                                <p class=" m-0 p-0">Upload Photo</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="my-slider Gallery-Slider d-flex col-10 slider" id="Gallery-Slider" style="overflow-x:scroll">
+                                                            @*<div id="RestaurantGalleryDiv">*@
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="card-title mt-6"><h4>Spare Parts Location</h4></div>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="row">
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Complete Address</label>
+                                                                    <div class="input-group">
+                                                                        <input type="text" name="CompleteAddress" value="@Model.CompleteAddress" required placeholder="Enter Complete Address" class="form-control branch-input" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="wo-titleinput mb-0">Search Location</label>
+                                                                    <div class="wo-form-icon">
+                                                                        <input type="text" class="form-control custom-input show-map-input Address" id="Address" name="Address" placeholder="Choose location" required value="@Model.Address">
+                                                                        <a href="javascript:void(0);" class="wo-right-icon get-current-location" onclick="getLocation()">
+                                                                            <i class="flaticon2-map"></i>
+                                                                        </a>
+                                                                        <a href="javascript:void(0);" class="wo-right-icon pin-on-map" @*data-toggle="modal" data-target="#map-modal"*@ onclick="openMap()">
+                                                                            Pin On Map
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="MapSearchResult" style="display:none">
+                                                                </div>
+                                                                <input type="hidden" name="Latitude" id="Latitude" value="@Model.Latitude" />
+                                                                <input type="hidden" name="Longitude" id="Longitude" value="@Model.Longitude" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            @*</form>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CropperModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90vw;">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="img-container">
+                    <img id="image" src="https://avatars0.githubusercontent.com/u/3456749" style="width:80vw;height:80vh" aspectratio="NaN" minCroppedWidth="0" minCroppedHeight="0">
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: space-between;">
+                <div class="cropper-actions">
+                    <div class="aspectratio-section">
+                        <h6>ASPECT RATIO</h6>
+                        <div class="aspectratios">
+                            <a href="javascript:;" class="cropper-aspectratio active" data="NaN"><span class="free-style"></span>FREE STYLE</a>
+                            <a href="javascript:;" class="cropper-aspectratio" data="1"><span class="box"></span> SQUARE (1:1)</a>
+                        </div>
+                    </div>
+                    <div class="shapes-section">
+                        <h6>SHAPES</h6>
+                        <div class="shapes">
+                            <a href="javascript:;" class="cropper-shape active" data="round"><span class="round"></span> ROUND/OVAL</a>
+                            <a href="javascript:;" class="cropper-shape" data="square"><span class="square"></span> SQUARE/RECTANGLE</a>
+                        </div>
+                    </div>
+                    <div class="backgrounds-section">
+                        <h6>BACKGROUNDS</h6>
+                        <div class="backgrounds">
+                            <a href="javascript:;" class="background-color active" data="#FFFFFF"><span style="background: #FFFFFF"></span> WHITE</a>
+                            <a href="javascript:;" class="background-color" data="#000000"><span style="background: #000000"></span> BLACK</a>
+                            <a href="javascript:;" class="background-color" data="#00000000"><span style="background: #00000000"></span> TRANSPARENT</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" id="crop">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Map Modal Start -->
+<div class="modal fade wo-videopopup " tabindex="-1" role="dialog" id="map-modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="wo-modalcontent modal-content">
+            <div class="modal-body">
+                <a href="javascript:void(0);" class="close"><i class="ti-close" data-dismiss="modal"></i></a>
+                <div class="login-header">
+                    <h4 class="text-center mb-2">Search Location</h4>
+                    <p class="text-center" id="drag-map"><span>Drag marker on the map to select your desired location.</span></p>
+                </div>
+                <!-- Modal Body Start -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="map-div" style="display:none">
+                                <input type="text" class="form-control custom-input mb-3 Address" id="current-location" name="current-location" placeholder="Search Location" required="">
+                                <div id="googleMap" style="width:100%;height:400px;"></div>
+                                <button class="btn btn-block btn-theme border-radius-4 mt-3 p-3" type="button" data-dismiss="modal">Done</button>
+                            </div>
+                            <div class="map-div-spin p-5 m-5 text-center">
+                                <span class="fa fa-circle-notch fa-spin fa-2x"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Body End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Map Modal End -->
+@section Scripts {
+    @*<script src="~/assets/admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>*@
+
+    <script src="~/js/Map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8&libraries=places&callback=initAutocomplete"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
+    <script src="~/js/cropper.js"></script>
+    <script src="~/js/compressor.js"></script>
+    <script src="~/Admin/js/general/ImageUploader-2.0.js"></script>
+    @*<script src="~/Admin/js/general/ImageUploader.js"></script>*@
+    <script src="/Admin/js/general/ModalPopup.js"></script>
+    <script src="~/Admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+
+
+    <script>
+        //$("#TakePhotoSpinner").hide();
+        'use strict';
+        var slider;
+            var _URL = window.URL || window.webkitURL;
+            var arrows;
+            var tnsCarousel = '';
+            var tnsCarousel1 = '';
+        var ResLogoPath = '';
+        var Description
+            var logoPath = '';
+            var VideoPath = "@Model.Video";
+            var GalleryPath = [];
+            var GalleryImgCount = 0;
+            var counter = 1;
+        if (KTUtil.isRTL()) {
+            arrows = {
+                leftArrow: '<i class="la la-angle-right"></i>',
+                rightArrow: '<i class="la la-angle-left"></i>'
+            }
+        } else {
+            arrows = {
+                leftArrow: '<i class="la la-angle-left"></i>',
+                rightArrow: '<i class="la la-angle-right"></i>'
+            }
+        }
+
+        // Class definition
+        var KTImageInputDemo = function () {
+            // Private functions
+            var initDemos = function () {
+                var avatar1 = new KTImageInput('kt_image_1');
+            }
+
+            return {
+                // public functions
+                init: function () {
+                    initDemos();
+                }
+            };
+        }();
+        $(document).ready(function () {
+            BindGalleryImages()
+            BindCarousle();
+            DeleteDocument();
+
+            $('i.fa-camera').click(function () {
+                $("#logo").trigger('click');
+                
+            });
+            $('.cropper-shape').click(function () {
+
+                $('#CropperModal').removeClass($('.cropper-shape.active').attr('data'));
+
+                $('.cropper-shape').removeClass('active');
+                $(this).addClass('active');
+
+                $('#CropperModal').addClass($(this).attr('data'));
+            })
+
+
+            $('.background-color').click(function () {
+                $('.background-color').removeClass('active');
+                $(this).addClass('active');
+
+
+                $('.cropper-view-box').css('background', $('.background-color.active').attr('data'))
+            })
+
+
+            $('.cropper-aspectratio').click(function () {
+                $('.cropper-aspectratio').removeClass('active');
+                $(this).addClass('active');
+
+
+                $('#image').attr('aspectratio', $(this).attr('data'));
+
+                cropper.setAspectRatio($(this).attr('data'))
+
+            })
+            $('i.fa-camera').click(function () {
+                $("#GarageLogo").trigger('click');
+            });
+            BindImageUploader("#GarageLogo", "#image", "#CropperModal", "#PreviewImage");
+
+            /*BindImageUploader("#logo", "#image", "#CropperModal", "#PreviewImage");*/
+
+            $(".cancelimage").click(function () {
+                DeleteImage(logoPath);
+            })
+            $("#formInputs :input").prop("disabled", false);
+
+            ClassicEditor
+                .create(document.querySelector('#Description'))
+               .then(editor => {
+                   Description = editor;
+                   Description.setData(`@Html.Raw(Model.Description)`);
+                   editor.isReadOnly = false;
+                   editor.on('change:isReadOnly', (evt, propertyName, isReadOnly) => {
+                       if (isReadOnly) {
+                           toolbarElement.style.display = 'none';
+                       } else {
+                           toolbarElement.style.display = 'flex';
+                       }
+                   });
+               })
+               .catch(error => {
+               });
+
+            const tnsCarousel = document.querySelectorAll('.my-slider');
+            tnsCarousel.forEach(slider => {
+                const tnsSlider = tns({
+                    container: slider,
+                    items: 3,
+                    slideBy: "page",
+                    fixedWidth: 160,
+                    nav: false,
+                    controls: false,
+                    mouseDrag: true,
+                    swipeAngle: false,
+                    speed: 400
+                });
+            });
+
+            $('#kt_image_res').hover(
+                function () {
+                    $(this).animate({ 'zoom': 3 }, 400);
+                },
+                function () {
+                    $(this).animate({ 'zoom': 1 }, 400);
+                });
+
+            $('#upld-btn-conctr').on('click', () => {
+                $('#gallery').click();
+            });
+            //$("#gallery").change(function () {
+            //    $("#TakePhotoDiv").hide();
+            //    $("#TakePhotoSpinner").show();
+
+            //    var file = this.files[0];
+            //    var draftImg = UploadImageToDraft(file).responseText;
+            //    GalleryPath.push(draftImg);
+            //    var reader = new FileReader();
+            //    reader.onloadend = function () {
+            //        var html = `<div class="col-lg-1 rounded mx-2 position-relative thumbnail-image-h-w res-imgs" id="ImageId" value="${draftImg}" style="background-image:url(${draftImg}); background-size:110px 70px;">
+            //                                                <i class="fa fa-trash position-absolute text-danger trash-icon cancelimage" onClick="DeleteGalleryImage(this)"></i>
+            //                                            </div>`;
+            //        $('.Gallery-Slider').append(html);
+
+            //        $("#TakePhotoDiv").show();
+            //        $("#TakePhotoSpinner").hide();
+            //    }
+            //    reader.readAsDataURL(file);
+            //});
+            $("#gallery").change(function () {
+                var html = '';
+                $("#upld-btn-conctr").css("opacity", "0.6").css("pointer-events", "none")
+                $("#TakePhotoDiv").find("p").hide()
+                $("#TakePhotoDiv").find("i").removeClass("fa fa-camera-retro m-0 p-0").addClass("spinner spinner-center");
+                for (var i = 0; i < this.files.length; i++) {
+                    GalleryImgCount = this.files.length;
+                    var file = this.files[i];
+
+                    var data = new FormData();
+                    data.append('file', file);
+
+                    $.ajax({
+                        url: "/File/Upload",
+                        type: "POST",
+                        processData: false,
+                        contentType: false,
+                        async: true,
+                        data: data,
+                        success: function (response) {
+                            $('.BtnSave').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+
+                            if (response.includes("Draft")) {
+                                ImageCallback(response)
+                            }
+                        },
+                        error: function (er) {
+                            toastr.error(er);
+                        }
+                    });
+                }
+            });
+            $("#CarMakeSearch").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#Repair-Specification bold").filter(function () {
+                    
+                    $(this).parent().parent().parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+            $("#ShowSelectedSpecs").on("change", function () {
+                if ($("#ShowSelectedSpecs").is(":checked")) {
+                    $("#Repair-Specification .CarMakeSelected").filter(function () {
+                        $(this).parent().parent().parent().toggle($(this).is(":checked"))
+                        $("#CarMakeSearch").attr("disabled", true);
+                    });
+                } else {
+                    $("#Repair-Specification .CarMakeSelected").filter(function () {
+                        $(this).parent().parent().parent().toggle()
+                        $("#CarMakeSearch").attr("disabled", false);
+                    });
+                }
+            })
+
+            $('.CarMakeSelected').change(function () {
+                let elem = $(this);
+                var data = new FormData();
+                data.append("CarMakeId", $(elem).val());
+                data.append("SparePartsDealerId", $('#Id').val());
+                //data.append("NameAr", $('#NameAr').val());
+                /*data.append("Logo", logoPath);*/
+                
+                $.ajax({
+                    url: "/Admin/SparePartsDealer/UpdateCarMake/",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (response) {
+                        toastr.success(response.message)
+
+                },
+                    error: function (er) {
+                        toastr.error(er);
+                    }
+                });
+                return false;
+
+            });
+            $('#UploadVideo').on('click', () => {
+                $('#Video').click();
+            });
+            $("#Video").change(function () {
+
+                $('#UploadVideo').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+                var file = this.files[0];
+                VideoPath = UploadImageToDraft(file).responseText;
+                $('video').attr('src', VideoPath);
+                $("#RemoveVideo").show();
+                $('#UploadVideo').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+            });
+            $("#Userform").submit(function () {
+                var Images = [];
+                $("#sv-btn").addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+                $.each(GalleryPath, (k, v) => {
+                    Images.push({
+                        SparePartDealerId: $('input[name="Id"]').val(),
+                        Image: v
+                    });
+                });
+                $.ajax({
+                    url: "/Admin/SparePartsDealer/Edit/",
+                    type: "POST",
+                    data: {
+                        Model: {
+                            Id: $('#Id').val(),
+                            ReferenceCode: '@Model.ReferenceCode',
+                            Logo: logoPath == '' ? '@Model.Logo' : logoPath,
+                            DealerImages: Images,
+                            UserId: $('#UserId').val(),
+                            CompleteAddress: $('input[name="CompleteAddress"]').val(),
+                            Status: $('#Status').val(),
+                            NameAsPerTradeLicense: $('#NameAsPerTradeLicense').val(),
+                            Description: $('#Description').val(),
+                            UEmail: $('#UEmail').val(),
+                            Bank: $('#Bank').val(),
+                            BankAccountNumber: $('#BankAccountNumber').val(),
+                            BankAccountHolderName: $('#BankAccountHolderName').val(),
+                            IBAN: $('#IBAN').val(),
+                            ContactPersonName: $('#ContactPersonName').val(),
+                            ContactPersonEmail: $('#ContactPersonEmail').val(),
+                            ContactPersonNumber: '971' + $('#ContactPersonNumber').val(),
+                            ContactPersonNumber01: '971' + $('#ContactPersonNumber01').val(),
+                            Latitude: $('#Latitude').val(),
+                            Longitude: $('#Longitude').val(),
+                            Address: $('#Address').val(),
+                            Video: VideoPath,
+                            User:
+                            {
+                                Password: $('input[name="Password"]').val(),
+                                PhoneNumber: '971' + $('input[name="PhoneNumber"]').val()
+                            }
+                        }
+                    },
+                    success: (response) => {
+                        if (response.success) {
+                            $('#sv-btn').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                            toastr.success("Dealer updated successfully ...");
+                            $(".img-area").find(".res-imgs").remove();
+                            BindGalleryImages();
+                        }
+                        //location.reload();
+                    },
+                    error: function (error) {
+                        toastr.options = {
+                            "positionClass": "toast-bottom-right",
+                        };
+                        $('#sv-btn').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                        //toastr.error('Something went wrong ...');
+                    }
+                });
+                return false;
+            });
+        })
+        function activeChange(element, flag, id) {
+            swal.fire({
+                title: 'Are you sure?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, do it!'
+            }).then(function (result) {
+                if (result.value) {
+                    $(element).find('i').hide();
+                    $(element).addClass('spinner spinner-left spinner-sm').attr('disabled', true);
+
+                    $.ajax({
+                        url: '/Admin/SparePartsDealer/ToggleActiveStatus?Id=' + id + '&flag=' + flag,
+                        type: 'Get',
+                        success: function (response) {
+                            if (response.success) {
+                                toastr.success(response.message);
+
+                                location.reload();
+
+
+                            } else {
+                                toastr.error(response.message);
+                                $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                $(element).find('i').show();
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            if (xhr.status == 403) {
+                                try {
+                                    var response = $.parseJSON(xhr.responseText);
+                                    swal.fire(response.Error, response.Message, "warning").then(function () {
+                                    });
+                                } catch (ex) {
+                                    swal.fire("Access Denied", "Your are not authorize to perform this action, For further details please contact administrator !", "warning").then(function () {
+                                    });
+                                }
+
+                                $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                $(element).find('i').show();
+
+                            }
+                        }
+                    });
+                } else {
+                    //swal("Cancelled", "Your imaginary file is safe :)", "error");
+                }
+            });
+        }
+        function DeleteGalleryImage(object) {
+
+                var path = $(object).parent().closest('div').css("background-image").replace('url("', '').replace('")', '');
+                GalleryPath.splice($.inArray(path, GalleryPath), 1);
+                $(object).parent().remove();
+                path = path.replace("%20", " ");
+
+            DeleteImage(path, 'SparePartsDealerImages')
+        }
+        function DeleteVideo() {
+                $("#RemoveVideo").removeClass("fa fa-trash trash-icon").addClass("spinner spinner-center").css("border-radius", "25px").attr("disabled", true);
+                VideoPath = null;
+                var videoElem = $('video').get(0);
+                videoElem.pause();
+                videoElem.removeAttribute('src'); // empty source
+                videoElem.load();
+                $("#RemoveVideo").addClass("fa fa-trash trash-icon").removeClass("spinner spinner-center").css("border-radius", "25px").attr("disabled", false)
+                $("#RemoveVideo").hide();
+            }
+        function Reject(element, flag, id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                type: 'warning',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'Reject!',
+                showCancelButton: true
+            }).then((result) => {
+                if (result.value) {
+                    $(element).find('i').hide();
+                    $(element).addClass('spinner spinner-left spinner-sm').attr('disabled', true);
+
+                    $.ajax({
+                        url: '/Admin/SparePartsDealer/ToggleActiveStatus?Id=' + id + '&flag=' + flag + '&RejectionReason=' + result.value,
+                        type: 'Get',
+                        success: function (response) {
+                            if (response.success) {
+                                toastr.success(response.message);
+
+                                location.href = "/Admin/SparePartsDealer/Index";
+
+
+                            } else {
+                                toastr.error(response.message);
+                                $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                $(element).find('i').show();
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            if (xhr.status == 403) {
+                                try {
+                                    var response = $.parseJSON(xhr.responseText);
+                                    swal.fire(response.Error, response.Message, "warning").then(function () {
+                                    });
+                                } catch (ex) {
+                                    swal.fire("Access Denied", "Your are not authorize to perform this action, For further details please contact administrator !", "warning").then(function () {
+                                    });
+                                }
+
+                                $(element).removeClass('spinner spinner-left spinner-sm').attr('disabled', false);
+                                $(element).find('i').show();
+
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        function DeleteDocument() {
+                $(".DeleteDocument").on("click", function () {
+
+                    $(this).find("i").removeClass("ki ki-bold-close icon-xs text-muted").addClass("spinner spinner-sm spinner-center");
+                    var Id = $(this).parent().parent().attr("id");
+
+                    $.ajax({
+                        url: '/Admin/SparePartsDealer/DeleteDocument/' + Id,
+                        type: 'GET',
+                        success: function (response) {
+                            if (response.success) {
+                                toastr.options = {
+                                    "positionClass": "toast-bottom-right",
+                                };
+
+                                $("#schedule-Document").find("#" + Id).remove()
+                                toastr.success(response.message)
+
+                            }
+
+                            else {
+                                //$('#SaveSchedule').removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                                $(this).find("i").removeClass("spinner spinner-sm spinner-center").addClass("ki ki-bold-close icon-xs text-muted");
+                                toastr.error(response.message);
+
+                            }
+                        },
+                        error: function (error) {
+                            toastr.options = {
+                                "positionClass": "toast-bottom-right",
+                            };
+                            $(this).find("i").removeClass("spinner spinner-sm spinner-center").addClass("ki ki-bold-close icon-xs text-muted");
+                            toastr.error('Something went wrong ...');
+                        }
+
+
+                    });
+
+                    //$(this).find("i").removeClass("spinner spinner-sm spinner-center").addClass("ki ki-bold-close icon-xs text-muted");
+                })
+            }
+        function ImageCallback(url) {
+                var html = '';
+
+                GalleryPath.push(url);
+                html = `<div class="item"><div class="rounded mx-2 position-relative thumbnail-image-h-w res-imgs" style="background-image:url(${url}); background-repeat: round;background-color: grey">
+                                                    <i class="fa fa-trash position-absolute text-danger trash-icon cancelimage" onClick="DeleteGalleryImage(this)"></i>
+                                                </div></div>`;
+                $('.Gallery-Slider').append(html);
+
+                if (counter == GalleryImgCount) {
+                    $("#upld-btn-conctr").css("opacity", "1").css("pointer-events", "")
+                    $("#TakePhotoDiv").find("p").show()
+                    $("#TakePhotoDiv").find("i").removeClass("spinner spinner-center").addClass("fa fa-camera-retro m-0 p-0");
+                    counter = 1;
+                    GalleryImgCount = 0;
+                }
+                else {
+                    counter++;
+                }
+
+                //tns({
+                //    container: "#Gallery-Slider",
+                //    items: 1,
+                //    fixedWidth: 83,
+                //    nav: false,
+                //    controls: false,
+                //    mouseDrag: true,
+                //    swipeAngle: false,
+                //    speed: 400,
+                //    mode: "carousel",
+                //    loop: false
+                //});
+            }
+        function BindCarousle() {
+                if (tnsCarousel == '') {
+                    tnsCarousel = document.querySelectorAll('.my-slider');
+                    tnsCarousel.forEach(slider => {
+                        const tnsSlider = tns({
+                            container: slider,
+                            items: 1,
+                            slideBy: "page",
+                            fixedWidth: 160,
+                            nav: false,
+                            controls: false,
+                            mouseDrag: true,
+                            swipeAngle: false,
+                            speed: 400,
+                            mode: "carousel",
+                            loop: false
+                        });
+                    });
+                }
+
+                $('.schedule').fadeIn();
+                $('.schedule').closest('.module-container').find('.spinner').remove();
+
+            }
+        function BindGalleryImages() {
+                
+            var html = '';
+            $.ajax({
+                url: '/Admin/SparePartsDealer/GetImages?SparePartsDealerId=' + '@Model.Id',
+                type: 'GET',
+                success: (response) => {
+                    if (response.success) {
+                        $.each(response.data, function (k, v) {
+                            html += `<div class="item"><div class="rounded mx-2 position-relative thumbnail-image-h-w res-imgs" id="restaurantImageId" data-imgId="${v.restaurantId}" style="background-image: url(${v.image.replace(/ /g, "%20").replace(" ", "%20")});background-repeat: round;background-color: grey">
+                                                        <i class="fa fa-trash position-absolute text-danger trash-icon cancelimage" id="RemoveImage" data-action="cancel" data-toggle="tooltip" title="Cancel avatar" onclick="DeleteGalleryImage(this)"></i>
+                                                    </div>
+                                            </div>`;
+
+
+                        });
+
+                        $(".Gallery-Slider").append(html);
+
+                        html = '';
+
+                        //BindGalleryCarousel();
+                    }
+                }
+            })
+        }
+        function GetGarageSchedule() {
+            $("#schedule-tags").empty();
+            //var id = $("#BranchId").val();
+            var html = '';
+            $.ajax({
+                url: '/Admin/SparePartsDealer/GetSchedule/' + @Model.Id,
+                type: 'Get',
+                success: function (response) {
+                    if (response.success) {
+                        $.each(response.data, function (k, v) {
+                            html += `
+                        <div class="item" id="MainDiv${v.day}">
+                          <span class="mr-2 label label-inline lbl-style pt-4" id="dispatch" style="display:inline-table;width:12rem">
+                               ${v.day}
+                                <p class="opacity-70 font-size-sm">${v.formattedOpeningTime} - ${v.formattedClosingTime}</p>
+
+                              </span>
+                             </div>`;
+                        });
+
+                        $("#schedule-tags").append(html);
+
+                        tns({
+                            container: "#schedule-tags",
+                            items: 1,
+                            slideBy: "page",
+                            fixedWidth: 160,
+                            nav: false,
+                            controls: false,
+                            mouseDrag: true,
+                            swipeAngle: false,
+                            speed: 400,
+                            mode: "carousel",
+                            loop: false
+                        });
+                    }
+                    else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        };
+    </script>
+}

@@ -1,0 +1,922 @@
+﻿ @model WebApp.ViewModels.RestaurantBranchViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Restaurant/Views/Shared/_Layout.cshtml";
+}
+@*<link href="/Admin/css/restaurant/branch/edit.css" rel="stylesheet" />*@
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<link href="/Admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!--begin::Page Custom Styles(used by this page)-->
+@*<link href="~/assets/admin/css/pages/wizard/wizard-2.css" rel="stylesheet" type="text/css" />*@
+<!--end::Page Custom Styles-->
+<style>
+
+    .nav.nav-tabs.nav-tabs-line.nav-tabs-line-3x .nav-link:hover:not(.disabled), .nav.nav-tabs.nav-tabs-line.nav-tabs-line-3x .nav-link.active, .nav.nav-tabs.nav-tabs-line.nav-tabs-line-3x .show > .nav-link {
+        border-bottom: 3px solid #dc4848;
+    }
+
+    .submit-button {
+        margin-bottom: 20px !important;
+        padding: 10px;
+    }
+
+    .item-option-card {
+        border: 3px solid #EBEDF3 !important;
+        border-radius: 2rem !important;
+        margin-bottom: 10px !important;
+    }
+
+    .item-option {
+        padding: 1.15rem !important;
+    }
+
+    .clear-margin-label {
+        margin-bottom: 0px !important;
+    }
+
+    .clear-margin-input {
+        margin-bottom: 0.5rem !important;
+    }
+
+    .theme-color {
+        color: #dc4848 !important;
+    }
+
+    .nav-item .active {
+        color: #dc4848 !important;
+    }
+
+    .nav-item .nav-link:hover {
+        color: #dc4848 !important;
+    }
+
+    .item-tab {
+        padding: 12px !important;
+    }
+
+    .offcanvas {
+        z-index: 1001;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        -webkit-transition: left 0.3s ease, right 0.3s ease, bottom 0.3s ease, top 0.3s ease;
+        transition: left 0.3s ease, right 0.3s ease, bottom 0.3s ease, top 0.3s ease;
+        left: -434px;
+        width: 434px;
+    }
+
+        .offcanvas.offcanvas-right {
+            right: -434px;
+            left: auto;
+        }
+
+    .vertical {
+        width: 0.1rem;
+        height: auto;
+        border: none;
+        background: #dacdcd;
+    }
+
+    .color-circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50px;
+        display: inline-block;
+        position: relative;
+        margin-top: 0px;
+        padding-top: 5px;
+        top: 1px;
+    }
+
+    .variat {
+        border-top: 1px solid #0000001c;
+        padding-top: 1.25rem !important;
+        border-bottom: 1px solid #0000004a;
+        padding-bottom: 1.25rem !important;
+    }
+
+    .branch-input {
+        background-color: #f0f0f0;
+        border-radius: 12px;
+        z-index: 99;
+    }
+
+    .branch-text {
+        background-color: #f0f0f0 !important;
+    }
+
+    .branch-input::placeholder {
+        color: #8e8a8a !important;
+        opacity: 70;
+    }
+
+    .item-tree {
+        border-bottom: dashed;
+        position: relative;
+        left: 3px;
+        top: -70px;
+        width: 26px;
+        height: 119px;
+        border-left: dashed;
+        color: #af0000;
+    }
+</style>
+
+
+<div id="kt_quick_panel" class="offcanvas offcanvas-right pt-5 pb-10 ">
+    <!--begin::Header-->
+    <div class="row p-4">
+        <div class="col-10">
+            <h6 class="pl-3 mt-1">Edit Item</h6>
+        </div>
+        <div class="col-2">
+            <div class="offcanvas-close pl-4">
+                <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_panel_close">
+                    <i class="ki ki-close icon-xs text-muted"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="offcanvas-header offcanvas-header-navs d-flex align-items-center justify-content-between mb-5">
+        <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-primary flex-grow-1 px-10" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#kt_quick_panel_logs">General</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#kt_quick_panel_settings">Type</a>
+            </li>
+        </ul>
+
+    </div>
+    <!--end::Header-->
+    <!--begin::Content-->
+    <div class="offcanvas-content px-10">
+        <div class="tab-content">
+            <!--begin::Tabpane-->
+            <div class="tab-pane fade show pt-3 pr-5 mr-n5 active" id="kt_quick_panel_logs" role="tabpanel">
+                <!--begin::Section-->
+                <div class="mb-15">
+                    <!--begin: Item-->
+                    <div class="form-group row">
+                        <div class="col-lg-12 text-center">
+                            <div class="image-input image-input-outline" id="kt_image_1">
+                                <div class="image-input-wrapper" style="background-image: url('../../../../Assets/AppFiles/Images/default.png')"></div>
+                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change logo">
+                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                    <input type="file" name="logo" id="logo" accept=".png, .jpg, .jpeg" required style="width:1px !important;height:1px !important" />
+                                    <input type="hidden" name="profile_avatar_remove" />
+                                </label>
+                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow cancelimage" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                </span>
+                            </div>
+                            <span class="form-text text-muted">Logo</span>
+                            <span class="form-text text-muted">Image dimensions should be 200 x 200 pixels and Image size must be less than 100 kb</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control branch-text" placeholder="Enter email .. " />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note <span class="text-danger">*</span></label>
+                        <textarea rows="6" class="form-control branch-text" placeholder="Enter note here ..."></textarea>
+                    </div>
+                    <!--end: Item-->
+                    <!--begin: Item-->
+                    <div class="d-flex">
+                        <span class="switch switch-sm switch-danger">
+                            <label>
+                                <input type="checkbox" checked="checked" name="select" />
+                                <span></span>
+                            </label>
+                        </span>
+                        <label class="mt-2 pl-4 text-justify" style="font-size: 12px;">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut.</label>
+                    </div>
+                    <!--end: Item-->
+                </div>
+                <!--end::Section-->
+                <!--begin::Section-->
+                <!--end::Section-->
+            </div>
+            <!--end::Tabpane-->
+            <!--begin::Tabpane-->
+            <!--end::Tabpane-->
+            <!--begin::Tabpane-->
+            <div class="tab-pane fade pt-3 pr-5 mr-n5" id="kt_quick_panel_settings" role="tabpanel">
+                <form class="form">
+                    <!--begin::Section-->
+                    <div class="form-group">
+                        <label class="opacity-70 font-weight-bolder">Add a Section </label>
+                        <div class="input-icon input-icon-right">
+                            <input type="text" class="form-control branch-text" placeholder="What section would you like to add?" />
+                            <span><i class="flaticon2-search-1 icon-md theme-color"></i></span>
+                        </div>
+                    </div>
+                    <div class="card item-option-card">
+                        <div class="item-option card-body">
+                            <div class="d-flex justify-content-lg-between">
+                                <div class="form-group">
+
+                                    <h6>Size  <span><i class="flaticon-delete icon-sm-ms theme-color"></i></span></h6>
+
+                                </div>
+                                <div>
+                                    <label class="checkbox checkbox-danger flex-row-reverse">
+                                        <input type="checkbox" name="Checkboxes5" checked="checked" />
+                                        <span class="ml-3"></span>
+                                        <strong>Required</strong>
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div id="item-option-column">
+                                <div class="d-flex">
+                                    <div class="form-group clear-margin-input">
+                                        <label class="clear-margin-label opacity-70">Title</label>
+                                        <input type="text" class="form-control branch-text" placeholder="Small" />
+                                    </div>
+                                    <div class="mt-lg-9 pr-2 pl-2">
+                                        <i class="fas fa-arrow-alt-circle-right theme-color"></i>
+                                    </div>
+                                    <div class="form-group clear-margin-input">
+                                        <label class="clear-margin-label opacity-70">Price</label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend branch-text"><span class="input-group-text theme-color">AED</span></div>
+                                            <input type="number" class="form-control branch-text" placeholder="0:00" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="d-flex">
+                                    <div class="form-group clear-margin-input">
+                                        <label class="clear-margin-label opacity-70">Title</label>
+                                        <input type="text" class="form-control branch-text" placeholder="Medium" />
+                                    </div>
+                                    <div class="mt-lg-9 pr-2 pl-2">
+                                        <i class="fas fa-arrow-alt-circle-right theme-color"></i>
+                                    </div>
+                                    <div class="form-group clear-margin-input">
+                                        <label class="opacity-70">Price</label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend branch-text"><span class="input-group-text theme-color">AED</span></div>
+                                            <input type="number" class="form-control branch-text" placeholder="0:00" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="d-flex">
+                                    <div class="form-group">
+                                        <label class="clear-margin-label opacity-70">Title</label>
+                                        <input type="text" class="form-control branch-text" placeholder="Large" />
+                                    </div>
+                                    <div class="mt-lg-9 pr-2 pl-2">
+                                        <i class="fas fa-arrow-alt-circle-right theme-color"></i>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="clear-margin-label opacity-70">Price</label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend branch-text"><span class="input-group-text theme-color">AED</span></div>
+                                            <input type="number" class="form-control branch-text" placeholder="0:00" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <button class="btn-danger btn btn-block"><i class="fa fa-plus"></i> Add New Item</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card item-option-card">
+                        <div class="item-option card-body">
+                            <div class="d-flex justify-content-lg-between">
+                                <div class="form-group">
+
+                                    <h6>Flavours  <span><i class="flaticon-delete icon-sm-ms theme-color"></i></span></h6>
+
+                                </div>
+                                <div>
+                                    <label class="checkbox checkbox-danger flex-row-reverse">
+                                        <input type="checkbox" name="Checkboxes5" checked="checked" />
+                                        <span class="ml-3"></span>
+                                        <strong>Required</strong>
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div id="item-option-column">
+                                <div class="d-flex">
+                                    <div class="form-group clear-margin-input">
+                                        <label class="clear-margin-label opacity-70">Title</label>
+                                        <input type="text" class="form-control branch-text" placeholder="Small" />
+                                    </div>
+                                    <div class="mt-lg-9 pr-2 pl-2">
+                                        <i class="fas fa-arrow-alt-circle-right theme-color"></i>
+                                    </div>
+                                    <div class="form-group clear-margin-input">
+                                        <label class="clear-margin-label opacity-70">Price</label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend branch-text"><span class="input-group-text theme-color">AED</span></div>
+                                            <input type="number" class="form-control branch-text" placeholder="0:00" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="d-flex">
+                                    <div class="form-group clear-margin-input">
+                                        <label class="clear-margin-label opacity-70">Title</label>
+                                        <input type="text" class="form-control branch-text" placeholder="Medium" />
+                                    </div>
+                                    <div class="mt-lg-9 pr-2 pl-2">
+                                        <i class="fas fa-arrow-alt-circle-right theme-color"></i>
+                                    </div>
+                                    <div class="form-group clear-margin-input">
+                                        <label class="opacity-70">Price</label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend branch-text"><span class="input-group-text theme-color">AED</span></div>
+                                            <input type="number" class="form-control branch-text" placeholder="0:00" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="d-flex">
+                                    <div class="form-group">
+                                        <label class="clear-margin-label opacity-70">Title</label>
+                                        <input type="text" class="form-control branch-text" placeholder="Large" />
+                                    </div>
+                                    <div class="mt-lg-9 pr-2 pl-2">
+                                        <i class="fas fa-arrow-alt-circle-right theme-color"></i>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="clear-margin-label opacity-70">Price</label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend branch-text"><span class="input-group-text theme-color">AED</span></div>
+                                            <input type="number" class="form-control branch-text" placeholder="0:00" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <button class="btn-danger btn btn-block"><i class="fa fa-plus"></i> Add New Item</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--begin::Section-->
+                    <!--end::Section-->
+                </form>
+
+
+            </div>
+
+
+            <!--end::Tabpane-->
+        </div>
+
+        <div class="offcanvas-footer d-flex submit-button align-items-center justify-content-end">
+            <div class="row">
+                <a href="#" class="btn btn-secondary mr-3">
+                    <i class="flaticon2-cross icon-sm"></i> Cancel
+                </a>
+                 <a href="#" class="btn btn-danger mr-3" id="edit-btn">
+                    <i class="flaticon2-check-mark icon-sm"></i> Save
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!--end::Content-->
+</div>
+
+<div id="kt_quick_category" class="offcanvas offcanvas-right pt-5 pb-10">
+    <!--begin::Header-->
+    <div class="row p-4">
+        <div class="col-10">
+            <h6 class="pl-3 mt-1">Edit Category</h6>
+        </div>
+        <div class="col-2">
+            <div class="offcanvas-close pl-4">
+                <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_category_close">
+                    <i class="ki ki-close icon-xs text-muted"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="offcanvas-header offcanvas-header-navs d-flex align-items-center justify-content-between mb-5">
+        <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-primary flex-grow-1 px-10" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#kt_quick_category_general">General</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#kt_quick_category_type">Type</a>
+            </li>
+        </ul>
+
+    </div>
+    <!--end::Header-->
+    <!--begin::Content-->
+    <div class="offcanvas-content px-10">
+        <div class="tab-content">
+            <!--begin::Tabpane-->
+            <div class="tab-pane fade show pt-3 pr-5 mr-n5 active" id="kt_quick_category_general" role="tabpanel">
+                <!--begin::Section-->
+                <div class="mb-15">
+                    <!--begin: Item-->
+                    <div class="form-group row">
+                        <div class="col-lg-12 text-center">
+                            <div class="image-input image-input-outline" id="kt_image_1">
+                                <div class="image-input-wrapper" style="background-image: url('../../../../Assets/AppFiles/Images/default.png')"></div>
+                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change logo">
+                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                    <input type="file" name="logo" id="logo" accept=".png, .jpg, .jpeg" required style="width:1px !important;height:1px !important" />
+                                    <input type="hidden" name="profile_avatar_remove" />
+                                </label>
+                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow cancelimage" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                </span>
+                            </div>
+                            <span class="form-text text-muted">Logo</span>
+                            <span class="form-text text-muted">Image dimensions should be 200 x 200 pixels and Image size must be less than 100 kb</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control branch-text" placeholder="Enter email .. " />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note <span class="text-danger">*</span></label>
+                        <textarea rows="6" class="form-control branch-text" placeholder="Enter note here ..."></textarea>
+                    </div>
+                    <!--end: Item-->
+                    <!--begin: Item-->
+                    <div class="d-flex">
+                        <span class="switch switch-sm switch-danger">
+                            <label>
+                                <input type="checkbox" checked="checked" name="select" />
+                                <span></span>
+                            </label>
+                        </span>
+                        <label class="mt-2 pl-4 text-justify" style="font-size: 12px;">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut.</label>
+                    </div>
+                    <!--end: Item-->
+                </div>
+                <!--end::Section-->
+                <!--begin::Section-->
+                <!--end::Section-->
+            </div>
+            <!--end::Tabpane-->
+            <!--begin::Tabpane-->
+            <!--end::Tabpane-->
+            <!--begin::Tabpane-->
+            <!--end::Tabpane-->
+        </div>
+    </div>
+    <!--end::Content-->
+</div>
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container-fluid align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+                        <a href="/Vendor/Dashboard/Index" class="opacity-75 hover-opacity-100">
+                            <i class="flaticon2-shelter text-white icon-1x"></i>
+                        </a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <a href="/Restaurant/Dashboard/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">&nbsp;&nbsp;Dashboard</a>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="/Restaurant/Menu/Index" class="text-white text-hover-white opacity-75 hover-opacity-100">Menu</a>
+                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
+                        <a href="javascript:;" class="text-white text-hover-white opacity-75 hover-opacity-100">Edit</a>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Dashboard-->
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <!--begin::Card-->
+                    @*<div class="card card-custom  gutter-b" id="kt_page_sticky_card">
+                        <div class="card-body">
+
+                        </div>
+                        </div>*@
+                    <div class="card card-custom  gutter-b">
+                        <div class="card-body">
+
+                            <div class="">
+                                <div class="" id="headingImage">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <div class="d-flex flex-column">
+                                                <div><h4>Create Branch</h4></div>
+                                                <div><h6>Status : <span style="color:red">Saved</span></h6></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 justify-content-end">
+
+                                            <button type="button" id="DraftButton" data-attr="Draft" onclick="EditBranch(this)" class="btn btn-block btn-dark">CREATE MENU</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator separator-solid my-7"></div>
+                                <div id="menu-list">
+                                    <div id="category-tab pt-4">
+                                        <div class="card card-custom gutter-b branch-input">
+                                            <div class="card-body  item-tab">
+                                                <!--begin::Top-->
+                                                <div class="d-flex">
+                                                    <!--begin::Pic-->
+                                                    <div class="flex-shrink-0 mr-7">
+                                                        <div class="symbol symbol-50 symbol-lg-70">
+                                                            <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                        </div>
+                                                    </div>
+                                                    <!--end::Pic-->
+                                                    <!--begin: Info-->
+                                                    <div class="flex-grow-1">
+                                                        <!--begin::Title-->
+
+                                                        <div class="row align-items-center justify-content-between flex-wrap">
+                                                            <!--begin::User-->
+                                                            <div class="col-md-10 col-sm-8" id="kt_quick_category_toggle">
+                                                                <!--begin::Name-->
+                                                                <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h6-sm font-weight-bold mr-3">Morning Menu</a>
+                                                                <!--end::Name-->
+                                                                <!--begin::Contacts-->
+                                                                <div class="d-flex flex-wrap">
+                                                                    <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5">I distinguish three main text objectives could be merely to inform people</div>
+                                                                </div>
+                                                                <!--end::Contacts-->
+                                                            </div>
+                                                            <!--begin::User-->
+                                                            <!--begin::Actions-->
+                                                            <div class="col-md-1 col-sm-2">
+                                                                <div class="my-lg-0 my-1">
+                                                                    <label class="opacity-70" style="margin-bottom: 0px;">Active</label>
+                                                                    <span class="switch switch-sm switch-danger">
+                                                                        <label>
+                                                                            <input type="checkbox" checked="checked" name="select" />
+                                                                            <span></span>
+                                                                        </label>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-1 col-sm-2 ">
+
+                                                                <div class="accordion accordion-light mt-4 accordion-toggle-arrow" id="accordionExample5">
+                                                                    <a href="#" class="btn btn-icon btn-bg-white" data-toggle="collapse" data-target="#collapseOne5">
+                                                                        <i class="flaticon2-down"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <!--end::Actions-->
+                                                        </div>
+
+
+                                                        <!--end::Title-->
+                                                        <!--begin::Content-->
+                                                        <!--end::Content-->
+                                                    </div>
+                                                    <!--end::Info-->
+                                                </div>
+                                                <!--end::Top-->
+                                                <!--begin::Separator-->
+                                                <!--end::Separator-->
+                                                <!--begin::Bottom-->
+                                                <!--end::Bottom-->
+                                            </div>
+                                        </div>
+                                        <div class="category-item-tab collapse" id="collapseOne5">
+                                            <div class="category-items">
+                                                <div class="row justify-content-end">
+                                                    <div class="item-tree">
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <div class="card card-custom gutter-b branch-input">
+                                                            <div class="card-body  item-tab">
+                                                                <!--begin::Top-->
+                                                                <div class="d-flex">
+                                                                    <!--begin::Pic-->
+                                                                    <div class="flex-shrink-0 mr-7">
+                                                                        <div class="symbol symbol-50 symbol-lg-70">
+                                                                            <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Pic-->
+                                                                    <!--begin: Info-->
+                                                                    <div class="flex-grow-1">
+                                                                        <!--begin::Title-->
+
+                                                                        <div class="row align-items-center justify-content-between flex-wrap kt_quick_panel_toggle" id="">
+                                                                            <!--begin::User-->
+                                                                            <div class="col-md-7 col-sm-5">
+                                                                                <!--begin::Name-->
+                                                                                <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h6-sm font-weight-bold mr-3">Pasta</a>
+                                                                                <!--end::Name-->
+                                                                                <!--begin::Contacts-->
+                                                                                <div class="d-flex flex-wrap">
+                                                                                    <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5">I distinguish three main text </div>
+                                                                                </div>
+                                                                                <!--end::Contacts-->
+                                                                            </div>
+                                                                            <!--begin::User-->
+                                                                            <!--begin::Actions-->
+                                                                            <div class="col-md-3 col-sm-4">
+                                                                                <div class="input-group mt-4">
+                                                                                    <div class="input-group-prepend">
+                                                                                        <span class="input-group-text font-weight-bold" style="color:red;">AED</span>
+                                                                                    </div>
+                                                                                    <input type="number" class="form-control" placeholder="0" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="d-flex col-md-2 col-sm-3 ">
+                                                                                <div class="my-lg-0 my-1">
+                                                                                    <label class="opacity-70" style="margin-bottom: 0px;">Active</label>
+                                                                                    <span class="switch switch-sm switch-danger">
+                                                                                        <label>
+                                                                                            <input type="checkbox" checked="checked" name="select" />
+                                                                                            <span></span>
+                                                                                        </label>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <!--end::Actions-->
+                                                                        </div>
+
+
+                                                                        <!--end::Title-->
+                                                                        <!--begin::Content-->
+                                                                        <!--end::Content-->
+                                                                    </div>
+                                                                    <!--end::Info-->
+                                                                </div>
+                                                                <!--end::Top-->
+                                                                <!--begin::Separator-->
+                                                                <!--end::Separator-->
+                                                                <!--begin::Bottom-->
+                                                                <!--end::Bottom-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="category-items">
+                                                <div class="row justify-content-end" >
+                                                    <div class="item-tree">
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <div class="card card-custom gutter-b branch-input">
+                                                            <div class="card-body  item-tab">
+                                                                <!--begin::Top-->
+                                                                <div class="d-flex">
+                                                                    <!--begin::Pic-->
+                                                                    <div class="flex-shrink-0 mr-7">
+                                                                        <div class="symbol symbol-50 symbol-lg-70">
+                                                                            <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Pic-->
+                                                                    <!--begin: Info-->
+                                                                    <div class="flex-grow-1">
+                                                                        <!--begin::Title-->
+
+                                                                        <div class=" row align-items-center justify-content-between flex-wrap" id="kt_quick_panel_toggle">
+                                                                            <!--begin::User-->
+                                                                            <div class="col-md-7 col-sm-5">
+                                                                                <!--begin::Name-->
+                                                                                <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h6-sm font-weight-bold mr-3">Pasta</a>
+                                                                                <!--end::Name-->
+                                                                                <!--begin::Contacts-->
+                                                                                <div class="d-flex flex-wrap">
+                                                                                    <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5">I distinguish three main text </div>
+                                                                                </div>
+                                                                                <!--end::Contacts-->
+                                                                            </div>
+                                                                            <!--begin::User-->
+                                                                            <!--begin::Actions-->
+                                                                            <div class="col-md-3 col-sm-4">
+                                                                                <div class="input-group mt-4">
+                                                                                    <div class="input-group-prepend">
+                                                                                        <span class="input-group-text font-weight-bold" style="color:red;">AED</span>
+                                                                                    </div>
+                                                                                    <input type="number" class="form-control" placeholder="0" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="d-flex col-md-2 col-sm-3 ">
+                                                                                <div class="my-lg-0 my-1">
+                                                                                    <label class="opacity-70" style="margin-bottom: 0px;">Active</label>
+                                                                                    <span class="switch switch-sm switch-danger">
+                                                                                        <label>
+                                                                                            <input type="checkbox" checked="checked" name="select" />
+                                                                                            <span></span>
+                                                                                        </label>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <!--end::Actions-->
+                                                                        </div>
+
+
+                                                                        <!--end::Title-->
+                                                                        <!--begin::Content-->
+                                                                        <!--end::Content-->
+                                                                    </div>
+                                                                    <!--end::Info-->
+                                                                </div>
+                                                                <!--end::Top-->
+                                                                <!--begin::Separator-->
+                                                                <!--end::Separator-->
+                                                                <!--begin::Bottom-->
+                                                                <!--end::Bottom-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="category-items">
+                                                <div class="row justify-content-end">
+                                                    <div class="item-tree">
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <div class="card card-custom gutter-b branch-input">
+                                                            <div class="card-body  item-tab">
+                                                                <!--begin::Top-->
+                                                                <div class="d-flex">
+                                                                    <!--begin::Pic-->
+                                                                    <div class="flex-shrink-0 mr-7">
+                                                                        <div class="symbol symbol-50 symbol-lg-70">
+                                                                            <img alt="Pic" src="/Images/Logo/menu-default.png" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Pic-->
+                                                                    <!--begin: Info-->
+                                                                    <div class="flex-grow-1">
+                                                                        <!--begin::Title-->
+
+                                                                        <div class=" d-flex align-items-center justify-content-between flex-wrap">
+                                                                            <!--begin::User-->
+                                                                            <!--begin::User-->
+                                                                            <!--begin::Actions-->
+                                                                            <div class="row">
+                                                                                <div class="col-md-8 col-sm-8">
+                                                                                    <div class="mt-4">
+
+
+
+                                                                                        <input type="text" class="form-control" placeholder="Name" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-4 col-sm-4">
+                                                                                    <div class="input-group mt-4">
+                                                                                        <div class="input-group-prepend">
+                                                                                            <span class="input-group-text font-weight-bold" style="color:red;">AED</span>
+                                                                                        </div>
+                                                                                        <input type="number" class="form-control" placeholder="0" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="d-flex">
+                                                                                <div class="mt-4 mr-3">
+                                                                                    <button class="btn btn-danger">Add</button>
+                                                                                </div>
+                                                                                <div class="mt-4">
+                                                                                    <button class="btn btn-dark">Delete</button>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <!--end::Actions-->
+                                                                        </div>
+
+
+                                                                        <!--end::Title-->
+                                                                        <!--begin::Content-->
+                                                                        <!--end::Content-->
+                                                                    </div>
+                                                                    <!--end::Info-->
+                                                                </div>
+                                                                <!--end::Top-->
+                                                                <!--begin::Separator-->
+                                                                <!--end::Separator-->
+                                                                <!--begin::Bottom-->
+                                                                <!--end::Bottom-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-end">
+                                                <div class="col-11">
+                                                    <button class="btn-danger btn btn-block"><i class="fa fa-plus"></i> Add Item</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--end::Card-->
+
+
+
+                </div>
+
+            </div>
+
+
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="min-height:100px">
+            <div id='myModalContent'>
+                <div class="row justify-content-center">
+                    <div class="col-16">
+                        <div class="kt-spinner kt-spinner--lg kt-spinner--dark kt-spinner-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--end::Row-->
+<script>
+    var SuccessMessage = '@ViewBag.SuccessMessage';
+    var ErrorMessage = '@ViewBag.ErrorMessage';
+</script>
+@section Scripts {
+
+<!--begin::Page Vendors(used by this page)-->
+<script src="~/admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+
+<script src="~/admin/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+    @*<script src="~/Assets/Admin/js/vendor/car/insurance.js"></script>*@
+<script src="~/Admin/js/general/ModalPopup.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/Admin/plugins/custom/datatables/datatables.bundle.js"></script>
+<!--end::Page Scripts-->
+<!--end::Page Scripts-->
+<script>
+
+
+
+</script>
+
+
+    }

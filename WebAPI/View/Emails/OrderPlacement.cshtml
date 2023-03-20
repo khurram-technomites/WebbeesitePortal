@@ -1,0 +1,447 @@
+﻿@model HelperClasses.DTOs.Emails.OrderPlacementEmailDTO
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Email Receipt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        body,
+        table,
+        td,
+        a {
+            -ms-text-size-adjust: 100%; /* 1 */
+            -webkit-text-size-adjust: 100%; /* 2 */
+        }
+
+        /**
+        * Remove extra space added to tables and cells in Outlook.
+        */
+        table,
+        td {
+            mso-table-rspace: 0pt;
+            mso-table-lspace: 0pt;
+        }
+
+        /**
+        * Better fluid images in Internet Explorer.
+        */
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        /**
+        * Remove blue links for iOS devices.
+        */
+        a[x-apple-data-detectors] {
+            font-family: inherit !important;
+            font-size: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+
+        /**
+        * Fix centering issues in Android 4.4.
+        */
+        div[style*="margin: 16px 0;"] {
+            margin: 0 !important;
+        }
+
+        body {
+            width: 100% !important;
+            height: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        /**
+        * Collapse table borders to avoid space between cells.
+        */
+        table {
+            border-collapse: collapse !important;
+        }
+
+        a {
+            color: #1a82e2;
+        }
+
+        img {
+            height: auto;
+            line-height: 100%;
+            text-decoration: none;
+            border: 0;
+            outline: none;
+        }
+    </style>
+
+</head>
+<body style="background-color: #e8e8e8;">
+
+    <!-- start body -->
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+        <!-- start logo -->
+        <tr>
+            <td align="center" bgcolor="#e8e8e8">
+                <!--[if (gte mso 9)|(IE)]>
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                <tr>
+                <td align="center" valign="top" width="600">
+                <![endif]-->
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td align="center" valign="top" style="padding: 36px 24px;">
+                           
+                        </td>
+                    </tr>
+                </table>
+                <!--[if (gte mso 9)|(IE)]>
+                </td>
+                </tr>
+                </table>
+                <![endif]-->
+            </td>
+        </tr>
+        <!-- end logo -->
+        <!-- start hero -->
+        <tr>
+            <td align="center" bgcolor="#e8e8e8">
+                <!--[if (gte mso 9)|(IE)]>
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+    <td align="center" valign="top" width="600">
+    <![endif]-->
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td align="center" bgcolor="#ffffff" style="padding: 0px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;border-top-left-radius:10px;border-top-right-radius:10px">
+                            <a href="@Model.Restaurant.Website" target="_blank" style="display: inline-block;">
+                                <img src="https://cdn.fougito.com/Draft/092e1545-45a9-41de-9cd0-754c54c9e74e.png" alt="Logo" border="0" style="display: block;min-width: 48px;height:150px;width:auto">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td align="left" bgcolor="#ffffff" style="padding: 0px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;">
+                            <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">Thank you for your order!</h1>
+                        </td>
+                    </tr>
+                </table>
+                <!--[if (gte mso 9)|(IE)]>
+    </td>
+    </tr>
+    </table>
+    <![endif]-->
+            </td>
+        </tr>
+        <!-- end hero -->
+        <!-- start copy block -->
+        <tr>
+            <td align="center" bgcolor="#e8e8e8">
+                <!--[if (gte mso 9)|(IE)]>
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                <tr>
+                <td align="center" valign="top" width="600">
+                <![endif]-->
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+
+                    <!-- start copy -->
+                    <tr>
+                        <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                            @{string contactUs = Model.Restaurant.Website + "/contactUs"; }
+                            <p style="margin: 0;">Here is a summary of your recent order. If you have any questions or concerns about your order, please <a href="@contactUs">contact us</a>.</p>
+                        </td>
+                    </tr>
+                    <!-- end copy -->
+                    <!-- start receipt table -->
+                    <tr>
+                        <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="left" bgcolor="#e8e8e8" width="75%" style="padding: 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"><strong>Order #</strong></td>
+                                    <td align="left" bgcolor="#e8e8e8" width="25%" style="padding: 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;color:red"><strong>@Model.Order.OrderNo</strong></td>
+                                </tr>
+                                <!-- hr -->
+                                <tr>
+                                    <td align="left" width="75%" style="padding: 5px 12px;border-bottom: 1px solid #fff"></td>
+                                    <td align="left" width="25%" style="padding: 5px 12px;border-bottom: 1px solid #fff"></td>
+                                </tr>
+                                <!-- hr -->
+                                @{
+                                    foreach (var items in Model.Order.OrderDetails)
+                                    {
+                                        <tr>
+                                            <td align="left" width="75%" style="padding: 2px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;"><strong>@items.Quantity x @items.MenuItems.Name</strong></td>
+                                            <td align="left" width="25%" style="padding: 2px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;">@items.TotalPrice AED</td>
+                                        </tr>
+
+                                        if (items.OrderDetailOptionValues.Count() > 0)
+                                        {
+                                            string OptionHTML = "<ul style='margin-top:-5px'>", ValueHTML = "<ul style='list-style:none;padding-left:12px; margin-top:-5px'>";
+                                            foreach (var options in items.OrderDetailOptionValues)
+                                            {
+                                                OptionHTML += "<li><strong>" + options.Quantity + " x " + options.MenuItemOptionValue + "</strong></li>";
+                                                ValueHTML += "<li>" + options.TotalPrice + " AED" + "</li>";
+                                            }
+                                            OptionHTML += "</ul>";
+                                            ValueHTML += "</ul>";
+
+                                            <tr>
+                                                <td align="left" width="75%" style="font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 12px">
+                                                    @Html.Raw(OptionHTML)
+                                                </td>
+                                                <td align="left" style="font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 12px">
+                                                    @Html.Raw(ValueHTML)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+
+                                <!-- hr -->
+                                <tr>
+                                    <td align="left" width="75%" style="padding: 5px 12px;border-bottom: 1px solid #e8e8e8"></td>
+                                    <td align="left" width="25%" style="padding: 5px 12px;border-bottom: 1px solid #e8e8e8"></td>
+                                </tr>
+                                <!-- hr -->
+
+                                <tr>
+                                    <td align="left" width="75%" style="padding: 2px 12px;padding-top: 10px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;"><strong>Subtotal</strong></td>
+                                    <td align="left" width="25%" style="padding: 2px 12px;padding-top: 10px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;">@Model.Order.Amount AED</td>
+                                </tr>
+                                <tr>
+                                    <td align="left" width="75%" style="padding: 2px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;"><strong>Coupon Code</strong></td>
+                                    <td align="left" width="25%" style="padding: 2px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;">@Model.Order.CouponCode</td>
+                                </tr>
+                                <tr>
+                                    <td align="left" width="75%" style="padding: 2px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;"><strong>Coupon Discount</strong></td>
+                                    <td align="left" width="25%" style="padding: 2px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;">@Model.Order.CouponDiscount AED</td>
+                                </tr>
+                                <tr>
+                                    <td align="left" width="75%" style="padding: 2px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;"><strong>VAT(%)</strong></td>
+                                    <td align="left" width="25%" style="padding: 2px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;">@Model.Order.TaxAmount AED</td>
+                                </tr>
+                                <tr>
+                                    <td align="left" width="75%" style="padding: 2px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;"><strong>Delivery Charges</strong></td>
+                                    <td align="left" width="25%" style="padding: 2px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;">@Model.Order.DeliveryCharges AED</td>
+                                </tr>
+                                <!-- hr -->
+                                <tr>
+                                    <td align="left" width="75%" style="padding: 5px 12px;border-bottom: 1px solid #e8e8e8"></td>
+                                    <td align="left" width="25%" style="padding: 5px 12px;border-bottom: 1px solid #e8e8e8"></td>
+                                </tr>
+                                <!-- hr -->
+                                <tr>
+                                    <td align="left" width="75%" style="padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 20px;color:red"><strong>Total</strong></td>
+                                    <td align="left" width="25%" style="padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 20px;color:red"><strong>@Model.Order.TotalAmount AED</strong></td>
+                                </tr>
+                                <!-- hr -->
+                                <tr>
+                                    <td align="left" width="75%" style="padding: 2px 12px;border-bottom: 1px solid #e8e8e8"></td>
+                                    <td align="left" width="25%" style="padding: 2px 12px;border-bottom: 1px solid #e8e8e8"></td>
+                                </tr>
+                                <!-- hr -->
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- end reeipt table -->
+
+                </table>
+                <!--[if (gte mso 9)|(IE)]>
+                </td>
+                </tr>
+                </table>
+                <![endif]-->
+            </td>
+        </tr>
+        <!-- end copy block -->
+        <!-- start receipt address block -->
+        <tr>
+            <td align="center" bgcolor="#e8e8e8" valign="top" width="100%">
+                <!--[if (gte mso 9)|(IE)]>
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                <tr>
+                <td align="center" valign="top" width="600">
+                <![endif]-->
+                <table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;border-bottom-left-radius:10px;border-bottom-right-radius:10px">
+                    <tr style="border-bottom:2px solid #f2f2f2;">
+                        <td align="center" valign="top" style="font-size: 0">
+                            <!--[if (gte mso 9)|(IE)]>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                            <tr>
+                            <td align="left" valign="top" width="300">
+                            <![endif]-->
+                            <div style="display: inline-block; width: 100%; max-width: 95%; min-width: 240px; vertical-align: top;">
+                                <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td align="left" valign="top" style="padding-bottom: 15px; padding-left: 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px">
+                                            <p><strong>Customer Details</strong></p>
+                                            <p>
+                                                @Model.Order.CustomerName
+                                                <br>
+                                                @Model.Order.Address
+                                                @{
+                                                    if (!string.IsNullOrEmpty(Model.Order.Street))
+                                                    {
+                                                        <br>
+                                                        <b>Street: </b> @Model.Order.Street
+                                                    }
+                                                    if (!string.IsNullOrEmpty(Model.Order.Floor))
+                                                    {
+                                                        <br>
+                                                        <b>Floor: </b> @Model.Order.Floor
+                                                    }
+                                                }
+                                                <br>
+                                                @Model.Order.CustomerContact
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!--[if (gte mso 9)|(IE)]>
+                            </td>
+                            <td align="left" valign="top" width="300">
+                            <![endif]-->
+                            <div style="display: inline-block; width: 100%; max-width: 50%; min-width: 240px; vertical-align: top;">
+
+                            </div>
+                            <!--[if (gte mso 9)|(IE)]>
+                            </td>
+                            </tr>
+                            </table>
+                            <![endif]-->
+                        </td>
+                    </tr>
+
+
+                    @{
+                        if (Model.Order.DeliveryStaff != null)
+                        {
+                            <tr style="border-bottom:2px solid #f2f2f2;">
+                                <td align="center" valign="top" style="font-size: 0;padding-top: 19px;">
+                                    <!--[if (gte mso 9)|(IE)]>
+                                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                                    <tr>
+                                    <td align="left" valign="top" width="300">
+                                    <![endif]-->
+                                    <div style="display: inline-block; width: 100%; max-width: 95%; min-width: 240px; vertical-align: top;">
+                                        <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                            <tr>
+                                                <td align="left" valign="top" style="padding-bottom: 15px; padding-left: 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px">
+                                                    <p><strong>Rider Details</strong></p>
+                                                    <p>
+                                                        @Model.Order.DeliveryStaff.FirstName @Model.Order.DeliveryStaff.LastName
+                                                        <br>
+                                                        @Model.Order.DeliveryStaff.PhoneNumber
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <!--[if (gte mso 9)|(IE)]>
+                                    </td>
+                                    <td align="left" valign="top" width="300">
+                                    <![endif]-->
+                                    <div style="display: inline-block; width: 100%; max-width: 50%; min-width: 240px; vertical-align: top;">
+
+                                    </div>
+                                    <!--[if (gte mso 9)|(IE)]>
+                                    </td>
+                                    </tr>
+                                    </table>
+                                    <![endif]-->
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                    @{
+                        string url = string.Format("{0}/tracking?orderId={1}", Model.Restaurant.Website, Model.Order.OrderNo);
+                    }
+                    <tr style="border-bottom:2px solid #f2f2f2;">
+                        <td align="center" valign="top" style="font-size: 0;padding-top: 19px;">
+                            <!--[if (gte mso 9)|(IE)]>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                            <tr>
+                            <td align="left" valign="top" width="300">
+                            <![endif]-->
+                            <div style="display: inline-block; width: 100%; max-width: 95%; min-width: 240px; vertical-align: top;">
+                                <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td align="left" valign="top" style="padding-bottom: 15px; padding-left: 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;height: 50px;">
+                                            <a href="@url" style="border: none; color: white; padding: 3% 6%; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; width: 85%; background-color: #120e0e; border-radius: 4px;">Track Order</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!--[if (gte mso 9)|(IE)]>
+                            </td>
+                            <td align="left" valign="top" width="300">
+                            <![endif]-->
+                            <!--[if (gte mso 9)|(IE)]>
+                            </td>
+                            </tr>
+                            </table>
+                            <![endif]-->
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td align="center" valign="top" style="font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px;">
+                            <!--[if (gte mso 9)|(IE)]>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                            <tr>
+                            <td align="left" valign="top" width="300">
+                            <![endif]-->
+                            <!--[if (gte mso 9)|(IE)]>
+                            </td>
+                            <td align="left" valign="top" width="300">
+                            <![endif]-->
+                            <div class="followus" style="padding: 20px 30px; text-align: left; background: #fff; display: flex; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                                <p style="font-size:12px">
+                                    Restaurant employees or representatives will NEVER ask you for your personal information i.e. your bank account details, password, PIN, CVV, OTP etc. For your own safety, DO NOT share these details with anyone over phone, SMS, or email.
+                                </p>
+
+                            </div>
+                            <div style="display: inline-block; width: 100%; max-width: 50%; min-width: 240px; vertical-align: top;">
+
+                            </div>
+                            <!--[if (gte mso 9)|(IE)]>
+                            </td>
+                            </tr>
+                            </table>
+                            <![endif]-->
+                        </td>
+                    </tr>
+                </table>
+                <!--[if (gte mso 9)|(IE)]>
+                </td>
+                </tr>
+                </table>
+                <![endif]-->
+            </td>
+        </tr>
+        <!-- end receipt address block -->
+        <!-- start footer -->
+        <tr>
+            <td align="center" bgcolor="#e8e8e8" style="padding: 24px;">
+                <small>Powered by</small>
+                <br />
+                <a href="https://fougito.com" target="_blank">
+                    <img src="https://cdn.fougito.com/Images/Restaurant/emailFooter.png">
+                </a>
+            </td>
+        </tr>
+        <!-- end footer -->
+
+    </table>
+    <!-- end body -->
+
+</body>
+</html>

@@ -1,0 +1,694 @@
+﻿
+.body h5 {
+    line-height: 0;
+}
+
+.dashboard {
+    background: #efefef;
+}
+
+.details::-webkit-scrollbar {
+    height: 2px;
+}
+
+/* Track */
+.details::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.show > .btn-secondary.dropdown-toggle:focus {
+    box-shadow: none !important;
+}
+
+.secondary:focus {
+    box-shadow: none !important;
+}
+
+.dropdown-item {
+    padding: 3px !important;
+    font-size: 11px;
+}
+
+/* Handle */
+.details::-webkit-scrollbar-thumb {
+    background: #d8d8d8;
+}
+
+.btn-secondary {
+    font-size: 12px !important;
+}
+
+.timeline {
+    background-color: #fff;
+    margin-left: -9px;
+    margin-right: -10px;
+}
+
+.Facilities {
+    line-height: 0;
+}
+
+.progress-timeline {
+    overflow-x: scroll;
+    padding-left: 12px;
+}
+
+.hour {
+    border-right: 1px solid #efefef;
+    padding-left: 5px;
+}
+
+.direct-chat-msg {
+    border: 1px solid #efefef;
+    height: 70px;
+    margin-top: 15px;
+}
+
+.direct-chat-info {
+    margin-top: -18px;
+}
+
+.btn-secondary {
+    color: #000 !important;
+    background-color: #efefef !important;
+    border: 0px !important;
+    font-weight: 500 !important;
+}
+
+.btn:focus {
+    box-shadow: 0 !important;
+}
+
+.progress-timeline::-webkit-scrollbar {
+    width: 2px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #efefef;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d9d9d9;
+    border-radius: 10px;
+}
+
+.scroll {
+    overflow-y: scroll;
+    height: 213px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.scroll::-webkit-scrollbar-track {
+    background: #efefef;
+    border-radius: 10px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    background: #d9d9d9;
+    border-radius: 10px;
+}
+
+.details {
+    border: 1px solid #efefef;
+}
+
+.profile {
+    width: 180px;
+    height: 54px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.card-img-left {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+
+.direct-chat-msg:after {
+    clear: both;
+}
+
+.c-1 {
+    background: #b5d4f8;
+}
+
+.c-2 {
+    background: #b5e8e6;
+    border;
+}
+
+.c-3 {
+    background: #f9c1c5;
+}
+
+.c-4 {
+    background: #f8e3bb;
+}
+
+#myChart #mychart-pie {
+    width: 100%;
+    max-width: 500px;
+}
+
+#myChart {
+    height: 263px !important;
+}
+
+.pie {
+    position: relative !important;
+    /* left: 100px!important; */
+    top: auto !important;
+    bottom: 45px !important;
+}
+
+.bg {
+    background: #fff;
+    border-radius: 5px;
+}
+
+.fb {
+    height: 317px;
+}
+
+.pie-grapgh {
+    height: 381px;
+}
+
+.amount {
+    position: absolute;
+    right: 30px;
+}
+
+.color {
+    background: #46c6c0;
+    padding: 7px;
+    width: 10px;
+    border-radius: 5px;
+    position: absolute;
+    right: 52px;
+    top: 1px;
+    font-size: 12px;
+}
+
+.amount h5 {
+    font-size: 12px;
+}
+
+.earning {
+    line-height: 0;
+    margin-bottom: 20px;
+}
+
+    .earning h5 {
+        font-size: 15px;
+    }
+
+    .earning span {
+        font-size: 11px;
+        color: #b4b4b4;
+        font-weight: 600;
+    }
+
+.heading-pie {
+    position: relative;
+    top: auto;
+    bottom: 90px;
+}
+
+.sub-heading h5 {
+    padding-left: 23px;
+    position: relative;
+    bottom: auto;
+    top: 0px;
+    font-size: 12px;
+}
+
+.t-bookings {
+    position: relative;
+    top: auto;
+    bottom: 181px !important;
+    float: right;
+    right: 202px !important;
+    text-align: center;
+    font-size: 17px !important;
+}
+
+.color-b {
+    background: #4688c6;
+    padding: 7px;
+    border-radius: 4px;
+    position: absolute;
+}
+
+.color-y {
+    background: #c6b946;
+    padding: 7px;
+    border-radius: 4px;
+    position: absolute;
+}
+
+.color-lb {
+    background: #46c6c0;
+    padding: 7px;
+    border-radius: 4px;
+    position: absolute;
+}
+
+.Facilitites-Booking {
+    background: #fff;
+}
+
+.packages {
+    margin-bottom: 33px;
+}
+
+    .packages img {
+        border-radius: 15px;
+    }
+
+.progress {
+    background: transparent !important;
+    border-radius: 0rem !important;
+}
+
+.progress-bar {
+    height: 10px !important;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.gld {
+    background-color: #eeba54 !important;
+    width: 85%;
+}
+
+.plat {
+    background-color: #ef656e !important;
+    width: 50%;
+}
+
+.brnz {
+    background-color: #46c6c0 !important;
+    width: 30%;
+}
+
+.progress span {
+    position: relative;
+    top: 5px;
+    left: 10px;
+    color: black;
+    font-weight: 700;
+}
+
+.lne {
+    background: #d50505;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    color: black;
+    font-size: 11px;
+    margin-top: 0rem;
+}
+
+    .table tr {
+        font-size: 11px;
+        height: 50px;
+    }
+
+    .table thead th {
+        border-bottom: 0px !important;
+    }
+
+    .table th {
+        border-top: 0px !important;
+        padding: 0px !important;
+    }
+
+    .table th {
+        color: #b4b4b4;
+    }
+
+.direct-order-name {
+    color: #b4b4b4;
+}
+
+    .direct-order-name strong {
+        color: black;
+        font-weight: 600;
+    }
+
+.table td {
+    font-weight: 600;
+    padding: 0rem !important;
+}
+
+.hide {
+    background: #dddada;
+    text-align: center;
+    border-radius: 5px;
+    position: relative;
+    right: 5px;
+}
+
+.graph {
+    margin-top: 4px;
+}
+
+.order-details {
+    padding-left: 3px;
+}
+
+.table td, .table th {
+    vertical-align: middle !important;
+}
+
+.timeline-user {
+    font-size: 10px;
+    padding: 0 5px;
+}
+
+.time {
+    position: relative;
+    top: auto;
+    bottom: 23px;
+    left: -18px;
+}
+
+    .time span {
+        color: #b4b4b4;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+#linechart {
+    height: 213px !important;
+}
+
+
+/* Mobiles in Potrait mode */
+@media only screen and (max-width : 410px) {
+    /* Add you style here */
+    .order-details {
+        padding-left: 3px;
+    }
+
+    .table tr {
+        font-size: 8px;
+    }
+
+    .table {
+        margin-top: 20px;
+    }
+
+        .table td, .table th {
+            vertical-align: middle !important;
+        }
+
+    .Facilities {
+        text-align: center;
+    }
+
+    .Enfiled {
+        margin-right: 30px;
+    }
+
+    tbody {
+        height: 190px;
+    }
+
+    .card-img-left {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    .bar-grapgh {
+        height: 250px;
+    }
+
+    .hide {
+        padding: 4px;
+    }
+
+    .pie-grapgh {
+        height: 250px;
+        /* margin-top: 10px; */
+    }
+
+    #linechart {
+        height: 171px !important;
+    }
+
+
+
+    .pie-grapgh {
+        height: 320px;
+    }
+
+    .pie {
+        position: relative !important;
+        left: 23px !important;
+        top: 20px !important;
+        bottom: auto;
+    }
+
+    .heading-pie {
+        position: relative;
+        top: auto;
+        bottom: 0px;
+    }
+
+    .t-bookings {
+        position: relative;
+        top: auto;
+        bottom: 61px !important;
+        right: 98px !important;
+        text-align: center;
+        font-size: 9px !important;
+        font-weight: 700;
+    }
+
+    .btn-secondary {
+        font-size: 10px !important;
+    }
+
+    #myChart {
+        height: 150px !important;
+    }
+
+    .customer-brief-details {
+        margin-top: 10px;
+    }
+
+    .line-grapgh {
+        margin-top: 0px;
+        ;
+    }
+}
+
+@media only screen and (min-width : 411px) and (max-device-width: 412px) {
+    .t-bookings {
+        position: relative;
+        top: auto;
+        bottom: 139px !important;
+        right: 144px !important;
+        text-align: center;
+        font-size: 10px !important;
+        font-weight: 700;
+    }
+
+    .Facilities {
+        text-align: center;
+    }
+
+    .btn-secondary {
+        font-size: 10px !important;
+    }
+
+    .Enfiled {
+        margin-right: 54px;
+    }
+
+    .e-fac {
+        margin-top: 0px;
+    }
+
+    .earning {
+        margin-top: 10px;
+    }
+
+    .bar-grapgh {
+        margin-top: 10px;
+    }
+
+    .pie-grapgh {
+        height: 293px;
+    }
+
+    .line-grapgh {
+        margin-top: 20px;
+    }
+
+    .earning {
+        margin-top: 0px;
+    }
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 360px) and (-webkit-min-device-pixel-ratio: 2) {
+    .t-bookings {
+        position: relative;
+        top: auto;
+        bottom: 58px !important;
+        right: 97px !important;
+        text-align: center;
+        font-size: 9px !important;
+        font-weight: 700;
+    }
+}
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
+
+    .btn-secondary {
+        font-size: 10px !important;
+    }
+
+    .Enfiled {
+        margin-right: 40px;
+    }
+}
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 376px) and (-webkit-min-device-pixel-ratio: 2) {
+
+    .t-bookings {
+        right: 105px !important;
+    }
+}
+/* ----------- iPhone 6+, 7+ and 8+ ----------- */
+@media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 3) {
+    .pie {
+        position: relative !important;
+        left: 23px !important;
+        top: 20px !important;
+        bottom: auto;
+    }
+
+    .heading-pie {
+        position: relative;
+        top: auto;
+        bottom: 0;
+    }
+
+    .t-bookings {
+        position: relative;
+        top: auto;
+        bottom: 73px !important;
+        right: 117px !important;
+        text-align: center;
+        font-size: 11px !important;
+        font-weight: 700;
+    }
+
+    .btn-secondary {
+        font-size: 10px !important;
+    }
+
+    .Enfiled {
+        margin-right: 60px;
+    }
+    /* .line-grapgh{
+        margin-top: px;
+    } */
+    .earning {
+        margin-top: 2px;
+    }
+}
+
+/* Mobiles in landscape mode */
+@media only screen and (min-width : 321px) and (max-width : 480px) {
+    /* Add you style here */
+
+
+}
+
+/* Tablets */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+    /* Add you style here */
+    .pie {
+        position: relative !important;
+        top: auto !important;
+        bottom: 45px !important;
+    }
+
+    .t-bookings {
+        position: relative;
+        top: auto;
+        bottom: 220px !important;
+        float: right;
+        right: 260px !important;
+        text-align: center;
+        font-size: 20px !important;
+        font-weight: 700;
+    }
+
+    .pie-grapgh {
+        height: 450px;
+        /* margin-top: 10px; */
+    }
+
+    .pie {
+        position: relative !important;
+        top: auto !important;
+        bottom: 45px !important;
+    }
+
+    .sub-heading h5 {
+        font-size: 17px;
+    }
+    /* .customer-details{
+        margin-top: 10px;
+    }
+    .bar-grapgh{
+        margin-top: 10px;
+    }
+    .earning{
+        margin-top: 10px;
+    } */
+
+}
+
+@media only screen and (min-device-width: 834px) and (max-device-width: 1112px) and (-webkit-min-device-pixel-ratio: 2) {
+    .pie-grapgh {
+        height: 322px !important;
+    }
+
+    .bar-grapgh {
+        height: 322px;
+    }
+
+    .t-bookings {
+        position: relative;
+        top: auto;
+        bottom: 155px !important;
+        float: right;
+        right: 166px !important;
+        text-align: center;
+        font-size: 12px !important;
+        font-weight: 700;
+    }
+
+    #myChart {
+        height: 200px !important;
+    }
+}

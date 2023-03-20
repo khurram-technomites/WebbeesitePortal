@@ -1,0 +1,72 @@
+﻿
+
+@{
+    Layout = null;
+}
+
+<style>
+    .modal-header {
+        padding: 0.8rem 0.75rem;
+    }
+
+    .modal .modal-header .modal-title {
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+
+    .spinner.spinner-left:before {
+        left: 0.5rem !important;
+    }
+</style>
+
+
+
+
+<div class="ordernow modal-body">
+    <div class="order-image row p-4">
+        <div class="col-md-5">
+            <img src="~/Images/Icons/BasketIcon.png" />
+        </div>
+        <div class="col-md-7 d-flex flex-column justify-content-center p-0">
+           
+               
+                <label class="mb-0 opacity-50 font-weight-bolder text-center">Cart Total</label>
+           
+                <label class="mb-0 order-price text-center">0 AED</label>
+            
+                <label class="mb-0 theme-red font-size-sm order-item text-center">0 Items</label>
+            
+        </div>
+    </div>
+    <div class="order-description text-center">
+        <label>Order Confirmation</label>
+        <p>Are you sure you want to place this order? If you wish to continue you will be redirected to the Payment Page.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 p-1">
+            <button class="btn btn-dark btn-block" data-dismiss="modal" aria-label="Close">
+                Cancel
+            </button>
+        </div>
+        <div class="col-md-6 p-1">
+            <button class="btn btn-danger btn-block" onclick="PlaceOrder(this)" >  Place Order</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('.order-price').html('AED ' + parseFloat(ShoppingCart.sum("Price")).toFixed(2));
+        $('.order-item').html(`${ShoppingCart.sum("Quantity")} Items`);
+
+        $(".basket-popup").addClass("modal-sm");
+        $(".basket-popup").removeClass("modal-lg");
+    });
+</script>
+
+
+
+

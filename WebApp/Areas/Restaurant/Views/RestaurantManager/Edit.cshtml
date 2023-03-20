@@ -1,0 +1,156 @@
+﻿@model WebApp.ViewModels.RestaurantManagerViewModel
+@{
+	Layout = null;
+}
+
+<div class="modal-header">
+	<h5 class="modal-title">Update</h5>
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<i aria-hidden="true" class="ki ki-close"></i>
+	</button>
+</div>
+
+<div class="modal-body">
+
+	<form id="frm-edit">
+		@Html.AntiForgeryToken()
+		<div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.Id, new { id = "Id" })
+		@Html.HiddenFor(model => model.Status, new { id = "Status" })
+		@Html.HiddenFor(model => model.CreationDate, new { id = "CreationDate" })
+
+		<div class="row">
+		
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Branch</label>
+					<div class="input-group mb-2">
+						<select asp-for="RestaurantBranchId" id="BranchId" class="form-control" asp-items="@(new SelectList(ViewBag.branches,"Id","NameAsPerTradeLicense"))" required></select>
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-building"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Name</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter  name here ...", required = "required" } })@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Email</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter email here ...", required = "required" } })@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Address</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter address here ...", required = "required" } })@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fas fa-id-card"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Contact 01</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter contact here ...", required = "required" } })@Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<div class="form-group">
+					<label class="control-label">Contact 02</label>
+					<div class="input-group mb-2">
+						@Html.EditorFor(model => model.Contact2, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter contact number here ...", required = "required" } })@Html.ValidationMessageFor(model => model.Contact2, "", new { @class = "text-danger" })
+						<div class="input-group-append"><span class="input-group-text"><i class="fa fa-phone"></i></span></div>
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+		</div>
+	</form>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	<button type="submit" class="btn btn-info" form="frm-edit">Save Changes</button>
+</div>
+
+<script>
+
+	var _URL = window.URL || window.webkitURL;
+	var logoPath = '';
+	$(document).ready(function () {
+
+		//Image Uploader Begin
+		//if ($("#PreviewImage").attr('src').length == 0) {
+		//	$('.image-upload').removeClass('uploaded');
+		//	$('.image-upload').addClass('empty');
+		//}
+
+		//$('i.fa-camera').click(function () {
+		//	$("#logo").trigger('click');
+		//});
+
+		//aspectratio = 1;
+		//minCroppedWidth = 50;
+		//minCroppedHeight = 50;
+		//BindImageUploader("#logo", "#image", "#CropperModal", "#PreviewImage");
+		//Image Uploader End
+
+		$("#frm-edit").submit(function () {
+
+			$(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+			var data = new FormData();
+			//        if (logoPath == '') {
+			//logoPath = $("#PreviewImage").attr('src');
+			//        }
+			data.append("Id", $("#Id").val());
+			data.append("Status", $("#Status").val());
+			data.append("CreationDate", $("#CreationDate").val());
+			data.append("Name", $('#Name').val());
+			data.append("Email", $('#Email').val());
+			data.append("Address", $('#Address').val());
+			data.append("Contact", $('#Contact').val());
+			data.append("Contact2", $('#Contact2').val());
+			//data.append("Logo", logoPath);
+			data.append("RestaurantBranchId", $('#BranchId').val());
+
+			data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+			$.ajax({
+				url: "/Restaurant/RestaurantManager/Edit/",
+				type: "POST",
+				processData: false,
+				contentType: false,
+				data: data,
+				success: function (response) {
+
+					if (callback) {
+						callback($('#myModalContent'), element, true, response);
+					}
+					//location.reload();
+				},
+				error: function (er) {
+					toastr.error(er);
+				}
+			});
+			return false;
+		});
+	});
+
+</script>

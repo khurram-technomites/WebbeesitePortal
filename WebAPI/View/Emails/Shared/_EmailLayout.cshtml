@@ -1,0 +1,108 @@
+﻿@using Microsoft.Extensions.Configuration
+
+@inject IConfiguration Configuration
+@{
+    string ImgURL = Configuration.GetValue<string>("WebAppImagesURL");
+
+    ViewData["BrandName"] = "NowBuySell";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .body {
+            font-size: 1em;
+        }
+
+        .main {
+            width: 80%;
+            display: block;
+        }
+
+        .head {
+            height: 72px;
+            position: relative;
+            background-color: #ffffff;
+        }
+
+        img {
+            display: block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .emailbody {
+            padding: 5px;
+            color: black;
+        }
+
+        a.button {
+            display: block;
+            height: 40px;
+            background: #000000;
+            padding: 10px 0 10px 0;
+            text-align: center;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            font-size: 2em;
+            width: 50%;
+            text-decoration: none;
+        }
+
+        .footer {
+            height: 50px;
+            line-height: 50px;
+            background-color: #ffffff;
+            text-align: center;
+            vertical-align: middle;
+            color: black;
+        }
+
+        .order-number {
+            color: orange;
+        }
+
+        .rest-name {
+            font-weight: bold;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .price-value {
+            text-align: right;
+        }
+
+        .order-details-head {
+            color: darkblue;
+            text-align: center;
+        }
+
+        .order-col-heads {
+            font-weight: bold;
+            height: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="head" style="position:relative">
+            @*<img src='@String.Concat(ImgURL,"EatachiEmailLogo.png")' height="70" style="position:absolute" />*@
+        </div>
+
+        @RenderBody()
+
+        <div class="footer">
+            <p>&copy; @ViewData["BrandName"]</p>
+        </div>
+    </div>
+</body>
+</html>

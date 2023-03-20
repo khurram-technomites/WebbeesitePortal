@@ -1,0 +1,190 @@
+﻿@model IEnumerable<WebApp.ViewModels.CategoryViewModel>
+
+@{
+    Layout = null;
+}
+
+
+<div class="modal-header">
+    <h5 class="modal-title">Import Categories</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+
+
+<div class="modal-body">
+
+    @if (Model.Any())
+    {
+        <div class="row mb-4">
+            <div class="col-md-10">
+
+                <div class="justify-content-end">
+                    <div class="input-icon input-icon-right">
+                        <input type="text" class="form-control search-btn" onchange="CategoriesByName(this)" placeholder="Search...">
+                        <span>
+                            <i class="flaticon2-search-1 icon-md"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <!--begin::Checkbox-->
+
+                <div class="checkbox-inline mt-2">
+                    <label class="checkbox checkbox-lg">
+                        <input type="checkbox" onchange="SelectAll(this)" name="Checkboxes3_1" />
+                        <span></span>
+                        Select All
+                    </label>
+
+                </div>
+
+
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 categories">
+                    <div class="mb-6">
+                        <!--begin::Content-->
+                        <div class="d-flex align-items-center flex-grow-1">
+                            <!--begin::Checkbox-->
+                            <label class="checkbox checkbox-lg checkbox-lg flex-shrink-0 mr-4">
+                                <input type="checkbox" class="category-checkbox" value="@item.Id">
+                                <span></span>
+                            </label>
+                            <!--end::Checkbox-->
+                            <!--begin::Section-->
+                            <div class="d-flex mb-2">
+
+                                <div class="symbol symbol-35 flex-shrink-0 mr-4">
+                                    <div class="symbol-label" style="background-image: url(@item.Image)"></div>
+                                </div>
+                                <span class="font-weight-bolder mt-2 text-left category-name">
+                                    @item.Name
+                                </span>
+
+
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Content-->
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    else
+    {
+        <div class="row justify-content-center">
+            <div id="notAvalaible" class="text-center">
+                <img style="width:10%" src="~/Images/Icons/NotFound.png" />
+                <h4><em>Categories are <span style="color: #f55050">not</span> found</em> </h4>
+            </div>
+        </div>
+    }
+
+
+
+</div>
+
+
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-info" onclick="ImportCategories(this)" id="import">Import</button>
+</div>
+
+<script>
+    var categories = [];
+    function ImportCategories(e) {
+        
+
+        $(e).addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+        $('.category-checkbox').each(function (k, v) {
+            
+            if ($(v).is(":checked")) {
+
+                categories.push({
+
+                    id: $(v).val()
+                });
+
+                console.log(categories);
+            }
+
+        });
+
+        $.ajax({
+
+            url: "/Restaurant/Category/ImportCategories",
+            type: "POST",
+            data: { categories: categories },
+            success: function (result) {
+
+                if (result.success) {
+
+                    $("#myModal").modal("hide");
+                    toastr.success(result.message);
+                    categories = [];
+                    $(e).removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                    window.location.reload();
+
+                } else {
+                    toastr.error(result.message);
+                    $(e).removeClass('spinner spinner-sm spinner-left').attr('disabled', false);
+                }
+
+
+            }
+        });
+    };
+
+    jQuery.expr[':'].contains = function (a, i, m) {
+        return jQuery(a).text().toUpperCase()
+            .indexOf(m[3].toUpperCase()) >= 0;
+    };
+
+    function CategoriesByName(e) {
+
+        $("#notFound").remove();
+        $(".categories").show();
+        var text = $(e).val();
+        if (text && text !== "") {
+
+            $('.categories').hide();
+            $(".categories").find('.category-name:contains("' + text + '")').closest('.categories').fadeIn();
+            if ($(".categories").find('.category-name:contains("' + text + '")').length == 0) {
+                $(".modal-body").append(`  <div class="col-md-12 " id="notFound">
+                                                <div id="notAvalaible" class="text-center">
+                                                    <img style="width:10%" src="/Images/Icons/NotFound.png" />
+                                                    <h4><em>Categories <span style="color: #f55050">not</span> found</em> </h4>
+                                                </div>
+                                            </div>`);
+            }
+
+        }
+
+        else {
+
+            $('.items').show();
+        }
+    };
+
+    function SelectAll(e) {
+        
+        if ($(e).is(":checked")) {
+
+            $(".category-checkbox").prop("checked", true);
+
+        }
+        else {
+            $(".category-checkbox").prop("checked", false);
+        }
+
+    }
+</script>

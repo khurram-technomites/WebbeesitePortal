@@ -1,0 +1,170 @@
+﻿@model WebApp.ViewModels.CouponViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Details</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+
+
+    <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    <div class="row">
+        @*  <div class="col-md-12 col-xs-12">
+        <div class="float-right mb-3">
+        <i class="fa fa-calendar"></i>
+        <b>@Html.Label("Creation Date:", htmlAttributes: new { @class = "control-label" })</b>
+        @if (Model.CreatedOn.HasValue)
+        {
+        var date = Model.CreatedOn.Value.ToString("dd MMM yyyy, h:mm tt");
+        <label class="control-label" readonly="readonly">@date</label>
+        }
+        else
+        {
+        <label class="control-label" readonly="readonly"> - </label>
+        }
+        </div>
+        </div>*@
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Coupon Code</label>
+                <div class="input-group mb-2">
+                    <label class="form-control" readonly="readonly"> @Model.CouponCode</label>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-hashtag"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Coupon Name</label>
+                <div class="input-group mb-2">
+                    <label class="form-control" readonly="readonly">@Model.Name</label>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-tag"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Type</label>
+                <div class="input-group mb-2">
+                    <label class="form-control" readonly="readonly">@Model.Type</label>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-toggle-off"></i></span></div>
+                </div>
+            </div>
+        </div>
+        @if (Model.Type != null)
+        {
+            if (Model.Type.Equals("FixedAmount"))
+            {
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">Discount Amount</label>
+                        <div class="input-group mb-2">
+                            <label class="form-control" readonly="readonly">@Model.Value</label>
+                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-credit-card"></i></span></div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">Discount Percentage</label>
+                        <div class="input-group mb-2">
+                            <label class="form-control" readonly="readonly">@Model.Value</label>
+                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-percent"></i></span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">Max Amount</label>
+                        <div class="input-group mb-2">
+                            <label class="form-control" readonly="readonly">@Model.MaxAmount</label>
+                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-credit-card"></i></span></div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-md-4 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Discount Percentage</label>
+                    <div class="input-group mb-2">
+                        <label class="form-control" readonly="readonly">@Model.Value</label>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-percent"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Max Amount</label>
+                    <div class="input-group mb-2">
+                        <label class="form-control" readonly="readonly">@Model.MaxAmount</label>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-credit-card"></i></span></div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Expiry</label>
+                <div class="input-group mb-2">
+                    <div class="input-daterange input-group kt_datepicker_range">
+                        <label class="form-control" readonly="readonly">@(Model.Expiry.HasValue ? Model.Expiry.Value.ToString("dd MMM yyyy") : "-")</label>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Max Usage</label>
+                <div class="input-group mb-2">
+                    <label class="form-control" readonly="readonly">@Model.MaxUsage</label>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-credit-card"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Usage Per Customer</label>
+                <div class="input-group mb-2">
+                    <label class="form-control" readonly="readonly">@Model.Frequency</label>
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-history"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Is Open To All</label>
+                <span class="switch">
+                    <label>
+                        @Html.CheckBox("IsOpenToAll")
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+</div>
+

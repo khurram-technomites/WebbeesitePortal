@@ -1,0 +1,93 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
+    //string ImgURL = Configuration.GetValue<string>("WebAppImagesURL");
+
+    string BrandName = "NowBuySell";
+}
+
+@model HelperClasses.DTOs.Authentication.ConfirmEmailDTO
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        .body {
+            font-size: 1em;
+        }
+
+        .main {
+            width: 80%;
+            display: block;
+        }
+
+        .head {
+            height: 72px;
+            position: relative;
+            background-color: #ffffff;
+        }
+
+        img {
+            display: block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .emailbody {
+            padding: 5px;
+            color: black;
+        }
+
+        a.button {
+            display: block;
+            height: 40px;
+            background: #000000;
+            padding: 10px 0 10px 0;
+            text-align: center;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            font-size: 2em;
+            width: 50%;
+            text-decoration: none;
+        }
+
+        .footer {
+            height: 50px;
+            line-height: 50px;
+            background-color: #000000;
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="head" style="position:relative">
+            @*<img src='@String.Concat(ImgURL,"EatachiEmailLogo.png")' height="70" style="position:absolute" />*@
+        </div>
+        <div class="emailbody">
+            <h1 style="text-align:center">Verify your email to finish signing up for @BrandName.</h1>
+
+            <p>Thank you for choosing @BrandName for your ordering needs.</p>
+            <p>
+                Please confirm that <strong>@Model.Email</strong> is your email address by clicking on the button below within 24 hours.
+            </p>
+
+            <div style="text-align:center">
+                @*<a class="button" href="@Model.ConfirmationLink">Verify</a>*@
+                <h2>@Model.AuthCode</h2>
+            </div>
+        </div>
+        <div class="footer">
+            <p>&copy; @BrandName</p>
+        </div>
+    </div>
+</body>
+</html>

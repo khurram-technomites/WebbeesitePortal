@@ -1,0 +1,164 @@
+﻿@model WebApp.ViewModels.RestaurantServiceStaffViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Update</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form id="frm-edit">
+        @Html.AntiForgeryToken()
+        <div class="alert alert-danger text-center" id="divMessage" style="display:none"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <input asp-for="Id" type="hidden" id="StaffId" />
+        <input asp-for="UserId" type="hidden" id="UserId" />
+        <input asp-for="Status" type="hidden" id="Status" />
+        <div class="row">
+            <div class="col-md-12 col-sm-12 mb-3" style=" display: flex; justify-content: center; align-items: center;">
+                <div class="image-upload uploaded">
+                    <i class="fa fa-camera"></i>
+                    <span>Upload Image</span>
+                    <input type="file" name="logo" id="logo" class="logo" accept=".png, .jpg, .jpeg" style="width:1px !important;height:1px !important" />
+                    <img id="PreviewImage" src='@Model.Logo' onerror="$(this).attr('src', ''); $(this).closest('.image-upload').addClass('empty').removeClass('uploaded')" />
+                    @*<i class="fa fa-trash" onclick="DeleteFile(this,'@Model.Image')"></i>*@
+
+                    <i class="fa fa-pen" onclick="DeleteFile(this,'@Model.Logo')"></i>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Branch</label>
+                    <div class="input-group mb-2">
+                        <select asp-for="RestaurantBranchId" id="BranchId" class="form-control" asp-items="@(new SelectList(ViewBag.branches,"Id","NameAsPerTradeLicense"))" required></select>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-building"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">First Name</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter first name here ...", required = "required" } })@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class=" fa fa-user"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Last Name</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter last name here ...", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa fa-user"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Email</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter email here ..." } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Phone</label>
+                    <div class="input-group mb-2">
+                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter phone number here ..." } })
+                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                        <div class="input-group-append"><span class="input-group-text"><i class="fas fa-phone"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <div class="input-group mb-2">
+                        <input asp-for="Password" class="form-control" type="password" value="@Model.Password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-lock"></i></span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info" id="savebtn">Save Changes</button>
+</div>
+<script>
+
+    var _URL = window.URL || window.webkitURL;
+    var logoPath = '';
+    $(document).ready(function () {
+
+        //Image Uploader Begin
+        //if ($("#PreviewImage").attr('src').length == 0) {
+        //	$('.image-upload').removeClass('uploaded');
+        //	$('.image-upload').addClass('empty');
+        //}
+
+        $('i.fa-camera').click(function () {
+            $("#logo").trigger('click');
+        });
+
+        aspectratio = 1;
+        minCroppedWidth = 50;
+        minCroppedHeight = 50;
+        BindImageUploader("#logo", "#image", "#CropperModal", "#PreviewImage");
+        //Image Uploader End
+
+        $("#savebtn").click(function () {
+            debugger;
+            $(this).closest('.modal').find('button[type=submit]').addClass('spinner spinner-sm spinner-left').attr('disabled', true);
+
+            var data = new FormData();
+
+            data.append("Id", $('#StaffId').val());
+            data.append("FirstName", $('#FirstName').val());
+            data.append("LastName", $('#LastName').val());
+            data.append("UserId", $('#UserId').val());
+            data.append("PhoneNumber", $('#PhoneNumber').val());
+            data.append("Email", $('#Email').val());
+            data.append("Logo", logoPath);
+            data.append("Password", $('#Password').val());
+            data.append("RestaurantBranchId", $('#BranchId').val());
+            data.append("Status", $('#Status').val());
+            data.append("__RequestVerificationToken", $('input[name=__RequestVerificationToken]').val());
+
+
+            $.ajax({
+                url: "/Restaurant/RestaurantServiceStaff/Edit",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+
+                    if (callback) {
+                        callback($('#myModalContent'), element, true, response);
+                        jQuery('#myModal').modal('hide');
+
+                    }
+                    //location.reload();
+                },
+                error: function (er) {
+                    toastr.error(er);
+                }
+            });
+            return false;
+        });
+    });
+
+</script>

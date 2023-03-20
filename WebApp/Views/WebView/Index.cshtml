@@ -1,0 +1,155 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<!--begin::Head-->
+<head>
+    <base href="../../../../">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="~/Admin/plugins/global/plugins.bundle.css" rel="stylesheet" />
+    <link href="~/Admin/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" />
+    <link href="~/Admin/css/style.bundle.css" rel="stylesheet" />
+    <link rel="icon" href="~/favicon.png" type="image/x-icon">
+
+    <style>
+        .imgWidth {
+            width: 250px;
+        }
+    </style>
+</head>
+
+
+<body id="kt_body" style=" height: 100%" class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading" ondragstart="return false">
+    <!--begin::Main-->
+
+    <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center" id="view">
+        <div class="text-center" id="loader">
+            <div class="spinner-border" role="status">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="~/Admin/plugins/global/plugins.bundle.js"></script>
+<script src="~/Admin/plugins/custom/prismjs/prismjs.bundle.js"></script>
+<script>
+
+    var _URL = window.URL || window.webkitURL;
+    var orderId = '@ViewBag.OrderId';
+    var paymentId = '@ViewBag.PaymentId';
+    var obj;
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '/WebView/GetStatusDetail?OrderId=' + orderId +'&PaymentId='+ paymentId,
+            type: 'GET',
+            //dataType: 'json',
+            success: function (data, textStatus, xhr) {
+                obj = data
+
+                if (data.success) {
+
+                    if (data.data.Result.paymentStatus == 'Failed') {
+                        $("#view").empty();
+
+                        var html = `<div class="card card-custom gutter-b" style="min-width: 250px; min-height: 385px">
+                <div style="padding: 10px 0px 0 0; height: 37px">
+                    <div class="card-title">
+                        <h3 class="card-label text-center">
+                            ORDER # ${data.data.Result.orderNo}
+                        </h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <img src="Status/6.gif" width="250" />
+
+                    <h5 class="text-center">
+                        Amount: ${data.data.Result.totalAmount} AED
+                    </h5>
+                    <h5 class="text-center">
+                        Payment Failed
+                    </h5>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-danger" style="width:90%" onclick="log()">View Order Details</button>
+                    </div>
+                </div>
+            </div>`
+
+                        $("#view").append(html);
+                    }
+                    else {
+                        $("#view").empty();
+
+                        var html = `<div class="card card-custom gutter-b" style="min-width: 250px; min-height: 385px">
+                <div style="padding: 10px 0px 0 0; height: 37px">
+                    <div class="card-title">
+                        <h3 class="card-label text-center">
+                            ORDER # ${data.data.Result.orderNo}
+                        </h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <img src="Status/1.gif" width="250" />
+
+                    <h5 class="text-center">
+                        Amount: ${data.data.Result.totalAmount} AED
+                    </h5>
+                    <h5 class="text-center">
+                        Payment Successful
+                    </h5>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-danger" style="width:90%" onclick="log()">View Order Details</button>
+                    </div>
+                </div>
+            </div>`
+
+                        $("#view").append(html);
+                    }
+                }
+                else {
+                    $("#view").empty();
+
+                    var html = `<div class="card card-custom gutter-b" style="min-width: 250px; min-height: 385px">
+                <div style="padding: 10px 0px 0 0; height: 37px">
+                    <div class="card-title">
+                        <h3 class="card-label text-center">
+                            ORDER # ${data.data.Result.orderNo}
+                        </h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <img src="Status/6.gif" width="250" />
+
+                    <h5 class="text-center">
+                        Amount: ${data.data.Result.totalAmount} AED
+                    </h5>
+                    <h5 class="text-center">
+                        Payment Failed
+                    </h5>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-danger" style="width:90%" onclick="log()">View Order Details</button>
+                    </div>
+                </div>
+            </div>`
+
+                    $("#view").append(html);
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                window.ReactNativeWebView.postMessage("Exit");
+            }
+        });
+    });
+
+    function log() {
+        window.ReactNativeWebView.postMessage(JSON.stringify(obj));
+    }
+
+</script>
+
+
+

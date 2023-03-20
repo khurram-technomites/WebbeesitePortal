@@ -1,0 +1,279 @@
+﻿.tns-outer, #schedule-tags {
+	width: 100% !important;
+}
+
+
+input[type='radio']:after {
+	width: 15px;
+	height: 15px;
+	border-radius: 15px;
+	top: -2px;
+	left: -1px;
+	position: relative;
+	background-color: #d1d3d1;
+	content: '';
+	display: inline-block;
+	visibility: visible;
+	border: 2px solid white;
+}
+
+input[type='radio']:checked:after {
+	width: 15px;
+	height: 15px;
+	border-radius: 15px;
+	top: -2px;
+	left: -1px;
+	position: relative;
+	background-color: #FF3F40;
+	content: '';
+	display: inline-block;
+	visibility: visible;
+	border: 2px solid white;
+}
+
+/*  .owl-carousel{
+        overflow: initial;
+    }*/
+.vertical {
+	width: 0.1rem;
+	height: auto;
+	border: none;
+	background: #dacdcd;
+}
+
+.color-circle {
+	width: 10px;
+	height: 10px;
+	border-radius: 50px;
+	display: inline-block;
+	position: relative;
+	margin-top: 0px;
+	padding-top: 5px;
+	top: 1px;
+}
+
+.variat {
+	border-top: 1px solid #0000001c;
+	padding-top: 1.25rem !important;
+	border-bottom: 1px solid #0000004a;
+	padding-bottom: 1.25rem !important;
+}
+
+
+.branch-input::placeholder {
+	color: #8e8a8a;
+	opacity: 70;
+}
+
+.thumbnail-image-h-w {
+	height: 80px;
+	width: 80px;
+}
+
+.bg-img-cover {
+	background: url('https://cdn.eathlos.com/Images/GarageImages/Fougito%20Garage/3d0bd866-158b-4e2c-b51c-8b8c50df2109.jfif');
+	background-size: 110px 70px;
+}
+
+.trash-icon {
+	background: white;
+	width: 20px;
+	height: 20px;
+	border: 50%;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 11px;
+	top: 5%;
+	right: 5%;
+}
+
+/*.bg-8E7C7C14 {
+        background-color: #8E7C7C14;
+    }*/
+
+.vertical {
+	margin-right: 16px;
+}
+
+
+
+
+
+
+
+
+div.pac-container {
+	/*for search locaton on map model popup txtaddress*/
+	z-index: 99999999999 !important;
+}
+
+.wo-right-icon {
+	position: absolute;
+	top: 30px;
+	font-size: 12px;
+	color: #ffb000;
+	font-weight: 900;
+}
+
+	.wo-right-icon:hover {
+		color: #ffb000;
+	}
+
+.pin-on-map {
+	right: 50px;
+	padding-right: 5px;
+	border-right: 1px solid rgb(255 63 64 / 5%);
+}
+
+.get-current-location {
+	top: 25px;
+	right: 30px;
+}
+
+	.get-current-location i {
+		color: #ffb000;
+	}
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+#map {
+	height: 100%;
+}
+
+
+
+.pac-card {
+	background-color: #fff;
+	border: 0;
+	border-radius: 2px;
+	box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+	margin: 10px;
+	padding: 0 0.5em;
+	font: 400 18px Roboto, Arial, sans-serif;
+	font-family: Roboto;
+	padding: 0;
+}
+
+#pac-container {
+	z-index: 1051 !important;
+}
+
+.pac-container {
+	z-index: 1051 !important;
+}
+
+.pac-controls {
+	padding: 5px 11px;
+}
+
+	.pac-controls label {
+		font-family: Roboto;
+		font-size: 13px;
+		font-weight: 300;
+	}
+
+#pac-input {
+	background-color: #fff;
+	font-family: Roboto;
+	font-size: 15px;
+	font-weight: 300;
+	margin-left: 12px;
+	padding: 0 11px 0 13px;
+	text-overflow: ellipsis;
+	width: 503px;
+	height: 40px;
+}
+
+	#pac-input:focus {
+		border-color: #4d90fe;
+	}
+
+
+h4 {
+	/* Layout Properties */
+	/* UI Properties */
+	text-align: left;
+	font: normal 600 18px/21px Poppins, Helvetica, "sans-serif";
+	letter-spacing: 0.29px;
+	color: #29262A;
+	opacity: 1;
+}
+
+.form-group label {
+	/* Layout Properties */
+	/*top: 432px;
+	left: 220px;
+	width: 188px;
+	height: 16px;*/
+	/* UI Properties */
+	text-align: left;
+	font: normal 600 13px/16px Poppins, Helvetica, "sans-serif";
+	font-family: Poppins, Helvetica, "sans-serif";
+	letter-spacing: 0.94px;
+	color: #29262A;
+	opacity: 0.4;
+}
+
+.custom-input {
+	background: #8E7C7C14;
+	border-radius: 6px;
+	border: unset;
+}
+
+	.custom-input:active, .custom-input.active, .custom-input:focus, .custom-input.focus {
+		background: #8E7C7C14;
+		border: unset;
+	}
+
+
+#schedule-tags > .item {
+	width: 160px;
+	height: 56px;
+	background: #8E7C7C14 0% 0% no-repeat padding-box;
+	border: 2px solid #D83B3B00;
+	border-radius: 10px;
+	opacity: 1;
+	white-space: unset;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+}
+
+.Gallery-Slider
+/*	#schedule-tags > .item div {
+		width: 100%
+	}
+*/
+#schedule-tags > .item span:first-child {
+	/* Layout Properties */
+	/* UI Properties */
+	text-align: left;
+	font: normal 600 14px/17px Poppins, Helvetica, "sans-serif";
+	letter-spacing: 0.22px;
+	color: #29262A;
+	opacity: 1;
+}
+
+	#schedule-tags > .item span:last-child {
+		/* Layout Properties */
+		/* UI Properties */
+		text-align: left;
+		font: normal normal 600 12px/15px Poppins, Helvetica, "sans-serif";
+		letter-spacing: 0.19px;
+		color: #29262A;
+		opacity: 0.4 !important;
+		padding: 0 10px;
+	}
+
+.btn-manage {
+	/* Layout Properties */
+	height: 52px;
+	/* UI Properties */
+	background: #29262A 0% 0% no-repeat padding-box;
+	border: 2px solid #D83B3B00;
+	border-radius: 10px;
+	opacity: 1;
+}

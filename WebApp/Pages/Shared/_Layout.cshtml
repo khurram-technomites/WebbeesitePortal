@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="../../../../">
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - NowBuySell</title>
+    <meta name="description" content="Login page example" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="canonical" href="https://keenthemes.com/metronic" />
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <!--end::Fonts-->
+    <!--begin::Page Custom Styles(used by this page)-->
+    <link href="~/css/login-4.css" rel="stylesheet" />
+    <!--end::Page Custom Styles-->
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="~/css/plugins.bundle.css" rel="stylesheet" />
+    <link href="~/css/prismjs.bundle.css" rel="stylesheet" />
+    <link href="~/css/style.bundle.css" rel="stylesheet" />
+    <!--end::Global Theme Styles-->
+    <!--begin::Layout Themes(used by all pages)-->
+    <!--end::Layout Themes-->
+    <link rel="shortcut icon" href="~/favicon.ico" />
+</head>
+
+
+<body id="kt_body" style="background-image: url(assets/media/bg/bg-10.jpg)" class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading">
+    <div class="d-flex flex-column flex-root">
+        @RenderBody()
+    </div>
+
+    <script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
+    <script>
+        var KTAppSettings = {
+            "breakpoints":
+                { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1200 },
+            "colors": {
+                "theme":
+                {
+                    "base":
+                    {
+                        "white": "#ffffff", "primary": "#6993FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800",
+                        "danger": "#F64E60", "light": "#F3F6F9", "dark": "#212121"
+                    },
+                    "light": {
+                        "white": "#ffffff", "primary": "#E1E9FF", "secondary": "#ECF0F3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE",
+                        "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0"
+                    },
+                    "inverse": {
+                        "white": "#ffffff", "primary": "#ffffff", "secondary": "#212121", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff",
+                        "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff"
+                    }
+                },
+                "gray": {
+                    "gray-100": "#F3F6F9", "gray-200": "#ECF0F3", "gray-300": "#E5EAEE", "gray-400": "#D6D6E0", "gray-500": "#B5B5C3",
+                    "gray-600": "#80808F", "gray-700": "#464E5F", "gray-800": "#1B283F", "gray-900": "#212121"
+                }
+            }, "font-family": "Poppins"
+        };
+    </script>
+
+    <script src="~/js/plugins.bundle.js"></script>  
+
+    <script src="~/js/login-general.js"></script>
+
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+<!--<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebApp</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>-->
+@*<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </li>
+        </ul>
+    </div>*@
+<!--</div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+</body>-->
+</html>
