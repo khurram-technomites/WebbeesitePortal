@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      dotnet: 3.1
+      dotnet: 5.0
   pre_build:
     commands:
       - echo Restoring NuGet packages...
@@ -11,12 +11,26 @@ phases:
   build:
     commands:
       - echo Building the application...
-      - dotnet build --configuration Release
+      - dotnet build WebAPI --configuration Release --output ./APIpublish
+      - dotnet build WebApp --configuration Release --output ./Webpublish
+      
+      #- dotnet restore Webbeesite.sln
+      #- dotnet build Webbeesie.sln --output ./publish
+      
   post_build:
     commands:
       - echo Publishing the application...
-      - dotnet publish --configuration Release --output ./publish
+      - dotnet publish WebAPI --configuration Release --output ./APIpublish
+      - dotnet publish WebApp --configuration Release --output ./Webpublish
+      
+      
 artifacts:
   files:
     - '**/*'
-  base-directory: './publish'
+  base-directory: './APIpublish'
+  secondary-artifacts:
+    artifact2:
+      files:
+      - '**/*'
+      base-directory: './Webpublish'
+
