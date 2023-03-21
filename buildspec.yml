@@ -16,7 +16,7 @@ phases:
     commands:
       - echo Publishing the application...
       - dotnet publish --configuration Release --output ./publish
-#artifacts:
-  #files:
-    #- '**/*'
-  #base-directory: 'WebbeesitePortal/publish'
+artifacts:
+  files:
+    - '**/*'
+  base-directory: './publish'
