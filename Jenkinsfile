@@ -23,7 +23,8 @@ pipeline {
 
         stage('Artifacts') {
             steps {
-                bat 'dotnet publish --configuration Release --output ./artifacts' // Publish the application
+                bat 'dotnet publish WebAPI --configuration Release --output ./Artifact-WebAPI' // Publish the application
+				bat 'dotnet publish WebApp --configuration Release --output ./Artifact-WebApp' // Publish the application
             }
         }
     }
