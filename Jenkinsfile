@@ -2,11 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm // Checkout the source code from your repository
-            }
-        }
 
         stage('Restore Dependencies') {
             steps {
